@@ -1,0 +1,17 @@
+[project]
+name = "cursus"
+version = "1.0.0"
+description = "An open-source API repository for university courses."
+license = { file = "LICENSE" }
+authors = [{ name = "Rafael Cenzano", email = "richard@richardhnguyen.com" }]
+dependencies = ["Flask>=3.0.0", "python-dotenv>=1.0.0"]
+
+[build-system]
+requires = ["flit_core<4"]
+build-backend = "flit_core.buildapi"
+
+# For black formatter
+[tool.black]
+line-length = 80
+target-version = ["py311"]
+include = '\.pyi?$'
