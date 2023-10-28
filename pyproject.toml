@@ -4,7 +4,10 @@ version = "1.0.0"
 description = "An open-source API repository for university courses."
 license = { file = "LICENSE" }
 authors = [{ name = "Rafael Cenzano", email = "richard@richardhnguyen.com" }]
-dependencies = ["Flask>=3.0.0", "python-dotenv>=1.0.0"]
+dependencies = ["Flask>=3.0.0", "python-dotenv>=1.0.0", "waitress>=2.1.2"]
+
+[project.scripts]
+cursus = "manage:cli"
 
 [build-system]
 requires = ["flit_core<4"]
