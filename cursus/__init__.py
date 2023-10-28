@@ -23,7 +23,9 @@ def create_app() -> Flask:
 
     @app.route("/")
     def hello():
-        return flask.jsonify({"message": "Hello, World!"})
+        return flask.jsonify(
+            {"message": "Hello, World!", "environment": app.config["FLASK_ENV"]}
+        )
 
     @app.route("/config")
     def config():

@@ -21,6 +21,7 @@ class Config(object):
     TESTING = False
     DEBUG = False
     DATABASE_URL = os.environ.get("DATABASE_URL")
+    FLASK_ENV = os.environ.get("FLASK_ENV")
 
 
 class DevConfig(Config):
