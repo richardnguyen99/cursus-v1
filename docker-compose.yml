@@ -1,0 +1,20 @@
+version: "3"
+services:
+  web:
+    build: .
+    ports:
+      - "5000:5001"
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: ./Dockerfile
+    environment:
+      - APP_SERVER_UPSTREAM=cursus-web
+      - APP_SERVER_SERVICE=cursus-web-1
+      - APP_SERVER_PORT=5001
+    volumes:
+      - ./nginx:/etc/nginx/templates
+    ports:
+      - "80:80"
+    depends_on:
+      - web

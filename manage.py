@@ -3,6 +3,7 @@
 
 import click
 import waitress
+import os
 
 from flask.cli import FlaskGroup
 from dotenv import load_dotenv
@@ -23,6 +24,10 @@ def run_waitress(host, port):
 
     # Load the environment variables from the .env file manually
     load_dotenv()
+
+    # Assert some environment variables are set
+    assert os.environ.get("DATABASE_URL")
+    assert os.environ.get("FLASK_ENV")
 
     app = create_app()
     print(f"Running waitress on {host}:{port}")

@@ -1,0 +1,28 @@
+events {
+    worker_connections 1024;
+}
+
+http {
+    server {
+        listen 80;
+
+        location / {
+            # Forward traffic to the server listening in this address
+            proxy_pass http://${APP_SERVER_UPSTREAM};
+
+            # Set request line and headers sent by nginx to the server
+            # $<something> is a variable that will be replaced by nginx. They are
+            # from the original request sent by the client, or nginx itself.
+            proxy_set_header            Host                        ${DOLLAR}http_host;
+            proxy_set_header            X-Real-IP                   ${DOLLAR}remote_addr;
+            proxy_set_header            X-Forwarded-For             ${DOLLAR}proxy_add_x_forwarded_for;
+            proxy_set_header            X-Forwarded-Proto           ${DOLLAR}scheme;
+            proxy_http_version          1.1;
+        }
+    }
+
+    upstream ${APP_SERVER_UPSTREAM} {
+        server ${APP_SERVER_SERVICE}:${APP_SERVER_PORT};
+    }
+}
+
