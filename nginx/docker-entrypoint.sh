@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+# A simple script to substitute environment variables in nginx.conf
+# In development, these environment variables should be set in docker-compose.yml
+# In production, these environment variables should be set in the 
+
 export DOLLAR='$'
 
 echo "\

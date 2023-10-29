@@ -1,0 +1,11 @@
+# Dockerfile will ignore these files and directories when performing commands 
+# like ADD and COPY
+
+.dockerignore
+.git
+.gitignore
+README.md
+
+__pycache__/
+.venv/
+.vscode/

@@ -22,7 +22,8 @@ def cli():
 def run_waitress(host, port):
     """Run the application using Waitress as the production server."""
 
-    # Load the environment variables from the .env file manually
+    # Load the environment variables from the .env file manually as `waitress`
+    # does not include the environment variables loading by default like Flask.
     load_dotenv()
 
     # Assert some environment variables are set

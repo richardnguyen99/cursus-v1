@@ -1,9 +1,38 @@
 version: "3"
 services:
   web:
-    build: .
+    build:
+      context: .
+      dockerfile: ./Dockerfile
     ports:
       - "5000:5001"
+    depends_on:
+      - postgres
+    volumes:
+      - ./cursus:/cursus/cursus
+
+  postgres:
+    container_name: postgres
+    image: postgres:latest
+    env_file: .env
+    ports:
+      - "7432:7432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    restart: always
+
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    env_file: .env
+    ports:
+      - "5050:5050"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    restart: always
+    depends_on:
+      - postgres
+
   nginx:
     build:
       context: ./nginx
@@ -12,9 +41,18 @@ services:
       - APP_SERVER_UPSTREAM=cursus-web
       - APP_SERVER_SERVICE=cursus-web-1
       - APP_SERVER_PORT=5001
+      - APP_ADMIN_UPSTREAM=cursus-pgadmin
+      - APP_ADMIN_SERVICE=pgadmin
+      - APP_ADMIN_PORT=5050
     volumes:
       - ./nginx:/etc/nginx/templates
     ports:
       - "80:80"
     depends_on:
       - web
+      - postgres
+      - pgadmin
+
+volumes:
+  postgres_data:
+  pgadmin_data:

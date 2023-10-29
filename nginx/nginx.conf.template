@@ -1,9 +1,15 @@
+# A template for Nginx configuration file
+# 
+# Nginx doesn't support environment variables during startup. This template is
+# used to generate a configuration files
+
 events {
     worker_connections 1024;
 }
 
 http {
     server {
+        server_name localhost;
         listen 80;
 
         location / {
@@ -21,8 +27,30 @@ http {
         }
     }
 
+    server {
+        server_name admin.localhost;
+        listen 80;
+
+        location / {
+            proxy_pass http://cursus-pgadmin/;
+
+            # Set request line and headers sent by nginx to the server
+
+            proxy_set_header            Host                        ${DOLLAR}http_host;
+            proxy_set_header            X-Real-IP                   ${DOLLAR}remote_addr;
+            proxy_set_header            X-Forwarded-For             ${DOLLAR}proxy_add_x_forwarded_for;
+            proxy_set_header            X-Forwarded-Proto           ${DOLLAR}scheme;
+            proxy_http_version          1.1;
+        }
+    }
+
+
     upstream ${APP_SERVER_UPSTREAM} {
         server ${APP_SERVER_SERVICE}:${APP_SERVER_PORT};
+    }
+
+    upstream ${APP_ADMIN_UPSTREAM} {
+        server ${APP_ADMIN_SERVICE}:${APP_ADMIN_PORT};
     }
 }
 
