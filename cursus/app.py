@@ -28,14 +28,21 @@ def create_app() -> Flask:
     db.init_app(app)
     migrate.init_app(app, db)
 
+    @app.route("/ping")
+    def ping():
+        resp = flask.make_response(flask.json.dumps({"message": "pong"}), 200)
+        resp.headers["Content-Type"] = "application/json"
+
+        return resp
+
     @app.route("/")
     def hello():
-        return flask.jsonify(
-            {
-                "message": "Hello, World!",
-                "environment": app.config["FLASK_ENV"],
-            }
+        resp = flask.make_response(
+            flask.json.dumps({"message": "Welcome to the Cursus API"}), 200
         )
+        resp.headers["Content-Type"] = "application/json"
+
+        return resp
 
     @app.route("/config")
     def config():
