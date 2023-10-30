@@ -8,7 +8,7 @@ import flask
 
 from flask import Flask
 
-from .util.extensions import db, alembic
+from .util.extensions import db, migrate
 
 
 def create_app() -> Flask:
@@ -25,8 +25,8 @@ def create_app() -> Flask:
     # Load configuration for the application
     app.config.from_object(os.environ.get("APP_SETTINGS"))
 
-    alembic.init_app(app)
     db.init_app(app)
+    migrate.init_app(app, db)
 
     @app.route("/")
     def hello():
