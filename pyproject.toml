@@ -1,10 +1,17 @@
 [project]
+dependencies = [
+    "Flask>=3.0.0",
+    "python-dotenv>=1.0.0",
+    "waitress>=2.1.2",
+    "Flask-SQLAlchemy>=3.1.1",
+    "Flask-Alembic>=2.0.1",
+    "psycopg2-binary>=2.9.9",
+]
 name = "cursus"
 version = "1.0.0"
 description = "An open-source API repository for university courses."
 license = { file = "LICENSE" }
 authors = [{ name = "Rafael Cenzano", email = "richard@richardhnguyen.com" }]
-dependencies = ["Flask>=3.0.0", "python-dotenv>=1.0.0", "waitress>=2.1.2"]
 
 [project.scripts]
 cursus = "manage:cli"
@@ -15,6 +22,6 @@ build-backend = "flit_core.buildapi"
 
 # For black formatter
 [tool.black]
-line-length = 80
+line-length = 79
 target-version = ["py311"]
 include = '\.pyi?$'

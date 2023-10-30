@@ -1,19 +1,33 @@
 # -*- coding: utf-8 -*-
 """Flask Management Script"""
 
+import os
 import click
 import waitress
-import os
 
-from flask.cli import FlaskGroup
+from flask.cli import FlaskGroup, with_appcontext
 from dotenv import load_dotenv
 
 from cursus import create_app
+from cursus.util.extensions import db
+
+from cursus.models import (  # noqa: F401 # pylint: disable=unused-import
+    university,
+)
 
 
 @click.group(cls=FlaskGroup, create_app=create_app)
 def cli():
     """Management script for the Flask application."""
+
+
+@cli.command("create-db")
+@with_appcontext
+def create_db():
+    """Create the database."""
+
+    db.create_all()
+    db.session.commit()
 
 
 @cli.command("waitress")

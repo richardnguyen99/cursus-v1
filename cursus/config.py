@@ -22,6 +22,7 @@ class Config(object):
     DEBUG = False
     DATABASE_URL = os.environ.get("DATABASE_URL")
     FLASK_ENV = os.environ.get("FLASK_ENV")
+    SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL")
 
 
 class DevConfig(Config):
@@ -34,3 +35,4 @@ class DevConfig(Config):
     """
 
     DEBUG = True
+    CSRF_ENABLED = True
