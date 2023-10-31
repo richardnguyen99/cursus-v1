@@ -4,3 +4,4 @@
 """
 
 from .extensions import db  # noqa: F401
+from . import exceptions as CursusException  # noqa: F401

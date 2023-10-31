@@ -8,7 +8,7 @@ import flask
 
 from flask import Flask
 
-from .views import find_bp
+from .views import find_bp, university_bp
 from .util.extensions import db, migrate
 
 
@@ -50,6 +50,7 @@ def create_app() -> Flask:
         return flask.jsonify({"message": app.config["DATABASE_URL"]})
 
     app.register_blueprint(find_bp)
+    app.register_blueprint(university_bp)
 
     @app.teardown_appcontext
     def shutdown_session(exception=None):  # pylint: disable=unused-argument
