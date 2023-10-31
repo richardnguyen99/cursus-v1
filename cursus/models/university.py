@@ -1,7 +1,7 @@
 """
 """
 
-from sqlalchemy import ForeignKey, String, Integer
+from sqlalchemy import ForeignKey, String, Integer, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from cursus.util.extensions import db
@@ -35,7 +35,7 @@ class University(db.Model):
         "UniversityDomain",
         backref="university",
         lazy=True,
-        cascade="all, delete-orphan",
+        collection_class=list,
     )
 
     def __init__(self, full_name: str, country: str):
@@ -54,10 +54,12 @@ class UniversityDomain(db.Model):
 
     __tablename__ = "university_domains"
 
+    __table_args__ = (UniqueConstraint("domain_name", "school_id"),)
+
     id: Mapped[int] = mapped_column(db.Integer, primary_key=True)
 
     domain_name: Mapped[str] = mapped_column(db.String(255), nullable=False)
 
-    school_id: Mapped[str] = mapped_column(
-        ForeignKey("universities.id"), nullable=False
+    school_id: Mapped[int] = mapped_column(
+        db.Integer, ForeignKey("universities.id"), nullable=False
     )

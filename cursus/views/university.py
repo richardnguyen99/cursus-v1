@@ -1,6 +1,10 @@
 import flask
+from sqlalchemy import func
+from sqlalchemy.orm import joinedload
 
 from cursus.util import CursusException
+from cursus.models.university import University
+from cursus.schema.university import university_schema
 
 
 def university_index():
@@ -31,13 +35,20 @@ def university_find():
         # Split query string into a list of arguments
         # TODO:
 
+        universities = (
+            University.query.filter(
+                func.lower(University.full_name).like(f"%{query_string}%")
+            )
+            .limit(10)
+            .options(joinedload(University.domains))
+            .all()
+        )
+
         resp = flask.make_response(
             flask.json.dumps(
                 {
                     "message": "OK",
-                    "data": {
-                        "query_string": query_string,
-                    },
+                    "data": university_schema.dump(universities, many=True),
                 }
             ),
             200,

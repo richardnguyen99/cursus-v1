@@ -43,7 +43,7 @@ university_bp.add_url_rule(
 @university_bp.app_errorhandler(BadRequest)
 @university_bp.app_errorhandler(400)
 def handle_bad_request(error: CursusException.BadRequestError):
-    if error == 400:
+    if type(error) is int and error == 400:
         return jsonify({"message": f"{request.url}: Bad Request"}), 400
     elif isinstance(error, BadRequest):
         return jsonify({"message": error.get_description()}), 400
@@ -55,7 +55,7 @@ def handle_bad_request(error: CursusException.BadRequestError):
 @university_bp.app_errorhandler(NotFound)
 @university_bp.app_errorhandler(404)
 def handle_not_found(error: CursusException.NotFoundError | NotFound | int):
-    if error == 404:
+    if type(error) is int and error == 404:
         return jsonify({"message": f"{request.url}: Not Found"}), 404
     elif isinstance(error, NotFound):
         return jsonify({"message": error.get_description()}), 404
@@ -69,7 +69,7 @@ def handle_not_found(error: CursusException.NotFoundError | NotFound | int):
 def handle_method_not_allowed(
     error: CursusException.MethodNotAllowedError | MethodNotAllowed | int,
 ):
-    if error == 405:
+    if type(error) is int and error == 405:
         return jsonify({"message": f"{request.url}: Method Not Allowed"}), 405
     elif isinstance(error, MethodNotAllowed):
         return jsonify({"message": error.get_description()}), 405

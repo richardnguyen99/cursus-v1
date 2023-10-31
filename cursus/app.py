@@ -9,7 +9,7 @@ import flask
 from flask import Flask
 
 from .views import find_bp, university_bp
-from .util.extensions import db, migrate
+from .util.extensions import db, migrate, ma
 
 
 def create_app() -> Flask:
@@ -26,8 +26,14 @@ def create_app() -> Flask:
     # Load configuration for the application
     app.config.from_object(os.environ.get("APP_SETTINGS"))
 
+    # Register Flask extensions
     db.init_app(app)
     migrate.init_app(app, db)
+    ma.init_app(app)
+
+    # Register views
+    app.register_blueprint(find_bp)
+    app.register_blueprint(university_bp)
 
     @app.route("/ping")
     def ping():
@@ -48,9 +54,6 @@ def create_app() -> Flask:
     @app.route("/config")
     def config():
         return flask.jsonify({"message": app.config["DATABASE_URL"]})
-
-    app.register_blueprint(find_bp)
-    app.register_blueprint(university_bp)
 
     @app.teardown_appcontext
     def shutdown_session(exception=None):  # pylint: disable=unused-argument
