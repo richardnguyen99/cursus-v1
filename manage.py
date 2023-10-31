@@ -11,11 +11,15 @@ from dotenv import load_dotenv
 from cursus import create_app
 from cursus.util.extensions import db
 
+
+# Not being accessed directly. However, it is required for the migrations to
+# know where to find the models.
 from cursus.models import (  # noqa: F401 # pylint: disable=unused-import
     university,
 )
 
 
+# Initialize the core management script
 @click.group(cls=FlaskGroup, create_app=create_app)
 def cli():
     """Management script for the Flask application."""

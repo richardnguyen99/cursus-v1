@@ -8,6 +8,7 @@ import flask
 
 from flask import Flask
 
+from .views import find_bp
 from .util.extensions import db, migrate
 
 
@@ -47,6 +48,8 @@ def create_app() -> Flask:
     @app.route("/config")
     def config():
         return flask.jsonify({"message": app.config["DATABASE_URL"]})
+
+    app.register_blueprint(find_bp)
 
     @app.teardown_appcontext
     def shutdown_session(exception=None):  # pylint: disable=unused-argument
