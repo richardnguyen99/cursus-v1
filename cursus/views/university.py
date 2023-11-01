@@ -1,4 +1,6 @@
 import flask
+import urllib.parse
+
 from sqlalchemy import func
 from sqlalchemy.orm import joinedload
 
@@ -31,28 +33,47 @@ def university_find():
         reason = "Query string cannot be empty while using this endpoint"
         raise CursusException.BadRequestError(reason)
 
-    else:
-        # Split query string into a list of arguments
-        # TODO:
+    # Parse query string into a dictionary of arguments
+    query_dict = urllib.parse.parse_qs(query_string)
 
-        universities = (
-            University.query.filter(
-                func.lower(University.full_name).like(f"%{query_string}%")
-            )
-            .limit(10)
-            .options(joinedload(University.domains))
-            .all()
-        )
+    # parse_qs returns a list of values for each key. This will convert the
+    # list into a single value.
+    parsed_dict = {key: value[0] for key, value in query_dict.items()}
 
-        resp = flask.make_response(
-            flask.json.dumps(
-                {
-                    "message": "OK",
-                    "data": university_schema.dump(universities, many=True),
-                }
-            ),
-            200,
-        )
+    # Check if query string contains a `s` argument and has a value
+    if "s" not in parsed_dict or not parsed_dict["s"]:
+        reason = "Query string must contain a `s` argument"
+        raise CursusException.BadRequestError(reason)
+
+    search_string = parsed_dict["s"]
+
+    universities = University.query.filter(
+        func.lower(University.full_name).like(f"%{search_string}%")
+    )
+
+    limit = 10
+
+    # Check if query string contains a `limits` argument and has a value
+    if "limit" in parsed_dict and parsed_dict["limit"]:
+        try:
+            limit = int(parsed_dict["limit"])
+        except ValueError:
+            reason = "Query string `limit` argument must be an integer"
+            raise CursusException.BadRequestError(reason)
+
+    universities = (
+        universities.limit(limit).options(joinedload(University.domains)).all()
+    )
+
+    resp = flask.make_response(
+        flask.json.dumps(
+            {
+                "message": "OK",
+                "data": university_schema.dump(universities, many=True),
+            }
+        ),
+        200,
+    )
 
     resp.headers["Content-Type"] = "application/json"
     return resp
