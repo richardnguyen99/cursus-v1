@@ -1,7 +1,9 @@
 """
+University model
 """
 
-from sqlalchemy import ForeignKey, String, Integer, UniqueConstraint
+from sqlalchemy import ForeignKey, String, Integer, UniqueConstraint, DateTime
+from sqlalchemy.sql import func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from cursus.util.extensions import db
@@ -21,14 +23,48 @@ class University(db.Model):
     )
 
     state: Mapped[str] = mapped_column(
-        db.String(64),
+        String(64),
         nullable=True,
     )
 
     country: Mapped[str] = mapped_column(
-        db.String(64),
+        String(64),
         nullable=False,
         index=True,
+    )
+
+    established: Mapped[int] = mapped_column(
+        Integer,
+        nullable=True,
+        default=1800,
+    )
+
+    former_name: Mapped[str] = mapped_column(
+        String(64),
+        nullable=True,
+    )
+
+    motto: Mapped[str] = mapped_column(
+        String(256),
+        nullable=True,
+    )
+
+    created_at: Mapped[DateTime] = mapped_column(
+        DateTime(timezone=True),
+        server_default=func.now(),
+    )
+
+    updated_at: Mapped[DateTime] = mapped_column(
+        DateTime(timezone=True),
+        server_default=func.now(),
+        server_onupdate=func.now(),
+    )
+
+    founders = relationship(
+        "UniversityFounder",
+        backref="university",
+        lazy=True,
+        collection_class=list,
     )
 
     domains = relationship(
@@ -59,6 +95,24 @@ class UniversityDomain(db.Model):
     id: Mapped[int] = mapped_column(db.Integer, primary_key=True)
 
     domain_name: Mapped[str] = mapped_column(db.String(255), nullable=False)
+
+    school_id: Mapped[int] = mapped_column(
+        db.Integer, ForeignKey("universities.id"), nullable=False
+    )
+
+
+class UniversityFounder(db.Model):
+    """Normalized University Founder model"""
+
+    __tablename__ = "university_founders"
+
+    __table_args__ = (UniqueConstraint("founder_name", "school_id"),)
+
+    id: Mapped[int] = mapped_column(db.Integer, primary_key=True)
+
+    founder_name: Mapped[str] = mapped_column(db.String(255), nullable=False)
+
+    biography_link: Mapped[str] = mapped_column(db.String(255), nullable=True)
 
     school_id: Mapped[int] = mapped_column(
         db.Integer, ForeignKey("universities.id"), nullable=False
