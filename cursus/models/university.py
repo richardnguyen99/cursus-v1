@@ -192,3 +192,5 @@ class UniversityCampus(db.Model):
     school_id: Mapped[int] = mapped_column(
         Integer, ForeignKey("universities.id"), nullable=False, index=True
     )
+
+    country = relationship("Country")

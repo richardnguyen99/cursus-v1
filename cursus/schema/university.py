@@ -1,12 +1,19 @@
-from marshmallow_sqlalchemy import SQLAlchemyAutoSchema, auto_field, fields
+# -*- coding: utf-8 -*-
 
-from cursus.util.extensions import ma
+"""
+University-related Schema
+"""
+
+from marshmallow import fields
+from marshmallow_sqlalchemy import SQLAlchemyAutoSchema, auto_field
+
 from cursus.models.university import (
     University,
     UniversityDomain,
     UniversityFounder,
     UniversityCampus,
 )
+from cursus.schema.country import CountrySchema
 
 
 class UniversityDomainSchema(SQLAlchemyAutoSchema):
@@ -45,6 +52,18 @@ class UniversityCampusSchema(SQLAlchemyAutoSchema):
     address_zip_code = auto_field()
     country_code = auto_field()
 
+    country = fields.Nested(CountrySchema, only=("name",), many=False)
+
+    address = fields.Method("get_address", dump_only=True)
+
+    def get_address(self, obj: UniversityCampus):
+        return f"{obj.address_number}, \
+{obj.address_street} \
+{obj.address_city}, \
+{obj.address_state}, \
+{obj.address_zip_code}, \
+{obj.country.name}"
+
 
 class UniversitySchema(SQLAlchemyAutoSchema):
     class Meta:
@@ -65,18 +84,28 @@ class UniversitySchema(SQLAlchemyAutoSchema):
         UniversityFounderSchema, many=True, only=("founder_name",)
     )
 
-    campuses = fields.Nested(
-        UniversityCampusSchema,
-        many=True,
-        only=(
-            "address_number",
-            "address_street",
-            "address_city",
-            "address_state",
-            "address_zip_code",
-            "country_code",
-        ),
+    # campuses = fields.Nested(
+    # UniversityCampusSchema,
+    # many=True,
+    # only=("address",),
+    # )
+
+    campuses = fields.Method(
+        "get_campuses",
+        dump_only=True,
     )
+
+    def get_campuses(self, obj: University):
+        return [
+            "{0}, {1}, {2}, {3} {4}".format(
+                campus.address_number,
+                campus.address_street,
+                campus.address_city,
+                campus.address_state,
+                campus.address_zip_code,
+            )
+            for campus in obj.campuses
+        ]
 
 
 university_schema = UniversitySchema()
