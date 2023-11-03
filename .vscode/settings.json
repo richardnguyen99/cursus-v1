@@ -7,4 +7,16 @@
         "--ignore=E203,W503",
         "--exclude=venv,build,dist,migrations",
     ],
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "server": "172.26.0.2",
+            "port": 7432,
+            "driver": "PostgreSQL",
+            "name": "cursus-db",
+            "group": "cursus",
+            "database": "cursus",
+            "username": "postgres"
+        }
+    ],
 }

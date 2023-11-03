@@ -22,17 +22,6 @@ class University(db.Model):
         nullable=False,
     )
 
-    state: Mapped[str] = mapped_column(
-        String(64),
-        nullable=True,
-    )
-
-    country: Mapped[str] = mapped_column(
-        String(64),
-        nullable=False,
-        index=True,
-    )
-
     established: Mapped[int] = mapped_column(
         Integer,
         nullable=True,
@@ -81,12 +70,20 @@ class University(db.Model):
         collection_class=list,
     )
 
-    def __init__(self, full_name: str, country: str):
+    def __init__(
+        self,
+        full_name: str,
+        established: int,
+        former_name: str,
+        motto: str,
+    ):
         self.full_name = full_name
-        self.country = country
+        self.established = established
+        self.former_name = former_name
+        self.motto = motto
 
     def __repr__(self):
-        return f"<University: {self.full_name}>"
+        return "<University({self.full_name})>".format(self=self)
 
     def __str__(self):
         return f"{self.full_name} - {self.country}"

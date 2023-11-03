@@ -4,7 +4,7 @@
 University-related Schema
 """
 
-from marshmallow import fields
+from marshmallow import fields, post_dump, pre_dump
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema, auto_field
 
 from cursus.models.university import (
@@ -14,6 +14,10 @@ from cursus.models.university import (
     UniversityCampus,
 )
 from cursus.schema.country import CountrySchema
+
+INCLUDE_DOMAINS = 1
+INCLUDE_CAMPUSES = 2
+INCLUDE_FOUNDERS = 3
 
 
 class UniversityDomainSchema(SQLAlchemyAutoSchema):
@@ -72,9 +76,10 @@ class UniversitySchema(SQLAlchemyAutoSchema):
         include_relationships = True
 
     id = auto_field()
-    full_name = auto_field()
-    state = auto_field()
-    country = auto_field()
+    full_name = auto_field(dump_only=True)
+    established = auto_field(dump_only=True)
+    former_name = auto_field(dump_only=True)
+    motto = auto_field()
 
     domains = fields.Nested(
         UniversityDomainSchema, many=True, only=("domain_name",)
@@ -83,12 +88,6 @@ class UniversitySchema(SQLAlchemyAutoSchema):
     founders = fields.Nested(
         UniversityFounderSchema, many=True, only=("founder_name",)
     )
-
-    # campuses = fields.Nested(
-    # UniversityCampusSchema,
-    # many=True,
-    # only=("address",),
-    # )
 
     campuses = fields.Method(
         "get_campuses",

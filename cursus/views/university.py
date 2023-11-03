@@ -1,12 +1,16 @@
 import flask
 import urllib.parse
 
-from sqlalchemy import func
 from sqlalchemy.orm import joinedload
 
 from cursus.util import CursusException
 from cursus.models.university import University
-from cursus.schema.university import university_schema
+from cursus.schema.university import (
+    UniversitySchema,
+    INCLUDE_DOMAINS,
+    INCLUDE_CAMPUSES,
+    INCLUDE_FOUNDERS,
+)
 
 
 def university_index():
@@ -41,14 +45,15 @@ def university_find():
     parsed_dict = {key: value[0] for key, value in query_dict.items()}
 
     # Check if query string contains a `s` argument and has a value
-    if "s" not in parsed_dict or not parsed_dict["s"]:
-        reason = "Query string must contain a `s` argument"
+    if "school" not in parsed_dict or not parsed_dict["school"]:
+        reason = "Query string must contain a `school` argument"
         raise CursusException.BadRequestError(reason)
 
-    search_string = parsed_dict["s"]
+    search_string = parsed_dict["school"]
 
+    # Search string with ignored-case pattern
     universities = University.query.filter(
-        func.lower(University.full_name).like(f"%{search_string}%")
+        University.full_name.ilike(f"%{search_string}%")
     )
 
     limit = 10
@@ -61,15 +66,48 @@ def university_find():
             reason = "Query string `limit` argument must be an integer"
             raise CursusException.BadRequestError(reason)
 
-    universities = (
-        universities.limit(limit).options(joinedload(University.domains)).all()
+    universities = universities.limit(limit).options(
+        joinedload(University.domains)
     )
+
+    established = False
+
+    if "show_established" in parsed_dict and parsed_dict["show_established"]:
+        try:
+            established = bool(parsed_dict["show_established"])
+        except ValueError:
+            reason = (
+                "Query string `show_established` argument must be a boolean"
+            )
+            raise CursusException.BadRequestError(reason)
+
+    # Schema dump options
+    fields = {
+        "id": True,
+        "full_name": True,
+        "established": established,
+        "former_name": True,
+        "motto": True,
+        "domains": True,
+        "created_at": True,
+        "updated_at": True,
+        "campuses": False,
+        "founders": False,
+    }
+
+    only_fields = tuple([key for key, value in fields.items() if value])
+
+    university_schema = UniversitySchema(only=only_fields)
 
     resp = flask.make_response(
         flask.json.dumps(
             {
                 "message": "OK",
-                "data": university_schema.dump(universities, many=True),
+                "data": university_schema.dump(
+                    universities.all(),
+                    many=True,
+                ),
+                "count": universities.count(),
             }
         ),
         200,
