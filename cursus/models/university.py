@@ -4,7 +4,7 @@ University model
 
 from sqlalchemy import ForeignKey, String, Integer, UniqueConstraint, DateTime
 from sqlalchemy.sql import func
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.orm import Mapped, mapped_column, relationship, Relationship
 
 from cursus.util.extensions import db
 
@@ -74,6 +74,13 @@ class University(db.Model):
         collection_class=list,
     )
 
+    campuses: Relationship[list["UniversityCampus"]] = relationship(
+        "UniversityCampus",
+        backref="university",
+        lazy=True,
+        collection_class=list,
+    )
+
     def __init__(self, full_name: str, country: str):
         self.full_name = full_name
         self.country = country
@@ -96,6 +103,17 @@ class UniversityDomain(db.Model):
 
     domain_name: Mapped[str] = mapped_column(db.String(255), nullable=False)
 
+    created_at: Mapped[DateTime] = mapped_column(
+        DateTime(timezone=True),
+        server_default=func.now(),
+    )
+
+    updated_at: Mapped[DateTime] = mapped_column(
+        DateTime(timezone=True),
+        server_default=func.now(),
+        server_onupdate=func.now(),
+    )
+
     school_id: Mapped[int] = mapped_column(
         db.Integer, ForeignKey("universities.id"), nullable=False
     )
@@ -114,6 +132,63 @@ class UniversityFounder(db.Model):
 
     biography_link: Mapped[str] = mapped_column(db.String(255), nullable=True)
 
+    created_at: Mapped[DateTime] = mapped_column(
+        DateTime(timezone=True),
+        server_default=func.now(),
+    )
+
+    updated_at: Mapped[DateTime] = mapped_column(
+        DateTime(timezone=True),
+        server_default=func.now(),
+        server_onupdate=func.now(),
+    )
+
     school_id: Mapped[int] = mapped_column(
         db.Integer, ForeignKey("universities.id"), nullable=False
+    )
+
+
+class UniversityCampus(db.Model):
+    """Normalized University Campus model"""
+
+    __tablename__ = "university_campuses"
+    __table_args__ = (
+        UniqueConstraint(
+            "address_number", "address_street", "country_code", "school_id"
+        ),
+    )
+
+    address_id: Mapped[int] = mapped_column(
+        db.Integer, primary_key=True, autoincrement=True
+    )
+
+    address_number: Mapped[str] = mapped_column(db.String(16), nullable=False)
+
+    address_street: Mapped[str] = mapped_column(db.String(64), nullable=False)
+
+    address_city: Mapped[str] = mapped_column(db.String(64), nullable=False)
+
+    address_state: Mapped[str] = mapped_column(db.String(64), nullable=False)
+
+    address_zip_code: Mapped[str] = mapped_column(
+        db.String(16), nullable=False
+    )
+
+    created_at: Mapped[DateTime] = mapped_column(
+        DateTime(timezone=True),
+        server_default=func.now(),
+    )
+
+    updated_at: Mapped[DateTime] = mapped_column(
+        DateTime(timezone=True),
+        server_default=func.now(),
+        server_onupdate=func.now(),
+    )
+
+    country_code: Mapped[str] = mapped_column(
+        db.String(2), ForeignKey("countries.alpha2"), nullable=False
+    )
+
+    school_id: Mapped[int] = mapped_column(
+        Integer, ForeignKey("universities.id"), nullable=False, index=True
     )
