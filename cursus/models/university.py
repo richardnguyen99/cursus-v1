@@ -2,7 +2,17 @@
 University model
 """
 
-from sqlalchemy import ForeignKey, String, Integer, UniqueConstraint, DateTime
+import string
+import random
+
+from sqlalchemy import (
+    ForeignKey,
+    String,
+    Integer,
+    UniqueConstraint,
+    DateTime,
+    event,
+)
 from sqlalchemy.sql import func
 from sqlalchemy.orm import Mapped, mapped_column, relationship, Relationship
 
@@ -36,6 +46,12 @@ class University(db.Model):
     motto: Mapped[str] = mapped_column(
         String(256),
         nullable=True,
+    )
+
+    object_id: Mapped[str] = mapped_column(
+        String(11),
+        nullable=False,
+        unique=True,
     )
 
     created_at: Mapped[DateTime] = mapped_column(
@@ -191,3 +207,23 @@ class UniversityCampus(db.Model):
     )
 
     country = relationship("Country")
+
+
+def _generate_string_id(length=11) -> str:
+    """Generate a random string ID for the University object"""
+
+    characters = string.ascii_letters + string.digits
+
+    while True:
+        new_id = "".join(random.choice(characters) for _ in range(length))
+        existing_video = University.query.get({"object_id": new_id})
+
+        if existing_video is None:
+            return new_id
+
+
+@event.listens_for(University, "before_insert")
+def generate_string_id(mapper, connection, target) -> None:
+    """Generate a random string ID for the University object"""
+
+    target.object_id = _generate_string_id()

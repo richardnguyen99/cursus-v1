@@ -7,9 +7,6 @@ from cursus.util import CursusException
 from cursus.models.university import University
 from cursus.schema.university import (
     UniversitySchema,
-    INCLUDE_DOMAINS,
-    INCLUDE_CAMPUSES,
-    INCLUDE_FOUNDERS,
 )
 
 
@@ -62,13 +59,12 @@ def university_find():
     if "limit" in parsed_dict and parsed_dict["limit"]:
         try:
             limit = int(parsed_dict["limit"])
+
         except ValueError:
             reason = "Query string `limit` argument must be an integer"
             raise CursusException.BadRequestError(reason)
 
-    universities = universities.limit(limit).options(
-        joinedload(University.domains)
-    )
+    universities = universities.limit(limit)
 
     established = False
 
@@ -81,6 +77,17 @@ def university_find():
             )
             raise CursusException.BadRequestError(reason)
 
+    show_domains = False
+
+    if "show_domains" in parsed_dict and parsed_dict["show_domains"]:
+        try:
+            show_domains = bool(parsed_dict["show_domains"])
+        except ValueError:
+            reason = "Query string `show_domains` argument must be a boolean"
+            raise CursusException.BadRequestError(reason)
+
+        universities = universities.options(joinedload("domains"))
+
     # Schema dump options
     fields = {
         "id": True,
@@ -88,7 +95,7 @@ def university_find():
         "established": established,
         "former_name": True,
         "motto": True,
-        "domains": True,
+        "domains": show_domains,
         "created_at": True,
         "updated_at": True,
         "campuses": False,
@@ -120,13 +127,31 @@ def university_find():
 def university_get_by_name(name: str):
     """University get by name endpoint"""
 
+    if flask.request.method != "GET":
+        uri = flask.request.url
+
+        raise CursusException.MethodNotAllowedError(
+            f"This endpoint, {uri}, only accepts GET requests"
+        )
+
+    university = University.query.filter_by(
+        University.full_name.ilike(f"{name}")
+    ).first()
+
+    if not university:
+        raise CursusException.BadRequestError(
+            f"University with name, {name}, not found"
+        )
+
+    university_schema = UniversitySchema()
+
     resp = flask.make_response(
         flask.json.dumps(
             {
                 "message": "OK",
-                "data": {
-                    "name": name,
-                },
+                "data": university_schema.dump(
+                    university,
+                ),
             }
         ),
         200,

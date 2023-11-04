@@ -15,10 +15,6 @@ from cursus.models.university import (
 )
 from cursus.schema.country import CountrySchema
 
-INCLUDE_DOMAINS = 1
-INCLUDE_CAMPUSES = 2
-INCLUDE_FOUNDERS = 3
-
 
 class UniversityDomainSchema(SQLAlchemyAutoSchema):
     class Meta:
