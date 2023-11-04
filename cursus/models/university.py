@@ -48,6 +48,11 @@ class University(db.Model):
         nullable=True,
     )
 
+    type: Mapped[str] = mapped_column(
+        String(64),
+        nullable=True,
+    )
+
     object_id: Mapped[str] = mapped_column(
         String(11),
         nullable=False,
@@ -65,14 +70,14 @@ class University(db.Model):
         server_onupdate=func.now(),
     )
 
-    founders = relationship(
+    founders: Relationship[list["UniversityFounder"]] = relationship(
         "UniversityFounder",
         backref="university",
         lazy=True,
         collection_class=list,
     )
 
-    domains = relationship(
+    domains: Relationship[list["UniversityDomain"]] = relationship(
         "UniversityDomain",
         backref="university",
         lazy=True,

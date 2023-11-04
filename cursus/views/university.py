@@ -100,6 +100,7 @@ def university_find():
         "updated_at": True,
         "campuses": False,
         "founders": False,
+        "object_id": True,
     }
 
     only_fields = tuple([key for key, value in fields.items() if value])
