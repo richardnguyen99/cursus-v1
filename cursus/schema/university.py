@@ -4,7 +4,7 @@
 University-related Schema
 """
 
-from marshmallow import fields, post_dump, pre_dump
+from marshmallow import fields
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema, auto_field
 
 from cursus.models.university import (
@@ -24,7 +24,6 @@ class UniversityDomainSchema(SQLAlchemyAutoSchema):
 
     id = auto_field()
     domain_name = auto_field()
-    school_id = auto_field()
 
 
 class UniversityFounderSchema(SQLAlchemyAutoSchema):
@@ -73,6 +72,7 @@ class UniversitySchema(SQLAlchemyAutoSchema):
 
     id = auto_field()
     full_name = auto_field(dump_only=True)
+    short_name = auto_field(dump_only=True)
     established = auto_field(dump_only=True)
     former_name = auto_field(dump_only=True)
     motto = auto_field()

@@ -26,6 +26,13 @@ class University(db.Model):
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
 
+    short_name: Mapped[str] = mapped_column(
+        String(32),
+        nullable=False,
+        unique=True,
+        index=True,
+    )
+
     full_name: Mapped[str] = mapped_column(
         String(128),
         unique=True,
@@ -51,12 +58,6 @@ class University(db.Model):
     type: Mapped[str] = mapped_column(
         String(64),
         nullable=True,
-    )
-
-    object_id: Mapped[str] = mapped_column(
-        String(11),
-        nullable=False,
-        unique=True,
     )
 
     created_at: Mapped[DateTime] = mapped_column(
@@ -115,7 +116,7 @@ class UniversityDomain(db.Model):
 
     __tablename__ = "university_domains"
 
-    __table_args__ = (UniqueConstraint("domain_name", "school_id"),)
+    __table_args__ = (UniqueConstraint("domain_name", "school_short_name"),)
 
     id: Mapped[int] = mapped_column(db.Integer, primary_key=True)
 
@@ -132,8 +133,8 @@ class UniversityDomain(db.Model):
         server_onupdate=func.now(),
     )
 
-    school_id: Mapped[int] = mapped_column(
-        db.Integer, ForeignKey("universities.id"), nullable=False
+    school_short_name: Mapped[str] = mapped_column(
+        String(32), ForeignKey("universities.short_name"), nullable=False
     )
 
 
@@ -142,7 +143,7 @@ class UniversityFounder(db.Model):
 
     __tablename__ = "university_founders"
 
-    __table_args__ = (UniqueConstraint("founder_name", "school_id"),)
+    __table_args__ = (UniqueConstraint("founder_name", "school_short_name"),)
 
     id: Mapped[int] = mapped_column(db.Integer, primary_key=True)
 
@@ -161,8 +162,8 @@ class UniversityFounder(db.Model):
         server_onupdate=func.now(),
     )
 
-    school_id: Mapped[int] = mapped_column(
-        db.Integer, ForeignKey("universities.id"), nullable=False
+    school_short_name: Mapped[str] = mapped_column(
+        String(32), ForeignKey("universities.short_name"), nullable=False
     )
 
 
@@ -172,7 +173,10 @@ class UniversityCampus(db.Model):
     __tablename__ = "university_campuses"
     __table_args__ = (
         UniqueConstraint(
-            "address_number", "address_street", "country_code", "school_id"
+            "address_number",
+            "address_street",
+            "country_code",
+            "school_short_name",
         ),
     )
 
@@ -207,28 +211,8 @@ class UniversityCampus(db.Model):
         db.String(2), ForeignKey("countries.alpha2"), nullable=False
     )
 
-    school_id: Mapped[int] = mapped_column(
-        Integer, ForeignKey("universities.id"), nullable=False, index=True
+    school_short_name: Mapped[str] = mapped_column(
+        String(32), ForeignKey("universities.short_name"), nullable=False
     )
 
     country = relationship("Country")
-
-
-def _generate_string_id(length=11) -> str:
-    """Generate a random string ID for the University object"""
-
-    characters = string.ascii_letters + string.digits
-
-    while True:
-        new_id = "".join(random.choice(characters) for _ in range(length))
-        existing_video = University.query.get({"object_id": new_id})
-
-        if existing_video is None:
-            return new_id
-
-
-@event.listens_for(University, "before_insert")
-def generate_string_id(mapper, connection, target) -> None:
-    """Generate a random string ID for the University object"""
-
-    target.object_id = _generate_string_id()
