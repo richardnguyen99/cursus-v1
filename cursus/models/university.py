@@ -2,16 +2,12 @@
 University model
 """
 
-import string
-import random
-
 from sqlalchemy import (
     ForeignKey,
     String,
     Integer,
     UniqueConstraint,
     DateTime,
-    event,
 )
 from sqlalchemy.sql import func
 from sqlalchemy.orm import Mapped, mapped_column, relationship, Relationship
@@ -120,7 +116,13 @@ class UniversityDomain(db.Model):
 
     id: Mapped[int] = mapped_column(db.Integer, primary_key=True)
 
-    domain_name: Mapped[str] = mapped_column(db.String(255), nullable=False)
+    domain_name: Mapped[str] = mapped_column(db.String(128), nullable=False)
+
+    iso639_1: Mapped[str] = mapped_column(String(8), nullable=True)
+
+    type: Mapped[str] = mapped_column(
+        String(16), nullable=False, server_default="TLD"
+    )
 
     created_at: Mapped[DateTime] = mapped_column(
         DateTime(timezone=True),

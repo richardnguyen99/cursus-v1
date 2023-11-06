@@ -2,6 +2,9 @@
     "[python]": {
         "editor.defaultFormatter": "ms-python.black-formatter",
     },
+    "[tsv]": {
+        "editor.renderFinalNewline": "off"
+    },
     "[sql]": {
         "editor.formatOnSave": false
     },
