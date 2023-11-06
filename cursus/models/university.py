@@ -46,12 +46,12 @@ class University(db.Model):
     )
 
     former_name: Mapped[str] = mapped_column(
-        String(64),
+        String(128),
         nullable=True,
     )
 
     motto: Mapped[str] = mapped_column(
-        String(256),
+        String(512),
         nullable=True,
     )
 
