@@ -44,7 +44,6 @@ class UniversityCampusSchema(SQLAlchemyAutoSchema):
         include_fk = True
 
     address_id = auto_field()
-    address_number = auto_field()
     address_street = auto_field()
     address_city = auto_field()
     address_state = auto_field()
@@ -56,8 +55,7 @@ class UniversityCampusSchema(SQLAlchemyAutoSchema):
     address = fields.Method("get_address", dump_only=True)
 
     def get_address(self, obj: UniversityCampus):
-        return f"{obj.address_number}, \
-{obj.address_street} \
+        return f"{obj.address_street}, \
 {obj.address_city}, \
 {obj.address_state}, \
 {obj.address_zip_code}, \

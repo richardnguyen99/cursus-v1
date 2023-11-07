@@ -175,7 +175,6 @@ class UniversityCampus(db.Model):
     __tablename__ = "university_campuses"
     __table_args__ = (
         UniqueConstraint(
-            "address_number",
             "address_street",
             "country_code",
             "school_short_name",
@@ -186,13 +185,11 @@ class UniversityCampus(db.Model):
         db.Integer, primary_key=True, autoincrement=True
     )
 
-    address_number: Mapped[str] = mapped_column(db.String(16), nullable=False)
-
-    address_street: Mapped[str] = mapped_column(db.String(64), nullable=False)
+    address_street: Mapped[str] = mapped_column(db.String(128), nullable=False)
 
     address_city: Mapped[str] = mapped_column(db.String(64), nullable=False)
 
-    address_state: Mapped[str] = mapped_column(db.String(64), nullable=False)
+    address_state: Mapped[str] = mapped_column(db.String(64), nullable=True)
 
     address_zip_code: Mapped[str] = mapped_column(
         db.String(16), nullable=False
