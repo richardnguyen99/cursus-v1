@@ -33,7 +33,7 @@ university_bp.add_url_rule(
     "/find", "find", view_func=university_find, methods=["GET", "POST"]
 )
 university_bp.add_url_rule(
-    "/get/<university_name>",
+    "/<name>",
     "university_name",
     view_func=university_get_by_name,
 )

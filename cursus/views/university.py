@@ -51,77 +51,36 @@ def university_find():
     # Search string with ignored-case pattern
     universities = University.query.filter(
         University.full_name.ilike(f"%{search_string}%")
-    )
-
-    limit = 10
-
-    # Check if query string contains a `limits` argument and has a value
-    if "limit" in parsed_dict and parsed_dict["limit"]:
-        try:
-            limit = int(parsed_dict["limit"])
-
-        except ValueError:
-            reason = "Query string `limit` argument must be an integer"
-            raise CursusException.BadRequestError(reason)
-
-    universities = universities.limit(limit)
-
-    established = False
-
-    if "show_established" in parsed_dict and parsed_dict["show_established"]:
-        try:
-            established = bool(parsed_dict["show_established"])
-        except ValueError:
-            reason = (
-                "Query string `show_established` argument must be a boolean"
-            )
-            raise CursusException.BadRequestError(reason)
-
-    show_domains = False
-
-    if "show_domains" in parsed_dict and parsed_dict["show_domains"]:
-        try:
-            show_domains = bool(parsed_dict["show_domains"])
-        except ValueError:
-            reason = "Query string `show_domains` argument must be a boolean"
-            raise CursusException.BadRequestError(reason)
-
-        universities = universities.options(joinedload("domains"))
+    ).limit(10)
 
     # Schema dump options
     fields = {
         "id": True,
         "full_name": True,
         "short_name": True,
-        "established": established,
-        "former_name": True,
-        "motto": True,
-        "domains": show_domains,
-        "created_at": True,
-        "updated_at": True,
-        "campuses": False,
-        "founders": False,
     }
 
     only_fields = tuple([key for key, value in fields.items() if value])
 
     university_schema = UniversitySchema(only=only_fields)
+    count = universities.count()
 
     resp = flask.make_response(
         flask.json.dumps(
             {
-                "message": "OK",
+                "message": "OK" if count > 0 else "No results found",
                 "data": university_schema.dump(
                     universities.all(),
                     many=True,
                 ),
-                "count": universities.count(),
+                "count": count,
             }
         ),
         200,
     )
 
     resp.headers["Content-Type"] = "application/json"
+
     return resp
 
 
@@ -135,16 +94,33 @@ def university_get_by_name(name: str):
             f"This endpoint, {uri}, only accepts GET requests"
         )
 
-    university = University.query.filter_by(
-        University.full_name.ilike(f"{name}")
+    university = University.query.filter(
+        University.short_name.ilike(f"{name}")
     ).first()
 
     if not university:
         raise CursusException.BadRequestError(
-            f"University with name, {name}, not found"
+            f"University with code name, {name}, not found"
         )
 
-    university_schema = UniversitySchema()
+    # Schema dump options
+    fields = {
+        "id": True,
+        "full_name": True,
+        "short_name": True,
+        "established": True,
+        "former_name": True,
+        "motto": True,
+        "campuses": True,
+        "domains": True,
+        "founders": True,
+        "updated_at": True,
+        "created_at": True,
+    }
+
+    only_fields = tuple([key for key, value in fields.items() if value])
+
+    university_schema = UniversitySchema(only=only_fields)
 
     resp = flask.make_response(
         flask.json.dumps(

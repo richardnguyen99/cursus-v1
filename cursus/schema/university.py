@@ -14,6 +14,7 @@ from cursus.models.university import (
     UniversityCampus,
 )
 from cursus.schema.country import CountrySchema
+from cursus.util.string_builder import StringBuilder
 
 
 class UniversityDomainSchema(SQLAlchemyAutoSchema):
@@ -39,6 +40,25 @@ class UniversityFounderSchema(SQLAlchemyAutoSchema):
     suffix = auto_field()
     biography_link = auto_field()
 
+    @staticmethod
+    def build(founder: UniversityFounder):
+        string_builder = StringBuilder()
+
+        string_builder.append(founder.first_name)
+        string_builder.append(" ")
+
+        if founder.middle_name and founder.middle_name != "-":
+            string_builder.append(founder.middle_name)
+            string_builder.append(" ")
+
+        string_builder.append(founder.last_name)
+
+        if founder.suffix and founder.suffix != "-":
+            string_builder.append(", ")
+            string_builder.append(founder.suffix)
+
+        return string_builder.build()
+
 
 class UniversityCampusSchema(SQLAlchemyAutoSchema):
     class Meta:
@@ -53,7 +73,17 @@ class UniversityCampusSchema(SQLAlchemyAutoSchema):
     address_zip_code = auto_field()
     country_code = auto_field()
 
-    country = fields.Nested(CountrySchema, only=("name",), many=False)
+    country = fields.Nested(
+        CountrySchema,
+        only=(
+            "name",
+            "alpha3",
+            "iso3166_2",
+            "region",
+            "subregion",
+        ),
+        many=False,
+    )
 
     address = fields.Method("get_address", dump_only=True)
 
@@ -78,23 +108,44 @@ class UniversitySchema(SQLAlchemyAutoSchema):
     former_name = auto_field(dump_only=True)
     motto = auto_field()
 
+    campuses = fields.Nested(
+        lambda: UniversityCampusSchema(
+            only=(
+                "address_street",
+                "address_city",
+                "address_state",
+                "address_zip_code",
+                "country_code",
+                "country",
+            )
+        ),
+        many=True,
+        dump_only=True,
+    )
+
     domains = fields.Nested(
-        UniversityDomainSchema, many=True, only=("domain_name",)
+        UniversityDomainSchema,
+        many=True,
+        only=("domain_name", "iso639_1", "type"),
+        dump_only=True,
     )
 
     founders = fields.Nested(
-        UniversityFounderSchema, many=True, only=("founder_name",)
-    )
-
-    campuses = fields.Method(
-        "get_campuses",
+        UniversityFounderSchema,
+        many=True,
         dump_only=True,
+        only=(
+            "last_name",
+            "first_name",
+            "middle_name",
+            "suffix",
+            "biography_link",
+        ),
     )
 
     def get_campuses(self, obj: University):
         return [
-            "{0}, {1}, {2}, {3} {4}".format(
-                campus.address_number,
+            "{0}, {1}, {2}, {3}".format(
                 campus.address_street,
                 campus.address_city,
                 campus.address_state,
@@ -102,6 +153,14 @@ class UniversitySchema(SQLAlchemyAutoSchema):
             )
             for campus in obj.campuses
         ]
+
+    def get_founder_strs(self, obj: University):
+        return [
+            UniversityFounderSchema.build(founder) for founder in obj.founders
+        ]
+
+    def get_domains(self, obj: University):
+        return [domain.domain_name for domain in obj.domains]
 
 
 university_schema = UniversitySchema()

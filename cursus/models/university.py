@@ -2,14 +2,18 @@
 University model
 """
 
+import datetime
+
 from sqlalchemy import (
     ForeignKey,
     String,
     Integer,
     UniqueConstraint,
     DateTime,
+    event,
+    TIMESTAMP,
 )
-from sqlalchemy.sql import func
+from sqlalchemy.sql import func, text
 from sqlalchemy.orm import Mapped, mapped_column, relationship, Relationship
 
 from cursus.util.extensions import db
@@ -215,14 +219,14 @@ class UniversityCampus(db.Model):
     )
 
     created_at: Mapped[DateTime] = mapped_column(
-        DateTime(timezone=True),
+        TIMESTAMP(timezone=True),
         server_default=func.now(),
+        onupdate=func.current_timestamp(),
     )
 
-    updated_at: Mapped[DateTime] = mapped_column(
-        DateTime(timezone=True),
-        server_default=func.now(),
-        server_onupdate=func.now(),
+    updated_at = db.Column(
+        TIMESTAMP(timezone=True),
+        server_default=text("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"),
     )
 
     country_code: Mapped[str] = mapped_column(
