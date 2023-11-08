@@ -145,11 +145,19 @@ class UniversityFounder(db.Model):
 
     __tablename__ = "university_founders"
 
-    __table_args__ = (UniqueConstraint("founder_name", "school_short_name"),)
+    __table_args__ = (
+        UniqueConstraint("first_name", "last_name", "school_short_name"),
+    )
 
     id: Mapped[int] = mapped_column(db.Integer, primary_key=True)
 
-    founder_name: Mapped[str] = mapped_column(db.String(255), nullable=False)
+    first_name: Mapped[str] = mapped_column(db.String(64), nullable=False)
+
+    last_name: Mapped[str] = mapped_column(db.String(64), nullable=False)
+
+    middle_name: Mapped[str] = mapped_column(db.String(32), nullable=True)
+
+    suffix: Mapped[str] = mapped_column(db.String(32), nullable=True)
 
     biography_link: Mapped[str] = mapped_column(db.String(255), nullable=True)
 
@@ -167,6 +175,17 @@ class UniversityFounder(db.Model):
     school_short_name: Mapped[str] = mapped_column(
         String(32), ForeignKey("universities.short_name"), nullable=False
     )
+
+    def __init__(self, first_name: str, last_name: str):
+        self.first_name = first_name
+        self.last_name = last_name
+
+    def __repr__(self):
+        return (
+            "<UniversityFounder({self.first_name} {self.last_name})>".format(
+                self=self
+            )
+        )
 
 
 class UniversityCampus(db.Model):

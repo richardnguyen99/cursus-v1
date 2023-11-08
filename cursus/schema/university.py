@@ -33,7 +33,10 @@ class UniversityFounderSchema(SQLAlchemyAutoSchema):
         include_fk = True
 
     id = auto_field()
-    founder_name = auto_field()
+    first_name = auto_field()
+    last_name = auto_field()
+    middle_name = auto_field()
+    suffix = auto_field()
     biography_link = auto_field()
 
 
