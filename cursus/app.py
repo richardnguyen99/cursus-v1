@@ -8,7 +8,8 @@ import flask
 
 from flask import Flask
 
-from .views import find_bp, university_bp
+from .apis import find_bp, university_bp as university_bp_v1
+from .views import view_bp
 from .util.extensions import db, migrate, ma
 
 
@@ -33,7 +34,8 @@ def create_app() -> Flask:
 
     # Register views
     app.register_blueprint(find_bp)
-    app.register_blueprint(university_bp)
+    app.register_blueprint(university_bp_v1)
+    app.register_blueprint(view_bp)
 
     @app.route("/ping")
     def ping():

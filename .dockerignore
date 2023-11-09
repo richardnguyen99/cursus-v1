@@ -5,7 +5,14 @@
 .git
 .gitignore
 README.md
+.editorconfig
+LICENSE
 
 __pycache__/
 .venv/
 .vscode/
+sql/
+nginx/
+.github/
+.mypy_cache
+
