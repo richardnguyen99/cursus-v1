@@ -4,6 +4,10 @@
 import flask
 import jinja2
 
+from werkzeug.exceptions import BadRequest, NotFound
+
+from cursus.util import exceptions
+
 view_bp = flask.Blueprint(
     "views",
     __name__,
@@ -14,10 +18,56 @@ view_bp = flask.Blueprint(
 )
 
 
+@view_bp.app_errorhandler(exceptions.BadRequestError)
+@view_bp.app_errorhandler(BadRequest)
+@view_bp.app_errorhandler(400)
+def handle_bad_request(error):
+    req = flask.request
+    msg = f"Bad Request: {req.method} {req.url}"
+
+    if isinstance(error, BadRequest):
+        msg = error.get_description()
+    elif isinstance(error, exceptions.BadRequestError):
+        msg = error.get_reason()
+
+    return flask.render_template("400.html", msg=msg), 400
+
+
+@view_bp.app_errorhandler(exceptions.NotFoundError)
+@view_bp.app_errorhandler(NotFound)
+@view_bp.app_errorhandler(404)
+def handle_not_found(error):
+    req = flask.request
+    msg = f"Not found: {req.url}"
+
+    if isinstance(error, NotFound):
+        msg = error.get_description()
+    elif isinstance(error, exceptions.NotFoundError):
+        msg = error.get_reason()
+
+    return (
+        flask.render_template(
+            "4xx.html",
+            title="Not found",
+            status_message="Not found",
+            status_code=404,
+            reason=msg,
+        ),
+        404,
+    )
+
+
 @view_bp.route("/", defaults={"page_name": "index"}, methods=["GET"])
 @view_bp.route("/<page_name>", methods=["GET"])
 def show(page_name):
+    req = flask.request
+
+    if req.method != "GET":
+        raise exceptions.MethodNotAllowedError(
+            f"Method {req.method} not allowed for this endpoint"
+        )
+
     try:
         return flask.render_template(f"{page_name}.html")
-    except jinja2.TemplatesNotFound:
-        flask.abort(404)
+    except jinja2.exceptions.TemplateNotFound:
+        raise exceptions.NotFoundError(f"Page {page_name} not found")
