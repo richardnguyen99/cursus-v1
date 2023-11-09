@@ -36,3 +36,15 @@ class DevConfig(Config):
 
     DEBUG = True
     CSRF_ENABLED = True
+
+
+class ProdConfig(Config):
+    """Production configuration class for the application
+
+    This class contains all the production configuration variables that are
+    used during deployment and production. It inherits from the base
+    configuration class and overrides some variables to suit the production
+    environment.
+    """
+
+    DEBUG = False

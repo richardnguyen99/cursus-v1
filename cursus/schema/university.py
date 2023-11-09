@@ -71,7 +71,7 @@ class UniversityCampusSchema(SQLAlchemyAutoSchema):
     address_city = auto_field()
     address_state = auto_field()
     address_zip_code = auto_field()
-    country_code = auto_field()
+    # country_code = auto_field()
 
     country = fields.Nested(
         CountrySchema,
