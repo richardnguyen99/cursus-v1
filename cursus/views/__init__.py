@@ -5,7 +5,12 @@ import flask
 import jinja2
 
 view_bp = flask.Blueprint(
-    "views", __name__, url_prefix="/", template_folder="templates"
+    "views",
+    __name__,
+    url_prefix="/",
+    template_folder="templates",
+    static_folder="static",
+    static_url_path="/static",
 )
 
 
