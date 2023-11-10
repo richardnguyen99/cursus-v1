@@ -1,0 +1,16 @@
+{% macro navbar() -%}
+  <div>
+    <div>
+      <a href="{{ url_for('views.show', page_name='index') }}">Home</a>
+      <div>
+        <div>
+          <a href="{{ url_for('views.show', page_name='index') }}">Login</a>
+          <a href="{{ url_for('views.show', page_name='index') }}">Register</a>
+        </div>
+        <div>
+          <a>Logout</a>
+        </div>
+      </div>
+    </div>
+  </div>
+{%- endmacro %}

@@ -8,6 +8,11 @@ from werkzeug.exceptions import BadRequest, NotFound
 
 from cursus.util import exceptions
 
+SUPPORT_ENDPOINTS = [
+    "",
+    "about",
+]
+
 view_bp = flask.Blueprint(
     "views",
     __name__,
@@ -61,13 +66,15 @@ def handle_not_found(error):
 @view_bp.route("/<page_name>", methods=["GET"])
 def show(page_name):
     req = flask.request
+    url = req.path
+    endpoint = url.split("/")[1]
+
+    if endpoint not in SUPPORT_ENDPOINTS:
+        raise exceptions.NotFoundError(f"Page {page_name} not found")
 
     if req.method != "GET":
         raise exceptions.MethodNotAllowedError(
             f"Method {req.method} not allowed for this endpoint"
         )
 
-    try:
-        return flask.render_template(f"{page_name}.html")
-    except jinja2.exceptions.TemplateNotFound:
-        raise exceptions.NotFoundError(f"Page {page_name} not found")
+    return flask.render_template(f"{page_name}.html"), 200
