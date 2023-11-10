@@ -2,7 +2,6 @@
 """
 
 import flask
-import jinja2
 
 from werkzeug.exceptions import BadRequest, NotFound
 
@@ -66,6 +65,8 @@ def handle_not_found(error):
 @view_bp.route("/<page_name>", methods=["GET"])
 def show(page_name):
     req = flask.request
+    current_app = flask.current_app
+
     url = req.path
     endpoint = url.split("/")[1]
 
@@ -77,4 +78,10 @@ def show(page_name):
             f"Method {req.method} not allowed for this endpoint"
         )
 
-    return flask.render_template(f"{page_name}.html"), 200
+    resp = flask.render_template(f"{page_name}.html")
+
+    current_app.logger.info(
+        f'({req.remote_addr}) - "{req.method} {req.url}" 200 {len(resp)}'
+    )
+
+    return resp, 200

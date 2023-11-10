@@ -7,10 +7,45 @@ import os
 import flask
 
 from flask import Flask
+from logging.config import dictConfig
 
 from .apis import find_bp, university_bp as university_bp_v1
 from .views import view_bp
 from .util.extensions import db, migrate, ma
+
+
+if os.environ.get("FLASK_ENV") != "development":
+    dictConfig(
+        {
+            "version": 1,
+            "disable_existing_loggers": True,
+            "formatters": {
+                "default": {
+                    "format": "[%(asctime)s] %(levelname)s | %(pathname)s:\
+    %(lineno)s >>> %(message)s",
+                    "datefmt": "%Y-%m-%dT%H:%M:%SZ",
+                },
+            },
+            "handlers": {
+                "console": {
+                    "class": "logging.StreamHandler",
+                    "formatter": "default",
+                    "stream": "ext://sys.stdout",
+                },
+                "size-rotate": {
+                    "class": "logging.handlers.RotatingFileHandler",
+                    "filename": "cursus.log",
+                    "maxBytes": 1024 * 1024 * 5,
+                    "backupCount": 5,
+                    "formatter": "default",
+                },
+            },
+            "root": {
+                "level": "INFO",
+                "handlers": ["console", "size-rotate"],
+            },
+        }
+    )
 
 
 def create_app() -> Flask:

@@ -36,6 +36,7 @@ class DevConfig(Config):
 
     DEBUG = True
     CSRF_ENABLED = True
+    LOG_LEVEL = "DEBUG"
 
 
 class ProdConfig(Config):
@@ -48,3 +49,4 @@ class ProdConfig(Config):
     """
 
     DEBUG = False
+    LOG_LEVEL = "INFO"
