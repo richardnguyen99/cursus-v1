@@ -81,6 +81,10 @@ html {
   font-variation-settings: normal;
 }
 
+body {
+  overflow-x: hidden;
+}
+
 /* normalize anchor tag */
 a {
   color: inherit;

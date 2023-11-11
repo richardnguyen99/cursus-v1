@@ -1,6 +1,9 @@
 .hero__section {
   position: relative;
-  background-color: rgb(var(--cursus-color-primary) / 0.15);
+  background: url('/static/img/downtime-dot-bg.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
 
   padding-top: var(--cursus-gutter-20, 5rem);
   padding-bottom: var(--cursus-gutter-20, 5rem);
@@ -24,4 +27,65 @@
 .hero__banner-text {
   font-size: var(--cursus-font-2xl, 2rem);
   font-weight: var(--cursus-font-semibold, 600);
+}
+
+
+.hero__card {
+  position: relative;
+  width: 100%;
+  max-width: 1024px;
+
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: -2rem;
+  padding: 2rem;
+
+  border-radius: 2rem;
+  background-color: rgb(var(--cursus-color-white) / 1);
+  border: 1px solid rgb(var(--cursus-color-black) / 0.1);
+  
+  box-shadow: 0 56px 70px 4px rgba(15, 23, 41, 0.26);  
+}
+
+.hero__card__dot-1 {
+  position: absolute;
+  top: -5%;
+  right: -5%;
+  z-index: -1;
+  width: 8rem;
+  height: 8rem;
+}
+
+.hero__heading-1 {
+  position: relative;
+  font-family: var(--cursus-font-serif);
+  font-size: 32px;
+  font-weight: 900;
+  line-height: 1.5;
+  margin-bottom: 2rem;
+  z-index: 1000;
+
+  width: fit-content;
+}
+
+.hero__heading-1::after {
+  content: '';
+  position: absolute;
+  display: block;
+
+  bottom: 0;
+  right: -5%;
+  z-index: -1;
+
+  width: 4rem;
+  height: 1rem;
+  background-color: rgb(var(--cursus-color-primary));
+  margin-top: 1rem;
+}
+
+.hero__paragraph, .hero__card p {
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1.5;
+  margin-bottom: 1rem;
 }
