@@ -1,0 +1,27 @@
+.hero__section {
+  position: relative;
+  background-color: rgb(var(--cursus-color-primary) / 0.15);
+
+  padding-top: var(--cursus-gutter-20, 5rem);
+  padding-bottom: var(--cursus-gutter-20, 5rem);
+}
+
+.hero__banner {
+  margin-top: var(--cursus-gutter-20, 5rem);
+  margin-bottom: var(--cursus-gutter-20, 5rem);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: var(--cursus-gutter-8, 2rem);
+}
+
+.hero__banner-image {
+  height: 4rem;
+}
+
+.hero__banner-text {
+  font-size: var(--cursus-font-2xl, 2rem);
+  font-weight: var(--cursus-font-semibold, 600);
+}

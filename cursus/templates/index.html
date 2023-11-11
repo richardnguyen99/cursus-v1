@@ -1,6 +1,17 @@
-{% extends "_base.html" %}
-{% block title %}Home{% endblock %}
-{% block main %}
+{% extends "_base.html" %} {% block title %}Home{% endblock %} {% block css %}
 {{ super() }}
-<h1>Hello, World!</h1>
+<link rel="stylesheet" href="/static/css/_hero.css" />
+{% endblock %} {% block main %} {{ super() }}
+<section class="hero__section">
+  <div class="hero__banner">
+    <img
+      class="hero__banner-image"
+      src="/static/img/logo-text-256.png"
+      alt="Logo banner"
+    />
+    <div class="hero__banner-text">
+      A public API for universities and courses data
+    </div>
+  </div>
+</section>
 {% endblock %}

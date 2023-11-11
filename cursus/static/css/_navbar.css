@@ -102,6 +102,10 @@
   color: var(--cursus-color-whit, white);
 }
 
+.navbar__pill:hover {
+  background-color: rgb(var(--cursus-color-primary--hover) / 1);
+}
+
 
 @media screen and (min-width: 768px) {
   .navbar__wrapper {

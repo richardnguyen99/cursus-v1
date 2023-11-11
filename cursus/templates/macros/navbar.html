@@ -1,21 +1,38 @@
 {% macro navbar(page_name='') -%}
-  <div class="navbar">
-    <div class="navbar__wrapper">
-      <a class="navbar__brand" href="{{ url_for('views.show', page_name='index') }}">
-        <img class="navbar__brand-logo" src="/static/img/logo-180.png" alt="Cursus" />
-        <p class="navbar__brand-text">
-          Cursus
-        </p>
-      </a>
-      <div class="navbar__collapse">
-        <div class="navbar__collapse-left">
-          <a class="navbar__link{% if page_name == 'about' %} navbar__link--state-active{% endif %}" href="{{ url_for('views.show', page_name='about') }}">About</a>
-          <a class="navbar__link{% if page_name == 'demo' %} navbar__link--state-active{% endif %}" href="{{ url_for('views.show', page_name='demo') }}">Demo</a>
-        </div>
-        <div class="navbar__collapse-right">
-          <a class="navbar__pill" href="{{ url_for('views.show', page_name='login') }}">Login</a
-        </div>
+<div class="navbar">
+  <div class="navbar__wrapper">
+    <a
+      class="navbar__brand"
+      href="{{ url_for('views.show', page_name='index') }}"
+    >
+      <img
+        class="navbar__brand-logo"
+        src="/static/img/logo-180.png"
+        alt="Cursus"
+      />
+      <p class="navbar__brand-text">Cursus</p>
+    </a>
+    <div class="navbar__collapse">
+      <div class="navbar__collapse-left">
+        <a
+          class="navbar__link{% if page_name == 'about' %} navbar__link--state-active{% endif %}"
+          href="{{ url_for('views.show', page_name='about') }}"
+          >About</a
+        >
+        <a
+          class="navbar__link{% if page_name == 'demo' %} navbar__link--state-active{% endif %}"
+          href="{{ url_for('views.show', page_name='demo') }}"
+          >Demo</a
+        >
+      </div>
+      <div class="navbar__collapse-right">
+        <a
+          class="navbar__pill"
+          href="{{ url_for('views.show', page_name='login') }}"
+          >Login</a
+        >
       </div>
     </div>
   </div>
+</div>
 {%- endmacro %}
