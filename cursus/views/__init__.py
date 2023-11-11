@@ -10,6 +10,8 @@ from cursus.util import exceptions
 SUPPORT_ENDPOINTS = [
     "",
     "about",
+    "demo",
+    "login",
 ]
 
 view_bp = flask.Blueprint(
@@ -78,7 +80,7 @@ def show(page_name):
             f"Method {req.method} not allowed for this endpoint"
         )
 
-    resp = flask.render_template(f"{page_name}.html")
+    resp = flask.render_template(f"{page_name}.html", page_name=page_name)
 
     current_app.logger.info(
         f'({req.remote_addr}) - "{req.method} {req.url}" 200 {len(resp)}'

@@ -1,0 +1,128 @@
+.navbar {
+  width: 100%;
+
+  background-color: rgb(var(--cursus-color-white) / 1);
+  height: 72px;
+
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: rgb(var(--cursus-color-black) / 0.1);
+}
+
+.navbar__wrapper {
+  max-width: 640px;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  margin-top: 0;
+  margin-bottom: 0;
+  margin-left: auto;
+  margin-right: auto;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--cursus-gutter-16, 4rem);
+  height: 100%;
+}
+
+.navbar__brand {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--cursus-gutter-2, 0.5rem);
+}
+
+.navbar__brand-logo {
+  width: 1.5rem;
+  height: 1.5rem;
+
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+.navbar__brand-text {
+  font-size: var(--cursus-font-xl, 1.5rem);
+  font-weight: var(--cursus-font-black, 600);
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+
+.navbar__collapse {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 100%;
+}
+
+.navbar__collapse-right,
+.navbar__collapse-left {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--cursus-gutter-12, 3rem);
+}
+
+.navbar__link {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  font-weight: var(--cursus-font-normal, 500);
+}
+
+.navbar__link:hover {
+  color: rgb(var(--cursus-color-primary) / 1);
+}
+
+.navbar__link--state-active {
+  font-weight: var(--cursus-font-bold, 700);
+
+  border-bottom-width: 2px;
+  border-bottom-style: solid;
+  border-bottom-color: rgb(var(--cursus-color-primary) / 1);
+}
+
+.navbar__pill {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--cursus-gutter-2, 0.5rem);
+
+  padding-top: var(--cursus-gutter-2, 0.5rem);
+  padding-bottom: var(--cursus-gutter-2, 0.5rem);
+  padding-left: var(--cursus-gutter-4, 1rem);
+  padding-right: var(--cursus-gutter-4, 1rem);
+
+  border-radius: 9999px;
+  background-color: rgb(var(--cursus-color-primary) / 1);
+  color: var(--cursus-color-whit, white);
+}
+
+
+@media screen and (min-width: 768px) {
+  .navbar__wrapper {
+    max-width: 768px;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .navbar__wrapper {
+    max-width: 1024px;
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+
+  .navbar__collapse, 
+  .navbar__collapse-left, 
+  .navbar__collapse-right,
+  .navbar__link {
+    height: 100%;
+  }
+}
+
