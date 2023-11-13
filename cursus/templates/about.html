@@ -3,7 +3,76 @@
 <link rel="stylesheet" href="/static/css/_about.css" />
 {% endblock %} {% block main %} {{ super() }}
 <div class="about__banner">
-  <div class="about__banner-text">About Cursus</div>
+  <h1 class="about__banner__text">About Cursus</h1>
+  <h2 class="about__banner__sub-text">
+    The open-source, public all-in-one API to find and retrieve university
+    information, globally.
+  </h2>
 </div>
-<section class=""></section>
+<section class="container about__section">
+  <h1>Why Cursus?</h1>
+  <p>
+    Cursus is a free, open-source API that provides information about
+    universities, colleges and their courses globally. The intention of this API
+    is to build a singly-uniformed API that any app can integrate seamlessly and
+    don't need to worry about maintaining their own database of the likes.
+  </p>
+  <h1>History of Cursus</h1>
+  <p>
+    Cursus was created to provide a universal API to query university courses
+    and their information, and that is still the core strength of Cursus. The
+    mission of Cursus is to provide basic, essential information about
+    universities and their courses such as name, location, domain, department,
+    course ID, etc.
+  </p>
+  <h1>Development</h1>
+  <p>
+    Cursus is powered by <a href="https://flask.palletsprojects.com/">Flask</a>,
+    a Python microframework and it uses
+    <a href="https://www.postgresql.org/">PostgresQL</a> as the database in
+    production. Both are suitable for the purpose of Cursus and are easy to use
+    and maintain.
+  </p>
+  <div class="about__callout">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 20 20"
+      fill="currentColor"
+      aria-hidden="true"
+    >
+      <path
+        fill-rule="evenodd"
+        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a.75.75 0 000 1.5h.253a.25.25 0 01.244.304l-.459 2.066A1.75 1.75 0 0010.747 15H11a.75.75 0 000-1.5h-.253a.25.25 0 01-.244-.304l.459-2.066A1.75 1.75 0 009.253 9H9z"
+        clip-rule="evenodd"
+      ></path>
+    </svg>
+    <p>
+      Cursus is still in development and needs your help to grow. If you&apos;re
+      interested, please check it out and make contributions at
+      <a href="https://github.com/richardnguyen99/cursus">GitHub</a>.
+    </p>
+  </div>
+  <h1>Support queries</h1>
+  <h2>Universities</h2>
+  <p>
+    Cursus provides information about universities and colleges globally. The
+    information includes name, location, domain, departments, founders, etc.
+  </p>
+  <p>
+    Cursus also allows you to search for universities by a variety of criteria
+    so that you can find the university you&apos;re looking for easily.
+  </p>
+  <h2>Courses</h2>
+  <p>
+    Cursus provides information about courses offered by universities and
+    colleges globally. The information includes name, ID, department, etc.
+  </p>
+  <h2>And more</h2>
+  <p>
+    Visit our <a href="/docs">documentation</a> for more information to see what
+    Cursus can do.
+  </p>
+  <p>Or, you can try it out live <a href="/demo">demonstration</a>.</p>
+</section>
+
 {% endblock %}

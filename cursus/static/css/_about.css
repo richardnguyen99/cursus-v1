@@ -1,14 +1,86 @@
 .about__section {
   position: relative;
   z-index: 1;
-  display: flex;
   overflow: visible;
+}
+
+.about__section > h1 {
+  font-family: var(--cursus-font-serif);
+  font-size: 3rem;
+  font-weight: var(--cursus-font-bold, 600);
+  color: rgb(var(--cursus-color-black) / 0.8);
+  text-align: center;
+  margin-bottom: var(--cursus-gutter-20, 5rem);
+}
+
+.about__section > h2 {
+  font-size: 2rem;
+  letter-spacing: -0.025em;
+  font-weight: var(--cursus-font-bold, 700);
+  color: rgb(var(--cursus-color-black) / 0.8);
+  margin-bottom: var(--cursus-gutter-4, 1rem);
+}
+
+.about__section > p {
+  line-height: 1.5;
+  margin-bottom: var(--cursus-gutter-12, 3rem);
+}
+
+.about__section a {
+  display: inline-block;
+  font-weight: var(--cursus-font-bold, 600);
+  color: rgb(var(--cursus-color-black) / 0.8);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: all 0.2s ease-in-out;
+}
+
+.about__callout {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+
+
+  padding: 1rem;
+  background-color: rgb(var(--cursus-color-primary) / 0.1);
+  border-left: 4px solid rgb(var(--cursus-color-primary) / 1);
+  color: rgb(var(--cursus-color-primary) / 1);
+  margin-bottom: var(--cursus-gutter-12, 3rem);
+}
+
+.about__callout > svg {
+  width: 2rem;
+  height: 2rem;
+  color: rgb(var(--cursus-color-primary) / 1);
+
+  flex-shrink: 0;
+}
+
+.about__callout > p {
+  margin: 0;
+  font-size: 0.875rem;
+  color: rgb(var(--cursus-color-primary) / 1);
+}
+
+.about__callout a {
+  color: rgb(var(--cursus-color-primary) / 1);
+}
+
+.about__callout a:hover {
+  color: rgb(var(--cursus-color-primary--hover) / 1);
+  border-bottom: 1px solid rgb(var(--cursus-color-primary--hover) / 1);
+}
+
+.about__section a:hover {
+  color: rgb(var(--cursus-color-primary) / 1);
+  border-bottom: 1px solid rgb(var(--cursus-color-primary) / 1);
 }
 
 .about__banner {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
 
   position: relative;
   background: url('/static/img/about-grid.png');
@@ -25,7 +97,7 @@
   padding-bottom: var(--cursus-gutter-20, 5rem);
 }
 
-.about__banner-text {
+.about__banner__text {
   position: relative;
   z-index: 1;
   display: flex;
@@ -37,6 +109,18 @@
 
   font-size: 6rem;
   font-weight: var(--cursus-font-black, 900);
+}
+
+.about__banner__sub-text {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+
+  max-width: 768px;
+
+  font-size: 20px;
+  font-weight: var(--cursus-font-bold, 600);
+  color: rgb(var(--cursus-color-black) / 0.6);
 }
 
 .about__bg-1 {
