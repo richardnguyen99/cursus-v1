@@ -27,6 +27,7 @@
     <link rel="stylesheet" href="/static/css/index.css" />
     <link rel="stylesheet" href="/static/css/_grid.css" />
     <link rel="stylesheet" href="/static/css/_navbar.css" />
+    <link rel="stylesheet" href="/static/css/_footer.css" />
     <link rel="stylesheet" href="/static/css/_button.css" />
     {% endblock %} {% endblock %}
   </head>
@@ -37,5 +38,8 @@
     <!-- Main -->
     <main style="padding-top: 72px">{% block main %}{% endblock %}</main>
     {% block js %} {% endblock %}
+
+    <!-- Footer -->
+    {% import 'macros/footer.html' as footer %} {{ footer.footer() }}
   </body>
 </html>
