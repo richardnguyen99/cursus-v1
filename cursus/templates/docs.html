@@ -9,7 +9,7 @@ css %} {{ super() }}
   </h2>
 </div>
 <div class="docs__card-wrapper">
-  <a href="#" class="docs__card">
+  <a href="{{ url_for("views.docs", page_name="search.html") }}" class="docs__card">
     <div class="docs__card__header">
       <i class="fi fi-rr-search"></i>
       <h2 class="docs__card__header__title">Search</h2>
@@ -20,7 +20,7 @@ css %} {{ super() }}
       </p>
     </div>
   </a>
-  <a href="#" class="docs__card">
+  <a href="{{ url_for("views.docs", page_name="details.html") }}" class="docs__card">
     <div class="docs__card__header">
       <i class="fi fi-rr-school"></i>
       <h2 class="docs__card__header__title">Details</h2>
@@ -29,7 +29,7 @@ css %} {{ super() }}
       Retrieve detailed information with the institution code name
     </div>
   </a>
-  <a href="#" class="docs__card">
+  <a href="{{ url_for("views.docs", page_name="courses.html") }}" class="docs__card">
     <div class="docs__card__header">
       <i class="fi fi-rr-books"></i>
       <h2 class="docs__card__header__title">Courses</h2>
@@ -38,7 +38,7 @@ css %} {{ super() }}
       Search and get a list of courses offered by a universities
     </div>
   </a>
-  <a href="#" class="docs__card">
+  <a href="{{ url_for("views.docs", page_name="campus.html") }}" class="docs__card">
     <div class="docs__card__header">
       <i class="fi fi-rs-marker"></i>
       <h2 class="docs__card__header__title">Campus</h2>
@@ -47,7 +47,7 @@ css %} {{ super() }}
       Search schools by campus address, or get the campus address yourself
     </div>
   </a>
-  <a href="#" class="docs__card">
+  <a href="{{ url_for("views.docs", page_name="domains.html") }}" class="docs__card">
     <div class="docs__card__header">
       <i class="fi fi-rs-at"></i>
       <h2 class="docs__card__header__title">Domains</h2>
@@ -56,7 +56,7 @@ css %} {{ super() }}
       Get a list of domains that associate with a university
     </div>
   </a>
-  <a href="#" class="docs__card">
+  <a href="{{ url_for("views.docs", page_name="more.html") }}" class="docs__card">
     <div class="docs__card__header">
       <i class="fi fi-rs-circle-ellipsis"></i>
       <h2 class="docs__card__header__title">More</h2>
