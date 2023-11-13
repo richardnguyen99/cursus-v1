@@ -1,4 +1,11 @@
 {% extends "_base.html" %} {% block title %}Documentation{% endblock %} {% block
-main %} {{ super() }}
-<h1>Documentation</h1>
+css %} {{ super() }}
+<link rel="stylesheet" href="/static/css/_docs.css" />
+{% endblock %} {% block main %} {{ super() }}
+<div class="docs__banner">
+  <h1 class="docs__banner__text">Documentation</h1>
+  <h2 class="docs__banner__sub-text">
+    It&apos;s simple, easy and free to use.
+  </h2>
+</div>
 {% endblock %}
