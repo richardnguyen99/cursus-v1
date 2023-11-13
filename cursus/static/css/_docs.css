@@ -19,6 +19,43 @@
   padding-bottom: var(--cursus-gutter-20, 5rem);
 }
 
+.docs__banner--search {
+  background: url('/static/img/docs-search-banner.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.docs__banner--courses {
+  background: url('/static/img/docs-courses-banner.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.docs__banner--details {
+  background: url('/static/img/docs-details-banner.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.docs__banner--campus {
+  background: url('/static/img/docs-campus-banner.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.docs__banner--domains {
+  background: url('/static/img/docs-domains-banner.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.docs__banner--more {
+  background: url('/static/img/docs-more-banner.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+
 .docs__banner__text {
   position: relative;
   z-index: 1;
@@ -114,4 +151,44 @@
 .docs__card__content {
   color: rgb(var(--cursus-color-black) / 0.6);
 }
+.docs__breadcrumb {
+  max-width: 1024px;
+  width: 100%;
+
+  padding-left: 2rem;
+  padding-right: 2rem;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 3rem;
+}
+
+.docs__breadcrumb__container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1rem;
+
+  margin-bottom: 2rem;
+}
+
+.docs__breadcrumb__container > a,
+.docs__breadcrumb__link {
+  font-weight: var(--cursus-font-bold, 800);
+  color: rgb(var(--cursus-color-primary) / 1);
+  padding-top: 8px;
+  padding-bottom: 8px;
+
+  transition: all 0.2s ease-in-out;
+  border-bottom: 2px solid transparent;
+}
+
+.docs__breadcrumb__container > a:hover,
+.docs__breadcrumb__link:hover {
+  border-bottom: 2px solid rgb(var(--cursus-color-primary) / 1);
+}
+
+.docs__breadcrumb__separator {
+  font-size: 20px;
+}
+
 
