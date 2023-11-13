@@ -12,6 +12,7 @@ SUPPORT_ENDPOINTS = [
     "about",
     "demo",
     "login",
+    "docs",
 ]
 
 view_bp = flask.Blueprint(
