@@ -1,0 +1,51 @@
+.about__section {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  overflow: visible;
+}
+
+.about__banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  position: relative;
+  background: url('/static/img/about-grid.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+
+  width: 1440px;
+  height: 360px;
+
+  margin-left: auto;
+  margin-right: auto;
+
+  padding-top: var(--cursus-gutter-20, 5rem);
+  padding-bottom: var(--cursus-gutter-20, 5rem);
+}
+
+.about__banner-text {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--cursus-font-serif);
+
+  max-width: 640px;
+
+  font-size: 6rem;
+  font-weight: var(--cursus-font-black, 900);
+}
+
+.about__bg-1 {
+  position: absolute;
+  left: auto;
+  top: -1px;
+  right: auto;
+  bottom: auto;
+  z-index: 1;
+  width: 400vw;
+  max-width: 3500px;
+}
