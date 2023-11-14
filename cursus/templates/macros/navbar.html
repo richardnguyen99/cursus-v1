@@ -47,29 +47,44 @@
         <i class="fi fi-rr-menu-burger"></i>
       </button>
       <div class="dropdown__menu navbar__dropdown__menu">
-        <ul class="dropdown__menu-list">
+        <ul class="navbar__dropdown-list">
           <li>
             <a
-              class="dropdown__menu-link{% if page_name == 'about' %} dropdown__menu-link--state-active{% endif %}"
+              class="navbar__dropdown-item"
               href="{{ url_for('views.show', page_name='about') }}"
-              >About</a
+            >
+              <i class="navbar__dropdown-item__icon fi fi-sr-info"></i>
+              <p>About</p></a
             >
           </li>
           <li>
             <a
-              class="dropdown__menu-link{% if page_name == 'docs' %} dropdown__menu-link--state-active{% endif %}"
+              class="navbar__dropdown-item"
               href="{{ url_for('views.show', page_name='docs') }}"
-              >Docs</a
+            >
+              <i
+                class="navbar__dropdown-item__icon fi fi-sr-circle-book-open"
+              ></i>
+              <p>Docs</p></a
             >
           </li>
           <li>
             <a
-              class="dropdown__menu-link{% if page_name == 'demo' %} dropdown__menu-link--state-active{% endif %}"
+              class="navbar__dropdown-item"
               href="{{ url_for('views.show', page_name='demo') }}"
-              >Demo</a
+            >
+              <i class="navbar__dropdown-item__icon fi fi-sr-display-code"></i>
+              <p>Demo</p></a
             >
           </li>
         </ul>
+        <hr class="navbar__dropdown-separator" />
+        <a
+          href="{{ url_for('views.show', page_name='login') }}"
+          class="btn btn--fluid btn--round btn--primary navbar__dropdown-btn"
+        >
+          LOGIN
+        </a>
       </div>
     </div>
   </div>

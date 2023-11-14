@@ -151,8 +151,9 @@
   position: absolute;
   top: 100%;
   right: 0;
+  min-width: 220px;
   margin-top: 8px;
-  padding: 2rem;
+  padding: 0.5rem;
   border-radius: 6px;
   background: rgb(var(--cursus-color-white) / 1);
   border: 1px solid rgb(var(--cursus-color-black) / 0.1);
@@ -160,16 +161,77 @@
 
   transform: translateY(0.5rem);
   opacity: 0;
-  transition: transform 0.1s cubic-bezier(0.16, 1, 0.5, 1), opacity 0.1s cubic-bezier(0.16, 1, 0.5, 1);
-  -webkit-transition: transform 0.1s cubic-bezier(0.16, 1, 0.5, 1), opacity 0.1s cubic-bezier(0.16, 1, 0.5, 1);
+  transition: all 0.1s cubic-bezier(0.16, 1, 0.5, 1);
+  -webkit-transition: all 0.1s cubic-bezier(0.16, 1, 0.5, 1);
   -moz-transition: all 0.1s cubic-bezier(0.16, 1, 0.5, 1);
-  -o-transition: transform 0.1s cubic-bezier(0.16, 1, 0.5, 1), opacity 0.1s cubic-bezier(0.16, 1, 0.5, 1);
+  -o-transition: all 0.1s cubic-bezier(0.16, 1, 0.5, 1);
 }
 
 .navbar__dropdown__menu.dropdown--show {
 
   transform: translateY(0rem);
   opacity: 1;
+}
+
+.navbar__dropdown-list {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  list-style: none;
+
+  gap: var(--cursus-gutter-1, 0.25rem);
+}
+
+.navbar__dropdown-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: 14px;
+  gap: var(--cursus-gutter-2, 0.5rem);
+  list-style: none;
+
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+  border-radius: 6px;
+  background: transparent;
+}
+
+.navbar__dropdown-item:hover {
+  background: rgb(var(--cursus-color-primary--hover) / 0.1);
+}
+
+.navbar__dropdown-item__icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  font-size: 1rem;
+}
+
+/* About icon styling */
+.navbar__dropdown-item__icon.fi-sr-info {
+  color: #0ea5e9;
+}
+
+/* Docs icon styling */
+.navbar__dropdown-item__icon.fi-sr-circle-book-open {
+  color: #f5a623;
+}
+
+/* Demo icon styling */
+.navbar__dropdown-item__icon.fi-sr-display-code {
+  color: #a3e635;
+}
+
+.navbar__dropdown-separator {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  color: rgb(var(--cursus-color-black) / 0.2);
+}
+
+.navbar__dropdown-btn {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 
 @media screen and (min-width: 768px) {

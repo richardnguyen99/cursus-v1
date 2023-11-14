@@ -91,3 +91,11 @@ a {
   color: inherit;
   text-decoration: inherit;
 }
+
+/* normalize icon tag */
+i {
+  font-style: normal;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
