@@ -7,12 +7,22 @@ from werkzeug.exceptions import BadRequest, NotFound
 
 from cursus.util import exceptions
 
-SUPPORT_ENDPOINTS = [
+SUPPORT_ENDPOINTS = {
     "",
     "about",
     "demo",
     "login",
-]
+    "docs",
+}
+
+SUPPORT_DOCS_ENDPOINTS = {
+    "search.html",
+    "details.html",
+    "courses.html",
+    "campus.html",
+    "domains.html",
+    "more.html",
+}
 
 view_bp = flask.Blueprint(
     "views",
@@ -85,5 +95,23 @@ def show(page_name):
     current_app.logger.info(
         f'({req.remote_addr}) - "{req.method} {req.url}" 200 {len(resp)}'
     )
+
+    return resp, 200
+
+
+@view_bp.route("/docs/<page_name>", methods=["GET"])
+def docs(page_name: str):
+    req = flask.request
+    url = req.path
+
+    if page_name not in SUPPORT_DOCS_ENDPOINTS:
+        raise exceptions.NotFoundError(f"Page {page_name} not found")
+
+    if req.method != "GET":
+        raise exceptions.MethodNotAllowedError(
+            f"Method {req.method} not allowed for this `/docs/` endpoint"
+        )
+
+    resp = flask.render_template(f"doc-{page_name}", page_name="docs")
 
     return resp, 200

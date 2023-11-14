@@ -1,0 +1,19 @@
+{% extends "_base.html" %} {% block title %}Domains - Docs{% endblock %} {%
+block css %} {{ super() }}
+<link rel="stylesheet" href="/static/css/_docs.css" />
+{% endblock %} {% block main %} {{ super() }}
+<div class="docs__banner docs__banner--domains">
+  <h1 class="docs__banner__text">Domains</h1>
+</div>
+<section class="container-lg">
+  <div class="docs__breadcrumb">
+    <div class="docs__breadcrumb__container">
+      <a href="/" class="docs__breadcrumb__link">Home</a>
+      <p class="docs__breadcrumb__separator">/</p>
+      <a href="/docs" class="docs__breadcrumb__link">Docs</a>
+      <p class="docs__breadcrumb__separator">/</p>
+      <p>Domains</p>
+    </div>
+  </div>
+</section>
+{% endblock %}

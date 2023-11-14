@@ -20,6 +20,11 @@
           >About</a
         >
         <a
+          class="navbar__link{% if page_name == 'docs' %} navbar__link--state-active{% endif %}"
+          href="{{ url_for('views.show', page_name='docs') }}"
+          >Docs</a
+        >
+        <a
           class="navbar__link{% if page_name == 'demo' %} navbar__link--state-active{% endif %}"
           href="{{ url_for('views.show', page_name='demo') }}"
           >Demo</a
