@@ -2,8 +2,18 @@
 block css %} {{ super() }}
 <link rel="stylesheet" href="/static/css/_docs.css" />
 {% endblock %} {% block main %} {{ super() }}
-<div class="docs__banner docs__banner--domains">
-  <h1 class="docs__banner__text">Domains</h1>
+<div class="docs__banner">
+  <div class="docs__banner__heading">
+    <h1 class="docs__banner__text">Domains</h1>
+  </div>
+  <div class="docs__banner__image">
+    <img
+      src="/static/img/docs-domains-banner.png"
+      width="1440"
+      height="360"
+      alt="Domains doc banner"
+    />
+  </div>
 </div>
 <section class="container-lg">
   <div class="docs__breadcrumb">

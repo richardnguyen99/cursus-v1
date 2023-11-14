@@ -1,16 +1,5 @@
 .docs__banner {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-
   position: relative;
-  background: url('/static/img/docs-banner.png');
-  background-size: contain;
-  background-repeat: no-repeat;
-
-  width: 1440px;
-  height: 360px;
 
   margin-left: auto;
   margin-right: auto;
@@ -19,42 +8,14 @@
   padding-bottom: var(--cursus-gutter-20, 5rem);
 }
 
-.docs__banner--search {
-  background: url('/static/img/docs-search-banner.png');
-  background-size: contain;
-  background-repeat: no-repeat;
+.docs__banner__heading {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
-
-.docs__banner--courses {
-  background: url('/static/img/docs-courses-banner.png');
-  background-size: contain;
-  background-repeat: no-repeat;
-}
-
-.docs__banner--details {
-  background: url('/static/img/docs-details-banner.png');
-  background-size: contain;
-  background-repeat: no-repeat;
-}
-
-.docs__banner--campus {
-  background: url('/static/img/docs-campus-banner.png');
-  background-size: contain;
-  background-repeat: no-repeat;
-}
-
-.docs__banner--domains {
-  background: url('/static/img/docs-domains-banner.png');
-  background-size: contain;
-  background-repeat: no-repeat;
-}
-
-.docs__banner--more {
-  background: url('/static/img/docs-more-banner.png');
-  background-size: contain;
-  background-repeat: no-repeat;
-}
-
 
 .docs__banner__text {
   position: relative;
@@ -80,6 +41,24 @@
   font-size: 20px;
   font-weight: var(--cursus-font-bold, 600);
   color: rgb(var(--cursus-color-black) / 0.6);
+}
+
+.docs__banner__image {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -10;
+
+  height: 330px;
+
+  display: flex;
+  justify-content: center;
+}
+
+.docs__banner__image img {
+  object-fit: cover;
 }
 
 .docs__card-wrapper {
@@ -108,7 +87,8 @@
   position: relative;
   background: rgb(var(--cursus-color-white));
   border-radius: 0.5rem;
-  box-shadow: 0 0 0 1px rgb(var(--cursus-color-black) / 0.1), 0 2px 4px rgb(var(--cursus-color-black) / 0.1);
+  box-shadow: 0 0 0 1px rgb(var(--cursus-color-black) / 0.1),
+    0 2px 4px rgb(var(--cursus-color-black) / 0.1);
   padding: 2rem;
   transition: all 0.2s ease-in-out;
 
@@ -117,7 +97,8 @@
 }
 
 .docs__card:hover {
-  box-shadow: 0 0 0 1px rgb(var(--cursus-color-black) / 0.25), 0 8px 12px rgb(var(--cursus-color-black) / 0.25);
+  box-shadow: 0 0 0 1px rgb(var(--cursus-color-black) / 0.25),
+    0 8px 12px rgb(var(--cursus-color-black) / 0.25);
   transform: translateY(-4px);
 }
 
@@ -147,7 +128,7 @@
   color: rgb(var(--cursus-color-primary) / 1);
 }
 
-.docs__card > p, 
+.docs__card > p,
 .docs__card__content {
   color: rgb(var(--cursus-color-black) / 0.6);
 }
@@ -191,4 +172,30 @@
   font-size: 20px;
 }
 
+@media screen and (min-width: 768px) {
+  .docs__banner__image {
+    height: 345px;
+  }
 
+  .docs__banner__text {
+    font-size: 5rem;
+  }
+
+  .docs__banner__sub-text {
+    font-size: 18px;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .docs__banner__image {
+    height: 360px;
+  }
+
+  .docs__banner__text {
+    font-size: 6rem;
+  }
+
+  .docs__banner__sub-text {
+    font-size: 20px;
+  }
+}
