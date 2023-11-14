@@ -38,6 +38,40 @@
         >
       </div>
     </div>
+    <div
+      id="navbarDropdown"
+      class="dropdown navbar__dropdown"
+      aria-expanded="false"
+    >
+      <button type="button" class="dropdown__btn navbar__dropdown__btn">
+        <i class="fi fi-rr-menu-burger"></i>
+      </button>
+      <div class="dropdown__menu navbar__dropdown__menu">
+        <ul class="dropdown__menu-list">
+          <li>
+            <a
+              class="dropdown__menu-link{% if page_name == 'about' %} dropdown__menu-link--state-active{% endif %}"
+              href="{{ url_for('views.show', page_name='about') }}"
+              >About</a
+            >
+          </li>
+          <li>
+            <a
+              class="dropdown__menu-link{% if page_name == 'docs' %} dropdown__menu-link--state-active{% endif %}"
+              href="{{ url_for('views.show', page_name='docs') }}"
+              >Docs</a
+            >
+          </li>
+          <li>
+            <a
+              class="dropdown__menu-link{% if page_name == 'demo' %} dropdown__menu-link--state-active{% endif %}"
+              href="{{ url_for('views.show', page_name='demo') }}"
+              >Demo</a
+            >
+          </li>
+        </ul>
+      </div>
+    </div>
   </div>
 </div>
 {%- endmacro %}
