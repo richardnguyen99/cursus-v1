@@ -92,10 +92,6 @@ def show(page_name):
 
     resp = flask.render_template(f"{page_name}.html", page_name=page_name)
 
-    current_app.logger.info(
-        f'({req.remote_addr}) - "{req.method} {req.url}" 200 {len(resp)}'
-    )
-
     return resp, 200
 
 

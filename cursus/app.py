@@ -21,8 +21,7 @@ if os.environ.get("FLASK_ENV") != "development":
             "disable_existing_loggers": True,
             "formatters": {
                 "default": {
-                    "format": "[%(asctime)s] %(levelname)s | %(pathname)s:\
-    %(lineno)s >>> %(message)s",
+                    "format": "[%(asctime)s] %(levelname)s >>> %(message)s",
                     "datefmt": "%Y-%m-%dT%H:%M:%SZ",
                 },
             },
@@ -91,6 +90,18 @@ def create_app() -> Flask:
     @app.route("/config")
     def config():
         return flask.jsonify({"message": app.config["DATABASE_URL"]})
+
+    @app.after_request
+    def after(response: flask.Response):
+        current_app = flask.current_app
+        req = flask.request
+
+        current_app.logger.info(
+            f'"{req.remote_addr}" {req.method} {req.path} \
+{response.status_code} {response.content_length}'
+        )
+
+        return response
 
     @app.teardown_appcontext
     def shutdown_session(exception=None):  # pylint: disable=unused-argument
