@@ -6,6 +6,7 @@ import flask
 from werkzeug.exceptions import BadRequest, NotFound
 
 from cursus.util import exceptions
+from .oauth import authorize
 
 SUPPORT_ENDPOINTS = {
     "",
@@ -32,6 +33,10 @@ view_bp = flask.Blueprint(
     static_folder="static",
     static_url_path="/static",
 )
+
+oauth_bp = flask.Blueprint("oauth", __name__, url_prefix="/oauth")
+
+oauth_bp.add_url_rule("/authorize", view_func=authorize, methods=["GET"])
 
 
 @view_bp.app_errorhandler(exceptions.BadRequestError)

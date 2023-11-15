@@ -23,6 +23,7 @@ class Config(object):
     DATABASE_URL = os.environ.get("DATABASE_URL")
     FLASK_ENV = os.environ.get("FLASK_ENV")
     SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL")
+    SECRET_KEY = os.environ.get("SECRET_KEY")
 
 
 class DevConfig(Config):

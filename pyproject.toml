@@ -8,13 +8,14 @@ dependencies = [
     "psycopg2-binary>=2.9.9",
     "Flask-Migrate>=4.0.0",
     "Flask-Marshmallow>=0.15.0",
+    "Flask-Login>=0.6.3",
     "marshmallow-sqlalchemy>=0.29.0",
 ]
 name = "cursus"
-version = "1.0.0"
+version = "0.0.2"
 description = "An open-source API repository for university courses."
 license = { file = "LICENSE" }
-authors = [{ name = "Rafael Cenzano", email = "richard@richardhnguyen.com" }]
+authors = [{ name = "Richard H Nguyen", email = "richard@richardhnguyen.com" }]
 requires-python = ">=3.11.0"
 
 [project.scripts]

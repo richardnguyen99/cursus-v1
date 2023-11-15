@@ -10,8 +10,8 @@ from flask import Flask
 from logging.config import dictConfig
 
 from .apis import find_bp, university_bp as university_bp_v1
-from .views import view_bp
-from .util.extensions import db, migrate, ma
+from .views import view_bp, oauth_bp
+from .util.extensions import db, migrate, ma, login_manager
 
 
 if os.environ.get("FLASK_ENV") != "development":
@@ -65,11 +65,17 @@ def create_app() -> Flask:
     db.init_app(app)
     migrate.init_app(app, db)
     ma.init_app(app)
+    login_manager.init_app(app)
 
     # Register views
     app.register_blueprint(find_bp)
     app.register_blueprint(university_bp_v1)
     app.register_blueprint(view_bp)
+    app.register_blueprint(oauth_bp)
+
+    @login_manager.user_loader
+    def load_user(id):
+        return "user-id"
 
     @app.route("/ping")
     def ping():
