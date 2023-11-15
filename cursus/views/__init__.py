@@ -6,7 +6,7 @@ import flask
 from werkzeug.exceptions import BadRequest, NotFound
 
 from cursus.util import exceptions
-from .oauth import authorize
+from .oauth import authorize, callback
 
 SUPPORT_ENDPOINTS = {
     "",
@@ -36,7 +36,12 @@ view_bp = flask.Blueprint(
 
 oauth_bp = flask.Blueprint("oauth", __name__, url_prefix="/oauth")
 
-oauth_bp.add_url_rule("/authorize", view_func=authorize, methods=["GET"])
+oauth_bp.add_url_rule(
+    "/authorize/<provider>", view_func=authorize, methods=["GET"]
+)
+oauth_bp.add_url_rule(
+    "/callback/<provider>", view_func=callback, methods=["GET"]
+)
 
 
 @view_bp.app_errorhandler(exceptions.BadRequestError)
@@ -82,7 +87,6 @@ def handle_not_found(error):
 @view_bp.route("/<page_name>", methods=["GET"])
 def show(page_name):
     req = flask.request
-    current_app = flask.current_app
 
     url = req.path
     endpoint = url.split("/")[1]
@@ -103,7 +107,6 @@ def show(page_name):
 @view_bp.route("/docs/<page_name>", methods=["GET"])
 def docs(page_name: str):
     req = flask.request
-    url = req.path
 
     if page_name not in SUPPORT_DOCS_ENDPOINTS:
         raise exceptions.NotFoundError(f"Page {page_name} not found")

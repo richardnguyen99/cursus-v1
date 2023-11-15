@@ -1,7 +1,13 @@
-{% extends "_base.html" %}
-{% block title %}Login{% endblock %}
-{% block main %}
+{% extends "_base.html" %} {% block title %}Login{% endblock %} {% block main %}
 {{ super() }}
 <h1>Login</h1>
+<a href="{{ url_for('oauth.authorize', provider='google') }}">
+  Login with Google
+</a>
+<a href="{{ url_for('oauth.authorize', provider='github') }}">
+  Login with GitHub
+</a>
+<a href="{{ url_for('oauth.authorize', provider='discord') }}">
+  Login with Discord
+</a>
 {% endblock %}
-
