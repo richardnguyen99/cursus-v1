@@ -1,29 +1,29 @@
 :root {
   /* CSS gutters for margin, padding, gap, etc. */
-  --cursus-gutter-1:  0.25rem;      /* 4px */
-  --cursus-gutter-2:  0.5rem;       /* 8px */
-  --cursus-gutter-3:  0.75rem;      /* 12px */
-  --cursus-gutter-4:  1rem;         /* 16px */
-  --cursus-gutter-5:  1.25rem;      /* 20px */
-  --cursus-gutter-6:  1.5rem;       /* 24px */
-  --cursus-gutter-7:  1.75rem;      /* 28px */
-  --cursus-gutter-8:  2rem;         /* 32px */
-  --cursus-gutter-9:  2.25rem;      /* 36px */
-  --cursus-gutter-10: 2.5rem;       /* 40px */
-  --cursus-gutter-11: 2.75rem;      /* 44px */
-  --cursus-gutter-12: 3rem;         /* 48px */
-  --cursus-gutter-13: 3.25rem;      /* 52px */
-  --cursus-gutter-14: 3.5rem;       /* 56px */
-  --cursus-gutter-15: 3.75rem;      /* 60px */
-  --cursus-gutter-16: 4rem;         /* 64px */
-  --cursus-gutter-17: 4.25rem;      /* 68px */
-  --cursus-gutter-18: 4.5rem;       /* 72px */
-  --cursus-gutter-19: 4.75rem;      /* 76px */
-  --cursus-gutter-20: 5rem;         /* 80px */
-  --cursus-gutter-21: 5.25rem;      /* 84px */
-  --cursus-gutter-22: 5.5rem;       /* 88px */
-  --cursus-gutter-23: 5.75rem;      /* 92px */
-  --cursus-gutter-24: 6rem;         /* 96px */
+  --cursus-gutter-1: 0.25rem; /* 4px */
+  --cursus-gutter-2: 0.5rem; /* 8px */
+  --cursus-gutter-3: 0.75rem; /* 12px */
+  --cursus-gutter-4: 1rem; /* 16px */
+  --cursus-gutter-5: 1.25rem; /* 20px */
+  --cursus-gutter-6: 1.5rem; /* 24px */
+  --cursus-gutter-7: 1.75rem; /* 28px */
+  --cursus-gutter-8: 2rem; /* 32px */
+  --cursus-gutter-9: 2.25rem; /* 36px */
+  --cursus-gutter-10: 2.5rem; /* 40px */
+  --cursus-gutter-11: 2.75rem; /* 44px */
+  --cursus-gutter-12: 3rem; /* 48px */
+  --cursus-gutter-13: 3.25rem; /* 52px */
+  --cursus-gutter-14: 3.5rem; /* 56px */
+  --cursus-gutter-15: 3.75rem; /* 60px */
+  --cursus-gutter-16: 4rem; /* 64px */
+  --cursus-gutter-17: 4.25rem; /* 68px */
+  --cursus-gutter-18: 4.5rem; /* 72px */
+  --cursus-gutter-19: 4.75rem; /* 76px */
+  --cursus-gutter-20: 5rem; /* 80px */
+  --cursus-gutter-21: 5.25rem; /* 84px */
+  --cursus-gutter-22: 5.5rem; /* 88px */
+  --cursus-gutter-23: 5.75rem; /* 92px */
+  --cursus-gutter-24: 6rem; /* 96px */
 
   /* CSS breakpoints for responsiveness */
   --cursus-breakpoint-sm: 640px;
@@ -44,19 +44,24 @@
   --cursus-font-black: 900;
 
   /* CSS font families */
-  --cursus-font-sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  --cursus-font-serif: "Playfair Display", ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
-  --cursus-font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --cursus-font-sans: Inter, ui-sans-serif, system-ui, -apple-system,
+    BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans",
+    sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+    "Noto Color Emoji";
+  --cursus-font-serif: "Playfair Display", ui-serif, Georgia, Cambria,
+    "Times New Roman", Times, serif;
+  --cursus-font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
 
   /* CSS font size */
-  --cursus-font-xs: 0.75rem;    /* 12px */
-  --cursus-font-sm: 0.875rem;   /* 14px */
-  --cursus-font-base: 1rem;     /* 16px */
-  --cursus-font-lg: 1.125rem;   /* 18px */
-  --cursus-font-xl: 1.25rem;    /* 20px */
-  --cursus-font-2xl: 1.5rem;    /* 24px */
-  --cursus-font-3xl: 1.875rem;  /* 30px */
-  --cursus-font-4xl: 2rem;      /* 32px */
+  --cursus-font-xs: 0.75rem; /* 12px */
+  --cursus-font-sm: 0.875rem; /* 14px */
+  --cursus-font-base: 1rem; /* 16px */
+  --cursus-font-lg: 1.125rem; /* 18px */
+  --cursus-font-xl: 1.25rem; /* 20px */
+  --cursus-font-2xl: 1.5rem; /* 24px */
+  --cursus-font-3xl: 1.875rem; /* 30px */
+  --cursus-font-4xl: 2rem; /* 32px */
 
   /* CSS color system */
   --cursus-color-white: 255 255 255;
@@ -64,13 +69,14 @@
   --cursus-color-primary: 100 103 242;
   --cursus-color-primary--hover: 90 93 226;
   --cursus-color-sky: 13 162 231;
-
 }
 
-*, *::before, *::after {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 html {
@@ -90,4 +96,18 @@ body {
 a {
   color: inherit;
   text-decoration: inherit;
+}
+
+img,
+video {
+  max-width: 100%;
+  height: auto;
+}
+
+/* normalize icon tag */
+i {
+  font-style: normal;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

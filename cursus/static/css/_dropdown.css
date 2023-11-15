@@ -1,0 +1,10 @@
+.dropdown {
+}
+
+.dropdown__menu {
+  visibility: hidden;
+}
+
+.dropdown__menu.dropdown--show {
+  visibility: visible;
+}

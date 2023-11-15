@@ -1,9 +1,10 @@
 .hero__section {
   position: relative;
-  background: url('/static/img/downtime-dot-bg.png');
+  background: url("/static/img/downtime-dot-bg.png");
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
+  z-index: 1;
 
   padding-top: var(--cursus-gutter-20, 5rem);
   padding-bottom: var(--cursus-gutter-20, 5rem);
@@ -25,36 +26,34 @@
 }
 
 .hero__banner-text {
-  font-size: var(--cursus-font-2xl, 2rem);
+  font-size: var(--cursus-font-xl, 1.25rem);
   font-weight: var(--cursus-font-semibold, 600);
 }
 
-
 .hero__card {
   position: relative;
-  width: 100%;
-  max-width: 1024px;
+  z-index: 3;
 
   margin-left: auto;
   margin-right: auto;
-  margin-top: -3rem;
-  padding-top: 4rem;
-  padding-bottom: 4rem;
+  margin-top: -1rem;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
   padding-left: 2rem;
   padding-right: 2rem;
 
   border-radius: 2rem;
   background-color: rgb(var(--cursus-color-white) / 1);
   border: 1px solid rgb(var(--cursus-color-black) / 0.1);
-  
-  box-shadow: 0 56px 70px 4px rgba(15, 23, 41, 0.26);  
+
+  box-shadow: 0 56px 70px 4px rgba(15, 23, 41, 0.26);
 }
 
 .hero__card__dot-1 {
   position: absolute;
   top: -5%;
   right: -5%;
-  z-index: -1;
+  z-index: 2;
   width: 8rem;
   height: 8rem;
 }
@@ -72,7 +71,7 @@
 }
 
 .hero__heading-1::after {
-  content: '';
+  content: "";
   position: absolute;
   display: block;
 
@@ -99,7 +98,7 @@
 }
 
 .hero__heading-2::after {
-  content: '';
+  content: "";
   position: absolute;
   display: block;
 
@@ -113,18 +112,17 @@
   margin-top: 1rem;
 }
 
-.hero__paragraph, .hero__card p {
+.hero__paragraph,
+.hero__card p {
   font-size: 18px;
   font-weight: 400;
   line-height: 1.5;
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
 }
 
 .hero__table {
   display: flex;
   flex-direction: column;
-
-  gap: 2rem;
 }
 
 .hero__row {
@@ -141,21 +139,82 @@
 
 .hero__tryout {
   position: relative;
-  max-width: 768px;
+  max-width: 576px;
   width: 100%;
   z-index: 100;
 
   margin-left: auto;
   margin-right: auto;
-  margin-top: -2rem;
+  margin-top: -1.25rem;
 
-  padding-top: 2rem;
-  padding-bottom: 2rem;
-  padding-left: 3rem;
-  padding-right: 3rem;
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
 
   border-radius: 2rem;
   background-color: rgb(var(--cursus-color-primary) / 1);
   color: white;
-  box-shadow: 0 26px 70px 4px rgba(15, 23, 41, 0.26);  
+  box-shadow: 0 26px 70px 4px rgba(15, 23, 41, 0.26);
+}
+
+@media screen and (min-width: 768px) {
+  .hero__banner-text {
+    font-size: var(--cursus-font-2xl, 1.5rem);
+    font-weight: var(--cursus-font-semibold, 600);
+  }
+
+  .hero__tryout {
+    max-width: 640px;
+
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: -1.5rem;
+
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+    padding-left: 2.25rem;
+    padding-right: 2.25rem;
+  }
+
+  .hero__table {
+    gap: 1rem;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .hero__banner-text {
+    font-size: var(--cursus-font-3xl, 1.75rem);
+    font-weight: var(--cursus-font-semibold, 600);
+  }
+
+  .hero__tryout {
+    max-width: 768px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: -2rem;
+
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
+
+  .hero__card {
+    margin-left: -2rem;
+    margin-right: -2rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+
+  .hero__table {
+    gap: 2rem;
+  }
+
+  .hero__paragraph,
+  .hero__card p {
+    margin-bottom: 1rem;
+  }
 }

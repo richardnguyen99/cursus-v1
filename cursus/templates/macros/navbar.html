@@ -38,6 +38,55 @@
         >
       </div>
     </div>
+    <div
+      id="navbarDropdown"
+      class="dropdown navbar__dropdown"
+      aria-expanded="false"
+    >
+      <button type="button" class="dropdown__btn navbar__dropdown__btn">
+        <i class="fi fi-rr-menu-burger"></i>
+      </button>
+      <div class="dropdown__menu navbar__dropdown__menu">
+        <ul class="navbar__dropdown-list">
+          <li>
+            <a
+              class="navbar__dropdown-item"
+              href="{{ url_for('views.show', page_name='about') }}"
+            >
+              <i class="navbar__dropdown-item__icon fi fi-sr-info"></i>
+              <p>About</p></a
+            >
+          </li>
+          <li>
+            <a
+              class="navbar__dropdown-item"
+              href="{{ url_for('views.show', page_name='docs') }}"
+            >
+              <i
+                class="navbar__dropdown-item__icon fi fi-sr-circle-book-open"
+              ></i>
+              <p>Docs</p></a
+            >
+          </li>
+          <li>
+            <a
+              class="navbar__dropdown-item"
+              href="{{ url_for('views.show', page_name='demo') }}"
+            >
+              <i class="navbar__dropdown-item__icon fi fi-sr-display-code"></i>
+              <p>Demo</p></a
+            >
+          </li>
+        </ul>
+        <hr class="navbar__dropdown-separator" />
+        <a
+          href="{{ url_for('views.show', page_name='login') }}"
+          class="btn btn--fluid btn--round btn--primary navbar__dropdown-btn"
+        >
+          LOGIN
+        </a>
+      </div>
+    </div>
   </div>
 </div>
 {%- endmacro %}

@@ -8,7 +8,6 @@
   justify-content: center;
   position: relative;
   padding: 12px 30px;
-  margin: 0.3125rem 1px;
   font-size: 14px;
   font-weight: 500;
   line-height: 1.5;
@@ -29,8 +28,8 @@
 }
 
 .btn--primary {
-  --cursus-btn-bg: #007bff;
-  --cursus-btn-text: #fff;
+  --cursus-btn-bg: var(--cursus-color-primary);
+  --cursus-btn-text: 255 255 255;
 }
 
 .btn--secondary {
