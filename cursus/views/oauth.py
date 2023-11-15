@@ -3,6 +3,7 @@
 """Cursus OAuth module with OAuth2 support
 """
 
+import json
 import flask
 import secrets
 import flask_login
@@ -71,6 +72,10 @@ def callback(provider: str):
     if not oauth2_token:
         return flask.abort(401)
 
+    token_response = response.json()
+
+    print(json.dumps(token_response, indent=4))
+
     response = requests.get(
         provider_data["userinfo"]["url"],
         headers={
@@ -82,8 +87,8 @@ def callback(provider: str):
     if response.status_code != 200:
         return flask.abort(401)
 
-    data = response.json()
+    data_response = response.json()
 
-    print(data)
+    print(json.dumps(data_response, indent=4))
 
     return flask.redirect(flask.url_for("views.show", page_name="index"))
