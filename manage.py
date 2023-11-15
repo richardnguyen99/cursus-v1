@@ -17,6 +17,7 @@ from cursus.util.extensions import db
 from cursus.models import (  # noqa: F401 # pylint: disable=unused-import
     university,
     country,
+    user,
 )
 
 
