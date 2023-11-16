@@ -5,7 +5,15 @@
 
 import cuid2
 
-from sqlalchemy import String, Integer, DateTime, ForeignKey, Text
+from typing import Any, Optional
+from sqlalchemy import (
+    String,
+    Integer,
+    DateTime,
+    ForeignKey,
+    Text,
+    UniqueConstraint,
+)
 from sqlalchemy.orm import Mapped, mapped_column, Relationship, relationship
 
 from cursus.util.extensions import db
@@ -19,7 +27,7 @@ class User(db.Model):
 
     __tablename__ = "users"
 
-    id: Mapped[int] = mapped_column(
+    id: Mapped[str] = mapped_column(
         String(11),
         primary_key=True,
         default=CUID_GENERATOR.generate,
@@ -79,6 +87,8 @@ class Account(db.Model):
 
     __tablename__ = "accounts"
 
+    __table_args__ = (UniqueConstraint("provider", "providerAccountId"),)
+
     id: Mapped[int] = mapped_column(
         String(11),
         primary_key=True,
@@ -100,17 +110,12 @@ class Account(db.Model):
         nullable=False,
     )
 
-    refresh_token: Mapped[str] = mapped_column(
+    refresh_token: Mapped[Optional[str]] = mapped_column(
         Text(),
         nullable=True,
     )
 
-    access_token: Mapped[str] = mapped_column(
-        Text(),
-        nullable=True,
-    )
-
-    expires_at: Mapped[int] = mapped_column(
+    expires_at: Mapped[Optional[int]] = mapped_column(
         Integer,
         nullable=True,
     )
@@ -118,15 +123,11 @@ class Account(db.Model):
     token_type: Mapped[str] = mapped_column(
         String(64),
         nullable=True,
+        default="Bearer",
     )
 
     scope: Mapped[str] = mapped_column(
         String(256),
-        nullable=True,
-    )
-
-    id_token: Mapped[str] = mapped_column(
-        Text(),
         nullable=True,
     )
 
@@ -135,12 +136,30 @@ class Account(db.Model):
         nullable=True,
     )
 
-    userId: Mapped[int] = mapped_column(
+    userId: Mapped[str] = mapped_column(
         String(11),
         ForeignKey("users.id", ondelete="CASCADE"),
         nullable=False,
         index=True,
     )
+
+    def __init__(
+        self,
+        userId: str,
+        auth_type: str,
+        provider: str,
+        providerAccountId: str,
+    ):
+        self.userId = userId
+        self.type = auth_type
+        self.provider = provider
+        self.providerAccountId = providerAccountId
+
+    def __repr__(self) -> str:
+        return f"<Account {self.providerAccountId}@{self.provider}>"
+
+    def __str__(self) -> str:
+        return f"<Account {self.providerAccountId}@{self.provider}>"
 
 
 class Session(db.Model):

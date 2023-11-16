@@ -11,6 +11,10 @@ import requests
 
 from urllib.parse import urlencode
 
+from cursus.models import Account, User
+from cursus.util.extensions import db
+from cursus.util.profile import get_profile
+
 
 def authorize(provider: str):
     if not flask_login.current_user.is_anonymous:
@@ -88,6 +92,16 @@ def callback(provider: str):
         return flask.abort(401)
 
     data_response = response.json()
+
+    user = (
+        db.session.query(User).filter_by(email=data_response["email"]).first()
+    )
+
+    if user is None:
+        profile = get_profile(provider, data_response)
+
+        db.session.add(profile)
+        db.session.commit()
 
     print(json.dumps(data_response, indent=4))
 
