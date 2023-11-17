@@ -24,6 +24,8 @@ class Config(object):
     FLASK_ENV = os.environ.get("FLASK_ENV")
     SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL")
     SECRET_KEY = os.environ.get("SECRET_KEY")
+    REMEMBER_COOKIE_NAME = "cursus_remember"
+    REMEMBER_COOKIE_DURATION = 2592000
     OAUTH2_PROVIDERS = {
         # Google OAuth 2.0 documentation:
         # https://developers.google.com/identity/protocols/oauth2/web-server#httprest

@@ -4,7 +4,6 @@
 """
 
 import cuid2
-import json
 import flask
 import secrets
 import flask_login
@@ -121,7 +120,7 @@ def callback(provider: str):
     print(uniform_account.providerAccountId)
 
     # Select User based on Account
-    profile = (
+    user_for_login = (
         db.session.query(User)
         .join(
             Account,
@@ -134,6 +133,6 @@ def callback(provider: str):
         .first()
     )
 
-    flask_login.login_user(profile)
+    flask_login.login_user(user_for_login, remember=True)
 
     return flask.redirect(flask.url_for("views.show", page_name="index"))
