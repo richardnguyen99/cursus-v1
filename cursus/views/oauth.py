@@ -81,8 +81,6 @@ def callback(provider: str):
 
     token_response = response.json()
 
-    print(json.dumps(token_response, indent=4))
-
     response = requests.get(
         provider_data["userinfo"]["url"],
         headers={
@@ -120,6 +118,22 @@ def callback(provider: str):
 
     db.session.commit()
 
-    print(json.dumps(data_response, indent=4))
+    print(uniform_account.providerAccountId)
+
+    # Select User based on Account
+    profile = (
+        db.session.query(User)
+        .join(
+            Account,
+            User.id == Account.userId,
+        )
+        .filter(
+            Account.provider == uniform_account.provider,
+            Account.providerAccountId == uniform_account.providerAccountId,
+        )
+        .first()
+    )
+
+    flask_login.login_user(profile)
 
     return flask.redirect(flask.url_for("views.show", page_name="index"))

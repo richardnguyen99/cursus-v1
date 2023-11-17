@@ -7,11 +7,13 @@ import os
 import flask
 
 from flask import Flask
+from flask_login import current_user, logout_user, login_required
 from logging.config import dictConfig
 
 from .apis import find_bp, university_bp as university_bp_v1
 from .views import view_bp, oauth_bp
 from .util.extensions import db, migrate, ma, login_manager
+from .models import User
 
 
 if os.environ.get("FLASK_ENV") != "development":
@@ -66,6 +68,19 @@ def create_app() -> Flask:
     migrate.init_app(app, db)
     ma.init_app(app)
     login_manager.init_app(app)
+    login_manager.login_view = "views.show"
+
+    @login_manager.user_loader
+    def load_user(id):
+        user = db.session.query(User).filter_by(id=id).first()
+
+        return user
+
+    @app.route("/logout")
+    @login_required
+    def logout():
+        logout_user()
+        return flask.redirect(flask.url_for("views.show", page_name="index"))
 
     # Register views
     app.register_blueprint(find_bp)
@@ -73,29 +88,12 @@ def create_app() -> Flask:
     app.register_blueprint(view_bp)
     app.register_blueprint(oauth_bp)
 
-    @login_manager.user_loader
-    def load_user(id):
-        return "user-id"
-
     @app.route("/ping")
     def ping():
         resp = flask.make_response(flask.json.dumps({"message": "pong"}), 200)
         resp.headers["Content-Type"] = "application/json"
 
         return resp
-
-    @app.route("/")
-    def hello():
-        resp = flask.make_response(
-            flask.json.dumps({"message": "Welcome to the Cursus API"}), 200
-        )
-        resp.headers["Content-Type"] = "application/json"
-
-        return resp
-
-    @app.route("/config")
-    def config():
-        return flask.jsonify({"message": app.config["DATABASE_URL"]})
 
     @app.after_request
     def after(response: flask.Response):

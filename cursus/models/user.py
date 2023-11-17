@@ -6,6 +6,7 @@
 import cuid2
 
 from typing import Any, Optional
+from flask_login import UserMixin
 from sqlalchemy import (
     String,
     Integer,
@@ -22,7 +23,7 @@ from cursus.util.extensions import db
 CUID_GENERATOR: cuid2.Cuid = cuid2.Cuid(length=11)
 
 
-class User(db.Model):
+class User(db.Model, UserMixin):
     """Core User Model for Cursus Application"""
 
     __tablename__ = "users"

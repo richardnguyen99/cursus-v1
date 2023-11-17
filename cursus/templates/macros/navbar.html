@@ -34,8 +34,10 @@
         <a
           class="navbar__pill"
           href="{{ url_for('views.show', page_name='login') }}"
-          >Login</a
         >
+          {% if current_user.is_authenticated %} Logout {% else %} Login {%
+          endif %}
+        </a>
       </div>
     </div>
     <div
@@ -83,7 +85,8 @@
           href="{{ url_for('views.show', page_name='login') }}"
           class="btn btn--fluid btn--round btn--primary navbar__dropdown-btn"
         >
-          LOGIN
+          {% if current_user.is_authenticated %} Logout {% else %} Login {%
+          endif %}
         </a>
       </div>
     </div>
