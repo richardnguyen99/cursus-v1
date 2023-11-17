@@ -3,6 +3,7 @@
 """Cursus OAuth module with OAuth2 support
 """
 
+import cuid2
 import json
 import flask
 import secrets
@@ -14,6 +15,7 @@ from urllib.parse import urlencode
 from cursus.models import Account, User
 from cursus.util.extensions import db
 from cursus.util.profile import get_profile
+from cursus.util.account import get_account
 
 
 def authorize(provider: str):
@@ -35,6 +37,7 @@ def authorize(provider: str):
             "scope": " ".join(provider_data["scope"]),
             "response_type": "code",
             "state": flask.session["oauth2_state"],
+            "access_type": provider_data.get("access_type", "online"),
         }
     )
 
@@ -93,15 +96,29 @@ def callback(provider: str):
 
     data_response = response.json()
 
-    user = (
-        db.session.query(User).filter_by(email=data_response["email"]).first()
+    uniform_account = get_account(provider, token_response, data_response)
+    account_from_database = (
+        db.session.query(Account)
+        .filter_by(
+            provider=uniform_account.provider,
+            providerAccountId=uniform_account.providerAccountId,
+        )
+        .first()
     )
 
-    if user is None:
+    # Account has not registered with this app
+    if account_from_database is None:
         profile = get_profile(provider, data_response)
+        profile.id = cuid2.Cuid(length=11).generate()
+        uniform_account.userId = profile.id
 
         db.session.add(profile)
-        db.session.commit()
+        db.session.add(uniform_account)
+
+    else:
+        account_from_database.refresh_token = uniform_account.refresh_token
+
+    db.session.commit()
 
     print(json.dumps(data_response, indent=4))
 

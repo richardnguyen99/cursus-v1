@@ -6,7 +6,7 @@ Profile functions to obtain user information from OAuth2 providers.
 
 from typing import Dict
 
-from cursus.models import User, Account
+from cursus.models import User
 
 __all__ = [
     "get_profile",
@@ -66,8 +66,12 @@ def _get_discord_profile(data: Dict[str, str]) -> User:
     :param data: Raw json-encoded data from Discord OAuth2.
     """
 
+    image = (
+        f"https://cdn.discordapp.com/avatars/{data['id']}/{data['avatar']}.png"
+    )
+
     return User(
-        name=data["username"],
+        name=data["global_name"],
         email=data["email"],
-        image=data["avatar_url"],
+        image=image,
     )

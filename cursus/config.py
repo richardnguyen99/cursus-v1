@@ -36,6 +36,7 @@ class Config(object):
                 "https://www.googleapis.com/auth/userinfo.profile",
                 "https://www.googleapis.com/auth/userinfo.email",
             ],
+            "access_type": "offline",
             "userinfo": {
                 "url": "https://www.googleapis.com/oauth2/v3/userinfo",
             },

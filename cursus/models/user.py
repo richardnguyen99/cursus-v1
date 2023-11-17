@@ -27,6 +27,8 @@ class User(db.Model):
 
     __tablename__ = "users"
 
+    __table_args__ = (UniqueConstraint("email", "name"),)
+
     id: Mapped[str] = mapped_column(
         String(11),
         primary_key=True,
@@ -35,18 +37,17 @@ class User(db.Model):
 
     name: Mapped[str] = mapped_column(
         String(256),
-        nullable=True,
+        nullable=False,
         index=True,
     )
 
     email: Mapped[str] = mapped_column(
         String(256),
-        nullable=True,
-        unique=True,
+        nullable=False,
         index=True,
     )
 
-    emailVerifiedDate: Mapped[str] = mapped_column(
+    emailVerifiedDate: Mapped[Optional[str]] = mapped_column(
         DateTime(timezone=True),
         nullable=True,
     )
@@ -89,7 +90,7 @@ class Account(db.Model):
 
     __table_args__ = (UniqueConstraint("provider", "providerAccountId"),)
 
-    id: Mapped[int] = mapped_column(
+    id: Mapped[str] = mapped_column(
         String(11),
         primary_key=True,
         default=CUID_GENERATOR.generate,
@@ -145,15 +146,15 @@ class Account(db.Model):
 
     def __init__(
         self,
-        userId: str,
         auth_type: str,
         provider: str,
         providerAccountId: str,
+        refresh_token: Optional[str],
     ):
-        self.userId = userId
         self.type = auth_type
         self.provider = provider
         self.providerAccountId = providerAccountId
+        self.refresh_token = refresh_token
 
     def __repr__(self) -> str:
         return f"<Account {self.providerAccountId}@{self.provider}>"
