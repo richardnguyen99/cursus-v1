@@ -1,0 +1,75 @@
+.login__section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 16.75rem);
+}
+
+.login__heading {
+  margin-bottom: 1rem;
+  font-size: 3rem;
+  font-weight: 900;
+}
+
+.login__container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 100%;
+  max-width: 640px;
+  border-radius: 2rem;
+  border: 1px solid rgb(var(--cursus-color-primary) / 0.5);
+
+  padding: 2rem;
+}
+
+.login__btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  border-radius: 1rem;
+  border: none;
+  background: rgb(var(--cursus-color-primary));
+  color: white;
+  font-size: 1.25rem;
+  font-weight: 500;
+  cursor: pointer;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
+
+.login__btn:hover {
+  background: rgb(var(--cursus-color-primary) / 0.9);
+}
+
+.login__btn.login__btn--google {
+  background: white;
+  color: black;
+  border: 1px solid #bbb;
+}
+
+.login__btn.login__btn--google:hover {
+  background: #f2f2f2;
+}
+
+.login__btn.login__btn--discord {
+  background: rgb(89, 102, 243);
+  color: white;
+}
+
+.login__btn.login__btn--discord:hover {
+  background: rgb(74, 87, 238);
+}
+
+.login__btn.login__btn--github {
+  background: rgb(0, 3, 51);
+  color: white;
+}
+
+.login__btn.login__btn--github:hover {
+  background: rgb(30, 33, 66);
+  color: white;
+}

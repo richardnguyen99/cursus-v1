@@ -9,6 +9,7 @@
   font-size: var(--cursus-font-lg, 1.25rem);
   background: rgb(var(--cursus-color-primary) / 1);
   color: white;
+  height: 7.25rem;
 }
 
 .footer__legality {
@@ -24,7 +25,6 @@
   display: flex;
   align-items: center;
   gap: 3rem;
-
 }
 
 .footer__legality-link {
@@ -47,7 +47,7 @@
   }
 }
 
-@media screen and (min-width: 1024px)  {
+@media screen and (min-width: 1024px) {
   .footer {
     padding-top: 2rem;
     padding-bottom: 2rem;
@@ -60,6 +60,6 @@
   }
 
   .footer__legality-wrapper {
-    margin-left: auto
+    margin-left: auto;
   }
 }

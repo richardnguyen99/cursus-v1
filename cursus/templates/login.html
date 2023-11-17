@@ -1,13 +1,49 @@
-{% extends "_base.html" %} {% block title %}Login{% endblock %} {% block main %}
+{% extends "_base.html" %} {% block title %}Login{% endblock %} {% block css %}
 {{ super() }}
-<h1>Login</h1>
-<a href="{{ url_for('oauth.authorize', provider='google') }}">
-  Login with Google
-</a>
-<a href="{{ url_for('oauth.authorize', provider='github') }}">
-  Login with GitHub
-</a>
-<a href="{{ url_for('oauth.authorize', provider='discord') }}">
-  Login with Discord
-</a>
+<link rel="stylesheet" href="/static/css/_login.css" />
+{% endblock %} {% block main %} {{ super() }}
+<section class="login__section">
+  <h1 class="login__heading">Login</h1>
+  <div class="login__container">
+    <a
+      href="{{ url_for('oauth.authorize', provider='google') }}"
+      class="login__btn login__btn--google"
+    >
+      <img
+        width="24"
+        height="24"
+        src="{{ url_for('static', filename='img/google-g-logo.svg') }}"
+        alt="Google Logo"
+        class="login__btn-img"
+      />
+      <p class="login__btn-text">Login with Google</p>
+    </a>
+    <a
+      href="{{ url_for('oauth.authorize', provider='github') }}"
+      class="login__btn login__btn--github"
+    >
+      <img
+        width="24"
+        height="24"
+        src="{{ url_for('static', filename='img/github-mark-white.svg') }}"
+        alt="GitHub Logo"
+        class="login__btn-img"
+      />
+      <p class="login__btn-text">Login with GitHub</p>
+    </a>
+    <a
+      href="{{ url_for('oauth.authorize', provider='discord') }}"
+      class="login__btn login__btn--discord"
+    >
+      <img
+        width="24"
+        height="24"
+        src="{{ url_for('static', filename='img/discord-clyde-logo.svg') }}"
+        alt="GitHub Logo"
+        class="login__btn-img"
+      />
+      <p class="login__btn-text">Login with Discord</p>
+    </a>
+  </div>
+</section>
 {% endblock %}
