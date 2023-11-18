@@ -61,7 +61,7 @@ def callback(provider: str):
     if "code" not in flask.request.args:
         return flask.abort(401)
 
-    next = flask.request.args.get("next")
+    next = flask.request.args.get("next", None)
 
     response = requests.post(
         provider_data["token_url"],
