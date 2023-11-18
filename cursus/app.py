@@ -77,6 +77,13 @@ def create_app() -> Flask:
 
         return user
 
+    @login_manager.unauthorized_handler
+    def handle_needs_login():
+        flask.flash("You have to be logged in to access this page.")
+        return flask.redirect(
+            flask.url_for("views.login", next=flask.request.endpoint)
+        )
+
     @app.route("/logout")
     @login_required
     def logout():

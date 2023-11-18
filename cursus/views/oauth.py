@@ -26,12 +26,13 @@ def authorize(provider: str):
         return flask.abort(404)
 
     flask.session["oauth2_state"] = secrets.token_urlsafe(16)
+    next = flask.request.args.get("next")
 
     query_string = urlencode(
         {
             "client_id": provider_data["client_id"],
             "redirect_uri": flask.url_for(
-                "oauth.callback", provider=provider, _external=True
+                "oauth.callback", provider=provider, next=next, _external=True
             ),
             "scope": " ".join(provider_data["scope"]),
             "response_type": "code",
@@ -57,6 +58,8 @@ def callback(provider: str):
     if "code" not in flask.request.args:
         return flask.abort(401)
 
+    next = flask.request.args.get("next")
+
     response = requests.post(
         provider_data["token_url"],
         data={
@@ -64,7 +67,7 @@ def callback(provider: str):
             "client_secret": provider_data["client_secret"],
             "code": flask.request.args.get("code"),
             "redirect_uri": flask.url_for(
-                "oauth.callback", provider=provider, _external=True
+                "oauth.callback", provider=provider, next=next, _external=True
             ),
             "grant_type": "authorization_code",
         },
@@ -72,7 +75,7 @@ def callback(provider: str):
     )
 
     if response.status_code != 200:
-        return flask.abort(401)
+        return flask.abort(403)
 
     oauth2_token = response.json().get("access_token")
     if not oauth2_token:
@@ -134,5 +137,8 @@ def callback(provider: str):
     )
 
     flask_login.login_user(user_for_login, remember=True)
+
+    if next is not None:
+        return flask.redirect(flask.url_for(next))
 
     return flask.redirect(flask.url_for("views.show", page_name="index"))

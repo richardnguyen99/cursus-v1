@@ -108,6 +108,47 @@
   background-color: rgb(var(--cursus-color-primary--hover) / 1);
 }
 
+.navbar__pill--outline {
+  background-color: transparent;
+  border-width: 1px;
+  border-style: solid;
+  border-color: rgb(var(--cursus-color-primary) / 1);
+  color: rgb(var(--cursus-color-primary) / 1);
+}
+
+.navbar__pill--outline:hover {
+  background-color: transparent;
+  border-color: rgb(var(--cursus-color-primary--hover) / 1);
+  color: rgb(var(--cursus-color-primary--hover) / 1);
+}
+
+.navbar__avatar {
+  border-radius: 9999px;
+  overflow: hidden;
+  flex-shrink: 0;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+}
+
+.navbar__avatar-container {
+  position: relative;
+  aspect-ratio: 1/1;
+  width: 100%;
+  height: 100%;
+}
+
+.navbar__avatar-image {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  color: transparent;
+}
+
 .navbar__dropdown {
   position: relative;
   display: block;
@@ -254,7 +295,9 @@
   .navbar__collapse-right,
   .navbar__link {
     display: flex;
+    align-items: center;
     height: 100%;
+    gap: 1rem;
   }
 
   .navbar__dropdown {

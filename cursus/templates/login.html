@@ -6,7 +6,7 @@
   <h1 class="login__heading">Login</h1>
   <div class="login__container">
     <a
-      href="{{ url_for('oauth.authorize', provider='google') }}"
+      href="{{ url_for('oauth.authorize', provider='google', next=next) }}"
       class="login__btn login__btn--google"
     >
       <img
@@ -19,7 +19,7 @@
       <p class="login__btn-text">Login with Google</p>
     </a>
     <a
-      href="{{ url_for('oauth.authorize', provider='github') }}"
+      href="{{ url_for('oauth.authorize', provider='github', next=next) }}"
       class="login__btn login__btn--github"
     >
       <img
@@ -32,7 +32,7 @@
       <p class="login__btn-text">Login with GitHub</p>
     </a>
     <a
-      href="{{ url_for('oauth.authorize', provider='discord') }}"
+      href="{{ url_for('oauth.authorize', provider='discord', next=next) }}"
       class="login__btn login__btn--discord"
     >
       <img

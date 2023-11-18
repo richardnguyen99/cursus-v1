@@ -57,8 +57,6 @@
     <main style="padding-top: 72px">{% block main %}{% endblock %}</main>
     {% block js %} {% endblock %}
 
-    <h1>Hi {{ current_user.name }}</h1>
-
     <!-- Footer -->
     {% import 'macros/footer.html' as footer %} {{ footer.footer() }}
     <script src="/static/js/dropdown.js"></script>
