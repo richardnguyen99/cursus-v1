@@ -26,7 +26,7 @@ def authorize(provider: str):
         return flask.abort(404)
 
     flask.session["oauth2_state"] = secrets.token_urlsafe(16)
-    next = flask.request.args.get("next")
+    next = flask.request.args.get("next", None)
 
     query_string = urlencode(
         {
@@ -55,7 +55,9 @@ def callback(provider: str):
     if not provider_data:
         return flask.abort(404)
 
-    if flask.request.args.get("state") != flask.session["oauth2_state"]:
+    state = flask.request.args.get("state", None)
+
+    if state is None or state != flask.session["oauth2_state"]:
         return flask.abort(401)
 
     if "code" not in flask.request.args:
@@ -87,7 +89,10 @@ def callback(provider: str):
     if not oauth2_token:
         return flask.abort(401)
 
-    token_response = response.json()
+    try:
+        token_response = response.json()
+    except Exception:
+        flask.abort(400, "Invalid token response")
 
     response = requests.get(
         provider_data["userinfo"]["url"],
@@ -98,9 +103,12 @@ def callback(provider: str):
     )
 
     if response.status_code != 200:
-        return flask.abort(401)
+        return flask.abort(401, "Cannot get user info")
 
-    data_response = response.json()
+    try:
+        data_response = response.json()
+    except Exception:
+        flask.abort(400, "Invalid data response")
 
     uniform_account = get_account(provider, token_response, data_response)
     account_from_database = (
@@ -138,8 +146,6 @@ def callback(provider: str):
         account_from_database.refresh_token = uniform_account.refresh_token
 
     db.session.commit()
-
-    print(uniform_account.providerAccountId)
 
     # Select User based on Account
     user_for_login = (
