@@ -91,3 +91,4 @@ class ProdConfig(Config):
 
     DEBUG = False
     LOG_LEVEL = "INFO"
+    PREFERRED_URL_SCHEME = "https"
