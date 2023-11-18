@@ -1,0 +1,74 @@
+{% extends "_base.html" %} {% block title %}Documentation{% endblock %} {% block
+css %} {{ super() }}
+<link rel="stylesheet" href="/static/css/_docs.css" />
+{% endblock %} {% block main %} {{ super() }}
+<div class="docs__banner">
+  <div class="docs__banner__heading">
+    <h1 class="docs__banner__text">Documentation</h1>
+    <h2 class="docs__banner__sub-text">
+      It&apos;s simple, easy and free to use.
+    </h2>
+  </div>
+  <div class="docs__banner__image">
+    <img src="/static/img/docs-banner.png" width="1440" height="360" alt="Main doc banner">
+  </div>
+</div>
+<div class="docs__card-wrapper">
+  <a href="{{ url_for("views.docs", page_name="search.html") }}" class="docs__card">
+    <div class="docs__card__header">
+      <i class="fi fi-rr-search"></i>
+      <h2 class="docs__card__header__title">Search</h2>
+    </div>
+    <div class="docs__card__content">
+      <p>
+        Search for a university by name, country, city, domain or combination
+      </p>
+    </div>
+  </a>
+  <a href="{{ url_for("views.docs", page_name="details.html") }}" class="docs__card">
+    <div class="docs__card__header">
+      <i class="fi fi-rr-school"></i>
+      <h2 class="docs__card__header__title">Details</h2>
+    </div>
+    <div class="docs__card__content">
+      Retrieve detailed information with the institution code name
+    </div>
+  </a>
+  <a href="{{ url_for("views.docs", page_name="courses.html") }}" class="docs__card">
+    <div class="docs__card__header">
+      <i class="fi fi-rr-books"></i>
+      <h2 class="docs__card__header__title">Courses</h2>
+    </div>
+    <div class="docs__card__content">
+      Search and get a list of courses offered by a universities
+    </div>
+  </a>
+  <a href="{{ url_for("views.docs", page_name="campus.html") }}" class="docs__card">
+    <div class="docs__card__header">
+      <i class="fi fi-rs-marker"></i>
+      <h2 class="docs__card__header__title">Campus</h2>
+    </div>
+    <div class="docs__card__content">
+      Search schools by campus address, or get the campus address yourself
+    </div>
+  </a>
+  <a href="{{ url_for("views.docs", page_name="domains.html") }}" class="docs__card">
+    <div class="docs__card__header">
+      <i class="fi fi-rs-at"></i>
+      <h2 class="docs__card__header__title">Domains</h2>
+    </div>
+    <div class="docs__card__content">
+      Get a list of domains that associate with a university
+    </div>
+  </a>
+  <a href="{{ url_for("views.docs", page_name="more.html") }}" class="docs__card">
+    <div class="docs__card__header">
+      <i class="fi fi-rs-circle-ellipsis"></i>
+      <h2 class="docs__card__header__title">More</h2>
+    </div>
+    <div class="docs__card__content">
+      You can also query and get results based on other criteria
+    </div>
+  </a>
+</div>
+{% endblock %}

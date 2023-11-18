@@ -1,8 +1,9 @@
+# -*- coding: utf-8 -*-
+
 """
 University model
 """
 
-import datetime
 
 from sqlalchemy import (
     ForeignKey,
@@ -10,7 +11,6 @@ from sqlalchemy import (
     Integer,
     UniqueConstraint,
     DateTime,
-    event,
     TIMESTAMP,
 )
 from sqlalchemy.sql import func, text

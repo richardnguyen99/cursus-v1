@@ -3,15 +3,16 @@
 
 import flask
 
+from flask_login import current_user, login_required
 from werkzeug.exceptions import BadRequest, NotFound
 
 from cursus.util import exceptions
+from .oauth import authorize, callback
 
-SUPPORT_ENDPOINTS = {
+SUPPORT_PUBLIC_ENDPOINTS = {
     "",
     "about",
     "demo",
-    "login",
     "docs",
 }
 
@@ -31,6 +32,20 @@ view_bp = flask.Blueprint(
     template_folder="templates",
     static_folder="static",
     static_url_path="/static",
+)
+
+oauth_bp = flask.Blueprint("oauth", __name__, url_prefix="/oauth")
+
+oauth_bp.add_url_rule(
+    "/authorize/<provider>",
+    view_func=authorize,
+    methods=["GET"],
+)
+
+oauth_bp.add_url_rule(
+    "/callback/<provider>",
+    view_func=callback,
+    methods=["GET"],
 )
 
 
@@ -73,16 +88,32 @@ def handle_not_found(error):
     )
 
 
+@view_bp.route("/login", methods=["GET"])
+def login():
+    if current_user.is_authenticated:
+        return flask.redirect(flask.url_for("views.show", page_name="index"))
+
+    req = flask.request
+
+    if req.method != "GET":
+        raise exceptions.MethodNotAllowedError(
+            f"Method {req.method} not allowed for this endpoint"
+        )
+
+    next = req.args.get("next")
+
+    return flask.render_template("login.html", next=next), 200
+
+
 @view_bp.route("/", defaults={"page_name": "index"}, methods=["GET"])
 @view_bp.route("/<page_name>", methods=["GET"])
 def show(page_name):
     req = flask.request
-    current_app = flask.current_app
 
     url = req.path
     endpoint = url.split("/")[1]
 
-    if endpoint not in SUPPORT_ENDPOINTS:
+    if endpoint not in SUPPORT_PUBLIC_ENDPOINTS:
         raise exceptions.NotFoundError(f"Page {page_name} not found")
 
     if req.method != "GET":
@@ -98,7 +129,6 @@ def show(page_name):
 @view_bp.route("/docs/<page_name>", methods=["GET"])
 def docs(page_name: str):
     req = flask.request
-    url = req.path
 
     if page_name not in SUPPORT_DOCS_ENDPOINTS:
         raise exceptions.NotFoundError(f"Page {page_name} not found")
@@ -111,3 +141,19 @@ def docs(page_name: str):
     resp = flask.render_template(f"doc-{page_name}", page_name="docs")
 
     return resp, 200
+
+
+@view_bp.route("/profile", methods=["GET"])
+@login_required
+def profile():
+    if not current_user.is_authenticated:
+        return flask.redirect(flask.url_for("views.login"))
+
+    req = flask.request
+
+    if req.method != "GET":
+        raise exceptions.MethodNotAllowedError(
+            f"Method {req.method} not allowed for this endpoint"
+        )
+
+    return flask.render_template("profile.html"), 200

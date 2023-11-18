@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """
 String Builder class for building strings dynamically.
 """

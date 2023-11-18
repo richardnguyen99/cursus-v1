@@ -23,6 +23,47 @@ class Config(object):
     DATABASE_URL = os.environ.get("DATABASE_URL")
     FLASK_ENV = os.environ.get("FLASK_ENV")
     SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL")
+    SECRET_KEY = os.environ.get("SECRET_KEY")
+    REMEMBER_COOKIE_NAME = "cursus_remember"
+    REMEMBER_COOKIE_DURATION = 2592000
+    OAUTH2_PROVIDERS = {
+        # Google OAuth 2.0 documentation:
+        # https://developers.google.com/identity/protocols/oauth2/web-server#httprest
+        "google": {
+            "client_id": os.environ.get("GOOGLE_CLIENT_ID"),
+            "client_secret": os.environ.get("GOOGLE_CLIENT_SECRET"),
+            "authorize_url": "https://accounts.google.com/o/oauth2/v2/auth",
+            "token_url": "https://accounts.google.com/o/oauth2/token",
+            "scope": [
+                "https://www.googleapis.com/auth/userinfo.profile",
+                "https://www.googleapis.com/auth/userinfo.email",
+            ],
+            "access_type": "offline",
+            "userinfo": {
+                "url": "https://www.googleapis.com/oauth2/v3/userinfo",
+            },
+        },
+        "github": {
+            "client_id": os.environ.get("GITHUB_CLIENT_ID"),
+            "client_secret": os.environ.get("GITHUB_CLIENT_SECRET"),
+            "authorize_url": "https://github.com/login/oauth/authorize",
+            "token_url": "https://github.com/login/oauth/access_token",
+            "scope": ["read:user", "user:email"],
+            "userinfo": {
+                "url": "https://api.github.com/user",
+            },
+        },
+        "discord": {
+            "client_id": os.environ.get("DISCORD_CLIENT_ID"),
+            "client_secret": os.environ.get("DISCORD_CLIENT_SECRET"),
+            "authorize_url": "https://discord.com/api/oauth2/authorize",
+            "token_url": "https://discord.com/api/oauth2/token",
+            "scope": ["identify", "email"],
+            "userinfo": {
+                "url": "https://discord.com/api/users/@me",
+            },
+        },
+    }
 
 
 class DevConfig(Config):
