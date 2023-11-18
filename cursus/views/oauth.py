@@ -32,7 +32,10 @@ def authorize(provider: str):
         {
             "client_id": provider_data["client_id"],
             "redirect_uri": flask.url_for(
-                "oauth.callback", provider=provider, next=next, _external=True
+                "oauth.callback",
+                provider=provider,
+                next=next,
+                _external=True,
             ),
             "scope": " ".join(provider_data["scope"]),
             "response_type": "code",
@@ -67,7 +70,10 @@ def callback(provider: str):
             "client_secret": provider_data["client_secret"],
             "code": flask.request.args.get("code"),
             "redirect_uri": flask.url_for(
-                "oauth.callback", provider=provider, next=next, _external=True
+                "oauth.callback",
+                provider=provider,
+                next=next,
+                _external=True,
             ),
             "grant_type": "authorization_code",
         },

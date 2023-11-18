@@ -5,6 +5,7 @@ import os
 import click
 import waitress
 
+from werkzeug.middleware.proxy_fix import ProxyFix
 from flask.cli import FlaskGroup, with_appcontext
 from dotenv import load_dotenv
 
@@ -51,6 +52,7 @@ def run_waitress(host, port):
     assert os.environ.get("FLASK_ENV")
 
     app = create_app()
+    app = ProxyFix(app, x_for=1, x_host=1)
     print(f"Running waitress on {host}:{port}")
 
     waitress.serve(app, host=host, port=port)
