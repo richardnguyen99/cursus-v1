@@ -106,9 +106,10 @@ def callback(provider: str):
         .first()
     )
 
+    profile = get_profile(provider, data_response)
+
     # Account has not registered with this app
     if account_from_database is None:
-        profile = get_profile(provider, data_response)
         profile.id = cuid2.Cuid(length=11).generate()
         uniform_account.userId = profile.id
 
@@ -116,6 +117,18 @@ def callback(provider: str):
         db.session.add(uniform_account)
 
     else:
+        user = (
+            db.session.query(User)
+            .filter_by(id=account_from_database.userId)
+            .first()
+        )
+
+        if user and profile.name != user.name:
+            user.name = profile.name
+
+        if user and profile.image != user.image:
+            user.image = profile.image
+
         account_from_database.refresh_token = uniform_account.refresh_token
 
     db.session.commit()
