@@ -65,7 +65,7 @@
 
   /* CSS color system */
   --cursus-color-white: 255 255 255;
-  --cursus-color-black: 0 0 0;
+  --cursus-color-black: 0 0 1; /* Temporary fix as cssmin will compile 0 0 0 to 0, which is incorrect */
   --cursus-color-primary: 100 103 242;
   --cursus-color-primary--hover: 90 93 226;
   --cursus-color-sky: 13 162 231;
