@@ -3,6 +3,7 @@
 # Pull base image
 FROM python:3.11-slim-buster
 
+
 # Install dependencies
 RUN apt-get update && apt-get install -y \
     build-essential \
@@ -11,13 +12,24 @@ RUN apt-get update && apt-get install -y \
     python3-pip \
     python3-setuptools \
     python3-wheel \
+    curl \ 
     && rm -rf /var/lib/apt/lists/*
+
+# Get nodejs from source
+RUN curl -sL https://deb.nodesource.com/setup_20.x -o /tmp/nodesource_setup.sh
+
+# Install nodejs
+RUN bash /tmp/nodesource_setup.sh
+RUN apt-get install -y nodejs
 
 # Set work directory (similiar to cd)
 WORKDIR /cursus
 
 # Copy project to docker container
 COPY . .
+
+# JavaScript dependencies related to the project
+RUN npm install -g uglify-js
 
 # Install dependencies
 RUN pip install --upgrade pip 

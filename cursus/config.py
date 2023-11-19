@@ -22,10 +22,20 @@ class Config(object):
     DEBUG = False
     DATABASE_URL = os.environ.get("DATABASE_URL")
     FLASK_ENV = os.environ.get("FLASK_ENV")
+
+    # Config for Flask SQLAlchemy and Alembic
     SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL")
+
+    # Config for Flask Session
     SECRET_KEY = os.environ.get("SECRET_KEY")
     REMEMBER_COOKIE_NAME = "cursus_remember"
     REMEMBER_COOKIE_DURATION = 2592000
+
+    # Config for Flask Assets
+    # https://webassets.readthedocs.io/en/latest/builtin_filters.html#uglifyjs
+    UGLIFYJS_EXTRA_ARGS = ["--compress", "--mangle", "--toplevel"]
+
+    # Config for OAuth2
     OAUTH2_PROVIDERS = {
         # Google OAuth 2.0 documentation:
         # https://developers.google.com/identity/protocols/oauth2/web-server#httprest
