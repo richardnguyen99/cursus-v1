@@ -9,9 +9,12 @@ dependencies = [
     "Flask-Migrate>=4.0.0",
     "Flask-Marshmallow>=0.15.0",
     "Flask-Login>=0.6.3",
+    "Flask-Assets>=2.1.0",
     "marshmallow-sqlalchemy>=0.29.0",
     "requests>=2.31.0",
     "cuid2>=2.0.0",
+    "cssmin",
+    "jsmin",
 ]
 name = "cursus"
 version = "0.0.2"

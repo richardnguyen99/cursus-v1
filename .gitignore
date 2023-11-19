@@ -160,3 +160,4 @@ cython_debug/
 #.idea/
 
 cursus-db.session.sql
+cursus/static/css/*.bundle.css
