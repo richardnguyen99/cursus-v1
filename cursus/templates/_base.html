@@ -44,7 +44,8 @@
     "css/_footer.css", "css/_button.css" %}
     <link rel="stylesheet" href="{{ ASSET_URL }}" />
     {% endassets %} {% endblock %} {% endblock %} {% assets
-    filters="scss,cssmin", output="css/min.bundle.css", "scss/global.scss"%}
+    filters="scss,autoprefixer6,cssmin", output="css/min.bundle.css",
+    "scss/global.scss"%}
     <link rel="stylesheet" href="{{ ASSET_URL }}" />
     {% endassets %}
   </head>
