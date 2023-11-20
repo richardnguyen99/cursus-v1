@@ -155,3 +155,9 @@ $corner-map: (
   right: (top-right, bottom-right),
   bottom: (bottom-right, bottom-left),
   left: (bottom-left, top-left)) !default;
+
+$direction-variant-map: (
+  top: "t",
+  right: "r",
+  bottom: "b",
+  left: "l") !default;

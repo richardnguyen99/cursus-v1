@@ -17,6 +17,8 @@
 .container-sm {
   @extend .container-fluid;
   max-width: $container-sm;
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
 /* Medium container breaks up to medium breakpoint (768px) */
@@ -25,6 +27,8 @@
   .container,
   .container-md {
     max-width: $container-md;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
   }
 }
 
@@ -34,6 +38,8 @@
   .container,
   .container-lg {
     max-width: $container-lg;
+    padding-left: 2rem;
+    padding-right: 2rem;
   }
 }
 

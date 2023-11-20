@@ -43,5 +43,10 @@ RUN pip install -e .
 # Expose port
 EXPOSE 50001
 
+# Remove webassets cache
+RUN rm -rf /cursus/cursus/static/.webassets-cache
+RUN rm -rf /cursus/cursus/static/css/min.bundle.css
+RUN rm -rf /cursus/cursus/static/js/min.bundle.js
+
 # Run the command as entry point
 CMD ["cursus", "run"]
