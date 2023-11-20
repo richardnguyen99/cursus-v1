@@ -15,7 +15,7 @@ services:
 
   postgres:
     container_name: postgres
-    image: postgres:latest
+    image: postgres:15
     env_file: .env
     ports:
       - "7432:7432"

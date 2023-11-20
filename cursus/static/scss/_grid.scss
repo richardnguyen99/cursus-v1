@@ -1,0 +1,9 @@
+@each $breakpoint, $variant in $breakpoint-variant-map {
+  @include breakpoint($breakpoint) {
+    @each $position in $position-values {
+      .position#{$variant}-#{$position} {
+        position: $position !important;
+      }
+    }
+  }
+}

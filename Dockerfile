@@ -29,7 +29,11 @@ WORKDIR /cursus
 COPY . .
 
 # JavaScript dependencies related to the project
+RUN npm install -g sass
 RUN npm install -g uglify-js
+RUN npm install -g requirejs
+RUN npm install -g postcss
+RUN npm install -g postcss-cli
 
 # Install dependencies
 RUN pip install --upgrade pip 

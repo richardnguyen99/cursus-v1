@@ -43,7 +43,10 @@
     "css/index.css", "css/_grid.css", "css/_dropdown.css", "css/_navbar.css",
     "css/_footer.css", "css/_button.css" %}
     <link rel="stylesheet" href="{{ ASSET_URL }}" />
-    {% endassets %} {% endblock %} {% endblock %}
+    {% endassets %} {% endblock %} {% endblock %} {% assets
+    filters="scss,cssmin", output="css/min.bundle.css", "scss/global.scss"%}
+    <link rel="stylesheet" href="{{ ASSET_URL }}" />
+    {% endassets %}
   </head>
   <body>
     <!-- Navbar -->

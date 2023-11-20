@@ -1,0 +1,15 @@
+// Responsive media queries
+
+@mixin breakpoint($breakpoint) {
+  @if $breakpoint =='' {
+    @content;
+  }
+
+  @else {
+    $value: map-get($breakpoint-map, $breakpoint);
+
+    @media screen and (min-width: $value) {
+      @content;
+    }
+  }
+}
