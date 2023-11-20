@@ -5,5 +5,11 @@
         position: $position !important;
       }
     }
+
+    @each $display in $display-values {
+      .display#{$variant}-#{$display} {
+        display: $display !important;
+      }
+    }
   }
 }

@@ -1,4 +1,4 @@
-// Responsive media queries
+/* Responsive media queries */
 
 @mixin breakpoint($breakpoint) {
   @if $breakpoint =='' {
