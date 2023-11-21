@@ -10,7 +10,7 @@ from flask.cli import FlaskGroup, with_appcontext
 from dotenv import load_dotenv
 
 from cursus import create_app
-from cursus.util.extensions import db
+from cursus.util.extensions import db, assets
 
 
 # Not being accessed directly. However, it is required for the migrations to
@@ -50,6 +50,9 @@ def run_waitress(host, port):
     # Assert some environment variables are set
     assert os.environ.get("DATABASE_URL")
     assert os.environ.get("FLASK_ENV")
+
+    # https://stackoverflow.com/questions/11981187/flask-assets-and-flask-testing-throws-registererror-another-bundle-is-already-r
+    assets._named_bundles = {}  # pylint: disable=protected-access
 
     app = create_app()
     app = ProxyFix(app, x_for=1, x_host=1)
