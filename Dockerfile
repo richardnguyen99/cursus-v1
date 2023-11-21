@@ -30,6 +30,8 @@ COPY . .
 
 # JavaScript dependencies related to the project
 RUN npm install -g sass
+RUN npm install -g babel-cli
+RUN npm install -g @babel/preset-env
 RUN npm install -g uglify-js
 RUN npm install -g requirejs
 RUN npm install -g postcss

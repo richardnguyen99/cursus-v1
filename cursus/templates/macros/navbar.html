@@ -20,12 +20,12 @@
           >About</a
         >
         <a
-          class="navbar__link{% if page_name == 'docs' %} navbar__link--state--active{% endif %}"
+          class="navbar__link{% if page_name == 'docs' %} navbar__link--active{% endif %}"
           href="{{ url_for('views.show', page_name='docs') }}"
           >Docs</a
         >
         <a
-          class="navbar__link{% if page_name == 'demo' %} navbar__link--state--active{% endif %}"
+          class="navbar__link{% if page_name == 'demo' %} navbar__link--active{% endif %}"
           href="{{ url_for('views.show', page_name='demo') }}"
           >Demo</a
         >
@@ -42,8 +42,8 @@
           Logout
         </a>
         <div class="navbar__avatar">
-          <div class="navbar__avatar-container">
-            <img class="navbar__avatar-image" width="32" height"32" src="{{
+          <div class="navbar__avatar__container">
+            <img class="navbar__avatar__image" width="32" height"32" src="{{
             current_user.image }}" alt="{{ current_user.name }}"/>
           </div>
         </div>

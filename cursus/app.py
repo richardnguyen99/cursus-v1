@@ -8,6 +8,7 @@ import flask
 
 from flask import Flask
 from flask_assets import Bundle
+from webassets.bundle import get_filter
 from flask_login import logout_user, login_required
 from logging.config import dictConfig
 
@@ -79,11 +80,15 @@ def create_app() -> Flask:
         output="css/min.bundle.css",
     )
 
+    babel_filter = get_filter(
+        "babel",
+        presets=app.config["BABEL_PRESET_ENV_PATH"],
+    )
     js_bundle = Bundle(
         "js/app.js",
         "js/dropdown.js",
         "js/index.js",
-        filters="uglifyjs",
+        filters=(babel_filter, "uglifyjs"),
         output="js/min.bundle.js",
     )
 
