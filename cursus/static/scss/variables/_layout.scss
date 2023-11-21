@@ -1,0 +1,163 @@
+/* Layout variables */
+
+/* Values for CSS `display` property */
+$display-values: (
+  block,
+  flex,
+  inline,
+  inline-block,
+  inline-flex,
+  table,
+  table-cell,
+  none) !default;
+
+/* Values for CSS `position` property */
+$position-values: (
+  static,
+  relative,
+  absolute,
+  fixed,
+  sticky,
+  ) !default;
+
+/* Values for spacing */
+$spacer: 8px !default;
+$spacer-0: 0 !default; // 0px
+$spacer-1: 0.25rem !default; // 4px
+$spacer-2: 0.5rem !default; // 8px
+$spacer-3: 0.75rem !default; // 12px
+$spacer-4: 1rem !default; // 16px
+$spacer-5: 1.25rem !default; // 20px
+$spacer-6: 1.5rem !default; // 24px
+$spacer-7: 1.75rem !default; // 28px
+$spacer-8: 2rem !default; // 32px
+$spacer-9: 2.25rem !default; // 36px
+$spacer-10: 2.5rem !default; // 40px
+$spacer-11: 2.75rem !default; // 44px
+$spacer-12: 3rem !default; // 48px
+$spacer-13: 3.25rem !default; // 52px
+$spacer-14: 3.5rem !default; // 56px
+$spacer-15: 3.75rem !default; // 60px
+$spacer-16: 4rem !default; // 64px
+$spacer-17: 4.25rem !default; // 68px
+$spacer-18: 4.5rem !default; // 72px
+$spacer-19: 4.75rem !default; // 76px
+$spacer-20: 5rem !default; // 80px
+$spacer-21: 5.25rem !default; // 84px
+$spacer-22: 5.5rem !default; // 88px
+$spacer-23: 5.75rem !default; // 92px
+$spacer-24: 6rem !default; // 96px
+
+/* List of spacers */
+$spacer-list: (
+  $spacer-0,
+  $spacer-1,
+  $spacer-2,
+  $spacer-3,
+  $spacer-4,
+  $spacer-5,
+  $spacer-6,
+  $spacer-7,
+  $spacer-8,
+  $spacer-9,
+  $spacer-10,
+  $spacer-11,
+  $spacer-12,
+  $spacer-13,
+  $spacer-14,
+  $spacer-15,
+  $spacer-16,
+  $spacer-17,
+  $spacer-18,
+  $spacer-19,
+  $spacer-20,
+  $spacer-21,
+  $spacer-22,
+  $spacer-23,
+  $spacer-24) !default;
+
+/* Map of spacers */
+$spacer-map: (
+  0: $spacer-0,
+  1: $spacer-1,
+  2: $spacer-2,
+  3: $spacer-3,
+  4: $spacer-4,
+  5: $spacer-5,
+  6: $spacer-6,
+  7: $spacer-7,
+  8: $spacer-8,
+  9: $spacer-9,
+  10: $spacer-10,
+  11: $spacer-11,
+  12: $spacer-12,
+  13: $spacer-13,
+  14: $spacer-14,
+  15: $spacer-15,
+  16: $spacer-16,
+  17: $spacer-17,
+  18: $spacer-18,
+  19: $spacer-19,
+  20: $spacer-20,
+  21: $spacer-21,
+  22: $spacer-22,
+  23: $spacer-23,
+  24: $spacer-24) !default;
+
+$width-xs: 0 !default; // 0px
+
+// For small-screen and phone devices
+$width-sm: 544px !default; // 544px
+
+// For tablets and such
+$width-md: 768px !default; // 768px
+
+// For medium-screen and 720p monitors
+$width-lg: 1024px !default;
+
+// For wide-screen and 1080p monitors
+$width-xl: 1280px !default;
+
+/* Values for responsive */
+$container-sm: $width-sm;
+$container-md: $width-md;
+$container-lg: $width-lg;
+$container-xl: $width-xl;
+
+/* Map of breakpoints */
+$breakpoint-map: (
+  sm: $width-sm,
+  md: $width-md,
+  lg: $width-lg,
+  xl: $width-xl) !default;
+
+/* Map of breakpoint variants */
+$breakpoint-variant-map: (
+  "": "",
+  sm: "-sm",
+  md: "-md",
+  lg: "-lg",
+  xl: "-xl") !default;
+
+/* Values for border-radius */
+$rounded-none: 0 !default;
+$rounded-sm: 0.125rem !default; // 2px
+$rounded: 0.25rem !default; // 4px
+$rounded-md: 0.375rem !default; // 6px
+$rounded-lg: 0.5rem !default; // 8px
+$rounded-xl: 0.75rem !default; // 12px
+$rounded-2xl: 1rem !default; // 16px
+$rounded-3xl: 1.5rem !default; // 24px
+$rounded-full: 9999px !default; // Circle
+
+$corner-map: (
+  top: (top-left, top-right),
+  right: (top-right, bottom-right),
+  bottom: (bottom-right, bottom-left),
+  left: (bottom-left, top-left)) !default;
+
+$direction-variant-map: (
+  top: "t",
+  right: "r",
+  bottom: "b",
+  left: "l") !default;

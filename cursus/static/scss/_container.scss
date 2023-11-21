@@ -1,0 +1,53 @@
+/* Fixed-width, centered column for content */
+
+/* Fuild container will take up all the space regardless of the viewport */
+.container-fluid {
+  @include make-container();
+}
+
+/* All containers share the same list of properties as .container-fluid */
+@each $breakpoint, $value in $breakpoint-map {
+  .container-#{$breakpoint} {
+    @extend .container-fluid;
+  }
+}
+
+/* Default and small container breaks up to small breakpoint (544px) */
+.container,
+.container-sm {
+  @extend .container-fluid;
+  max-width: $container-sm;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+/* Medium container breaks up to medium breakpoint (768px) */
+@include breakpoint(md) {
+
+  .container,
+  .container-md {
+    max-width: $container-md;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+/* Large container breaks up to large breakpoint (1024px) */
+@include breakpoint(lg) {
+
+  .container,
+  .container-lg {
+    max-width: $container-lg;
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+/* Extra large container breaks up to extra large breakpoint (1280px) */
+@include breakpoint(xl) {
+
+  .container,
+  .container-xl {
+    max-width: $container-xl;
+  }
+}

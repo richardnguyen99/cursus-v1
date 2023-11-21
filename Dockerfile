@@ -29,7 +29,14 @@ WORKDIR /cursus
 COPY . .
 
 # JavaScript dependencies related to the project
+RUN npm install -g sass
+RUN npm install -g babel-cli
+RUN npm install -g @babel/preset-env
 RUN npm install -g uglify-js
+RUN npm install -g requirejs
+RUN npm install -g postcss
+RUN npm install -g postcss-cli
+RUN npm install -g autoprefixer
 
 # Install dependencies
 RUN pip install --upgrade pip 
@@ -37,6 +44,11 @@ RUN pip install -e .
 
 # Expose port
 EXPOSE 50001
+
+# Remove webassets cache
+RUN rm -rf /cursus/cursus/static/.webassets-cache
+RUN rm -rf /cursus/cursus/static/css/min.bundle.css
+RUN rm -rf /cursus/cursus/static/js/min.bundle.js
 
 # Run the command as entry point
 CMD ["cursus", "run"]

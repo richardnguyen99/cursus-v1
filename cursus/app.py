@@ -7,7 +7,9 @@ import os
 import flask
 
 from flask import Flask
-from flask_login import current_user, logout_user, login_required
+from flask_assets import Bundle
+from webassets.bundle import get_filter
+from flask_login import logout_user, login_required
 from logging.config import dictConfig
 
 from .apis import find_bp, university_bp as university_bp_v1
@@ -72,6 +74,27 @@ def create_app() -> Flask:
     login_manager.login_view = "views.show"
     login_manager.session_protection = "strong"
 
+    scss_bundle = Bundle(
+        "scss/global.scss",
+        filters="scss,autoprefixer6,cssmin",
+        output="css/min.bundle.css",
+    )
+
+    babel_filter = get_filter(
+        "babel",
+        presets=app.config["BABEL_PRESET_ENV_PATH"],
+    )
+    js_bundle = Bundle(
+        "js/app.js",
+        "js/dropdown.js",
+        "js/index.js",
+        filters=(babel_filter, "uglifyjs"),
+        output="js/min.bundle.js",
+    )
+
+    assets.register("css_all", scss_bundle)
+    assets.register("js_all", js_bundle)
+
     @login_manager.user_loader
     def load_user(id):
         user = db.session.query(User).filter_by(id=id).first()
@@ -101,6 +124,26 @@ def create_app() -> Flask:
     def ping():
         resp = flask.make_response(flask.json.dumps({"message": "pong"}), 200)
         resp.headers["Content-Type"] = "application/json"
+
+        return resp
+
+    @app.route("/sw.js")
+    def sw():
+        resp = flask.make_response(
+            flask.send_from_directory("static", "sw.js"), 200
+        )
+        resp.headers["Content-Type"] = "application/javascript"
+        resp.headers["Cache-Control"] = "no-cache"
+
+        return resp
+
+    @app.route("/robots.txt")
+    def robots():
+        resp = flask.make_response(
+            flask.send_from_directory("static", "robots.txt"), 200
+        )
+        resp.headers["Content-Type"] = "text/plain"
+        resp.headers["Cache-Control"] = "no-cache"
 
         return resp
 

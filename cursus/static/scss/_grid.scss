@@ -1,0 +1,81 @@
+/* Design layout grid */
+
+@each $breakpoint, $variant in $breakpoint-variant-map {
+  @include breakpoint($breakpoint) {
+    @each $position in $position-values {
+      .position#{$variant}-#{$position} {
+        position: $position !important;
+      }
+    }
+
+    @each $display in $display-values {
+      .display#{$variant}-#{$display} {
+        display: $display !important;
+      }
+    }
+
+    @for $i from 1 through 12 {
+      .col#{$variant}-#{$i} {
+        flex-grow: 0;
+        flex-shrink: 0;
+        flex-basis: auto;
+        max-width: percentage($i / 12);
+      }
+    }
+
+    @for $i from 0 through 24 {
+      .gap#{$variant}-#{$i} {
+        gap: #{$i * 0.25}rem;
+      }
+
+      .px#{$variant}-#{$i} {
+        padding-left: #{$i * 0.25}rem;
+        padding-right: #{$i * 0.25}rem;
+      }
+
+      .py#{$variant}-#{$i} {
+        padding-top: #{$i * 0.25}rem;
+        padding-bottom: #{$i * 0.25}rem;
+      }
+
+      .mx#{$variant}-#{$i} {
+        margin-left: #{$i * 0.25}rem;
+        margin-right: #{$i * 0.25}rem;
+      }
+
+      .my#{$variant}-#{$i} {
+        margin-top: #{$i * 0.25}rem;
+        margin-bottom: #{$i * 0.25}rem;
+      }
+
+      .\-mx#{$variant}-#{$i} {
+        margin-left: -#{$i * 0.25}rem;
+        margin-right: -#{$i * 0.25}rem;
+      }
+
+      .\-my#{$variant}-#{$i} {
+        margin-top: -#{$i * 0.25}rem;
+        margin-bottom: -#{$i * 0.25}rem;
+      }
+
+      @each $direction, $dir-variant in $direction-variant-map {
+        .p#{$dir-variant}#{$variant}-#{$i} {
+          padding-#{$direction}: #{$i * 0.25}rem;
+        }
+
+        .m#{$dir-variant}#{$variant}-#{$i} {
+          margin-#{$direction}: #{$i * 0.25}rem;
+        }
+
+        .\-m#{$dir-variant}#{$variant}-#{$i} {
+          margin-#{$direction}: -#{$i * 0.25}rem;
+        }
+      }
+    }
+  }
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+}

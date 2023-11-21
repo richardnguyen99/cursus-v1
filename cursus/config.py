@@ -35,6 +35,13 @@ class Config(object):
     # https://webassets.readthedocs.io/en/latest/builtin_filters.html#uglifyjs
     UGLIFYJS_EXTRA_ARGS = ["--compress", "--mangle", "--toplevel"]
 
+    # https://webassets.readthedocs.io/en/latest/builtin_filters.html#autoprefixer
+    AUTOPREFIXER_BROWSER = ["> 1%", "last 2 versions", "ie >= 10", "iOS >= 7"]
+
+    # https://webassets.readthedocs.io/en/latest/builtin_filters.html#javascript-cross-compilers
+    # BABEL_PRESETS = "babel-preset-env"
+    BABEL_PRESET_ENV_PATH = os.environ.get("BABEL_PRESET_ENV_PATH")
+
     # Config for OAuth2
     OAUTH2_PROVIDERS = {
         # Google OAuth 2.0 documentation:

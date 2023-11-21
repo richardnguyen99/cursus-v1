@@ -15,17 +15,17 @@
     <div class="navbar__collapse">
       <div class="navbar__collapse-left">
         <a
-          class="navbar__link{% if page_name == 'about' %} navbar__link--state-active{% endif %}"
+          class="navbar__link{% if page_name == 'about' %} navbar__link--active{% endif %}"
           href="{{ url_for('views.show', page_name='about') }}"
           >About</a
         >
         <a
-          class="navbar__link{% if page_name == 'docs' %} navbar__link--state-active{% endif %}"
+          class="navbar__link{% if page_name == 'docs' %} navbar__link--active{% endif %}"
           href="{{ url_for('views.show', page_name='docs') }}"
           >Docs</a
         >
         <a
-          class="navbar__link{% if page_name == 'demo' %} navbar__link--state-active{% endif %}"
+          class="navbar__link{% if page_name == 'demo' %} navbar__link--active{% endif %}"
           href="{{ url_for('views.show', page_name='demo') }}"
           >Demo</a
         >
@@ -42,8 +42,8 @@
           Logout
         </a>
         <div class="navbar__avatar">
-          <div class="navbar__avatar-container">
-            <img class="navbar__avatar-image" width="32" height"32" src="{{
+          <div class="navbar__avatar__container">
+            <img class="navbar__avatar__image" width="32" height"32" src="{{
             current_user.image }}" alt="{{ current_user.name }}"/>
           </div>
         </div>
@@ -69,35 +69,35 @@
         <ul class="navbar__dropdown-list">
           <li>
             <a
-              class="navbar__dropdown-item"
+              class="navbar__dropdown__item"
               href="{{ url_for('views.show', page_name='about') }}"
             >
-              <i class="navbar__dropdown-item__icon fi fi-sr-info"></i>
+              <i class="navbar__dropdown__item__icon fi fi-sr-info"></i>
               <p>About</p></a
             >
           </li>
           <li>
             <a
-              class="navbar__dropdown-item"
+              class="navbar__dropdown__item"
               href="{{ url_for('views.show', page_name='docs') }}"
             >
               <i
-                class="navbar__dropdown-item__icon fi fi-sr-circle-book-open"
+                class="navbar__dropdown__item__icon fi fi-sr-circle-book-open"
               ></i>
               <p>Docs</p></a
             >
           </li>
           <li>
             <a
-              class="navbar__dropdown-item"
+              class="navbar__dropdown__item"
               href="{{ url_for('views.show', page_name='demo') }}"
             >
-              <i class="navbar__dropdown-item__icon fi fi-sr-display-code"></i>
+              <i class="navbar__dropdown__item__icon fi fi-sr-display-code"></i>
               <p>Demo</p></a
             >
           </li>
         </ul>
-        <hr class="navbar__dropdown-separator" />
+        <hr class="navbar__dropdown__separator" />
         <a
           href="{{ url_for('views.show', page_name='login') }}"
           class="btn btn--fluid btn--round btn--primary navbar__dropdown-btn"
