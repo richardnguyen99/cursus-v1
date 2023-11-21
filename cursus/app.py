@@ -132,6 +132,16 @@ def create_app() -> Flask:
 
         return resp
 
+    @app.route("/robots.txt")
+    def robots():
+        resp = flask.make_response(
+            flask.send_from_directory("static", "robots.txt"), 200
+        )
+        resp.headers["Content-Type"] = "text/plain"
+        resp.headers["Cache-Control"] = "no-cache"
+
+        return resp
+
     @app.after_request
     def after(response: flask.Response):
         current_app = flask.current_app

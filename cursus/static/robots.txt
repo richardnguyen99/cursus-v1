@@ -1,0 +1,67 @@
+User-agent: Applebot
+Disallow: /profile/
+
+User-agent: baiduspider
+Disallow: /profile/
+
+User-agent: Bingbot
+Disallow: /profile/
+
+User-agent: Discordbot
+Disallow: /profile/
+
+User-agent: facebookexternalhit
+Disallow: /
+Disallow: /profile/
+
+User-agent: Googlebot
+Disallow: /profile/
+
+User-agent: Googlebot-Image
+Disallow: /profile/
+
+User-agent: ia_archiver
+Disallow: /
+Disallow: /profile/
+
+User-agent: LinkedInBot
+Disallow: /
+Disallow: /profile/
+
+User-agent: msnbot
+Disallow: /profile/
+
+User-agent: Naverbot
+Disallow: /profile/
+
+User-agent: Pinterestbot
+Disallow: /
+Disallow: /profile/
+
+User-agent: Screaming Frog SEO Spider
+Disallow: /profile/
+
+User-agent: seznambot
+Disallow: /profile/
+
+User-agent: Slurp
+Disallow: /profile/
+
+User-agent: teoma
+Disallow: /profile/
+
+User-agent: TelegramBot
+Disallow: /
+Disallow: /profile/
+
+User-agent: Twitterbot
+Disallow: /profile/
+
+User-agent: Yandex
+Disallow: /profile/
+
+User-agent: Yeti
+Disallow: /profile/
+
+User-agent: *
+Disallow: /
