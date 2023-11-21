@@ -8,8 +8,21 @@
 
     <!-- Favicon -->
     <link rel="icon" href="/static/favicon.ico" />
+    <link rel="apple-touch-icon" href="/static/img/logo-180.png" />
+
+    <!-- Manifest -->
+    <link rel="manifest" href="/static/manifest.json" />
 
     <title>{% block title %}{% endblock %} - Cursus</title>
+
+    <meta
+      name="description"
+      content="An open-source API repository for university courses "
+    />
+    <meta name="author" content="Richard H. Nguyen" />
+    <meta name="theme-color" content="#8250df" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="#8250df" />
 
     <!-- CSS -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -43,13 +56,14 @@
     "css/index.css", "css/_grid.css", "css/_dropdown.css", "css/_navbar.css",
     "css/_footer.css", "css/_button.css" %}
     <link rel="stylesheet" href="{{ ASSET_URL }}" />
-    {% endassets %} {% endblock %} {% endblock %} {% assets
-    filters="scss,autoprefixer6,cssmin", output="css/min.bundle.css",
-    "scss/global.scss"%}
+    {% endassets %} {% endblock %} {% endblock %} {% assets "css_all" %}
     <link rel="stylesheet" href="{{ ASSET_URL }}" />
     {% endassets %}
   </head>
   <body>
+    <button type="button" id="installButton" class="display-none">
+      Install
+    </button>
     <!-- Navbar -->
     {% from "macros/navbar.html" import navbar with context %} {{
     navbar(page_name) }}
@@ -58,10 +72,11 @@
     <main style="padding-top: 72px">{% block main %}{% endblock %}</main>
 
     <!-- Footer -->
-    {% import 'macros/footer.html' as footer %} {{ footer.footer() }} {% block
-    js %} {% assets filters="uglifyjs", output="js/core.bundle.js",
-    "js/dropdown.js", "js/index.js"%}
+    {% import 'macros/footer.html' as footer %} {{ footer.footer() }} {% assets
+    "js_all" %}
     <script src="{{ ASSET_URL }}"></script>
-    {% endassets %} {% endblock %}
+    {% endassets %} {% block js %}
+    <script text="text/javascript"></script>
+    {% endblock %}
   </body>
 </html>
