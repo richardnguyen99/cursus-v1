@@ -150,10 +150,6 @@
 }
 
 @media screen and (min-width: 768px) {
-  .about__banner__image {
-    height: 345px;
-  }
-
   .about__banner__text {
     font-size: 5rem;
   }
@@ -164,10 +160,6 @@
 }
 
 @media screen and (min-width: 1024px) {
-  .about__banner__image {
-    height: 360px;
-  }
-
   .about__banner__text {
     font-size: 6rem;
   }
