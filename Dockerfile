@@ -29,14 +29,15 @@ WORKDIR /cursus
 COPY . .
 
 # JavaScript dependencies related to the project
-RUN npm install -g sass
-RUN npm install -g babel-cli
-RUN npm install -g @babel/preset-env
-RUN npm install -g uglify-js
-RUN npm install -g requirejs
-RUN npm install -g postcss
-RUN npm install -g postcss-cli
-RUN npm install -g autoprefixer
+RUN npm install -g \
+    sass \ 
+    babel-cli \
+    @babel/preset-env \ 
+    uglify-js \
+    requirejs \
+    postcss \ 
+    postcss-cli \
+    autoprefixer
 
 # Install dependencies
 RUN pip install --upgrade pip 
