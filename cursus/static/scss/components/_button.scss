@@ -1,0 +1,86 @@
+/* Button element to initiate an action on a page or a component */
+
+.btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: center;
+  text-align: center;
+  cursor: pointer;
+
+  min-width: max-content;
+  padding: 0rem 0.75rem;
+  height: 2rem;
+  gap: 0.25rem;
+  border-radius: 6px;
+  border: 1px solid;
+  border-color: #eee;
+  background-color: initial;
+
+  &--primary {
+    background-color: rgb(var(--color-cursus) / 1);
+    border-color: rgb(var(--color-indigo-600) / 1);
+    color: rgb(var(--color-white) / 1);
+
+    &:hover {
+      background-color: rgb(var(--color-indigo-600) / 1);
+      border-color: rgb(var(--color-indigo-700) / 1);
+    }
+
+    &.btn--cursus {
+      background-color: rgb(var(--color-cursus) / 1);
+      border-color: rgb(var(--color-indigo-600) / 1);
+      color: rgb(var(--color-white) / 1);
+
+      &:hover {
+        background-color: rgb(var(--color-indigo-600) / 1);
+        border-color: rgb(var(--color-indigo-700) / 1);
+      }
+    }
+  }
+
+  &--secondary {
+    background-color: rgb(var(--color-gray-100) / 1);
+    color: rgb(var(--color-gray-500) / 1);
+    border-color: rgb(var(--color-gray-200) / 1);
+
+    &:hover {
+      background-color: rgb(var(--color-gray-200) / 1);
+      border-color: rgb(var(--color-gray-300) / 1);
+    }
+
+    &.btn--cursus {
+      background-color: rgb(var(--color-indigo-50) / 1);
+      color: rgb(var(--color-cursus) / 1);
+      border-color: rgb(var(--color-indigo-100) / 1);
+
+      &:hover {
+        background-color: rgb(var(--color-indigo-100) / 1);
+        border-color: rgb(var(--color-indigo-200) / 1);
+      }
+    }
+
+
+  }
+
+  &--rounded {
+    border-radius: 9999px;
+  }
+
+  &--large {
+    height: 2.5rem;
+    padding: 0rem 1rem;
+    gap: 0.5rem;
+  }
+
+  &--xl {
+    height: 3rem;
+    padding: 0rem 1.5rem;
+    gap: 0.75rem;
+  }
+
+  &--fluid {
+    width: 100%;
+  }
+}

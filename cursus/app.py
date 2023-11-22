@@ -71,13 +71,17 @@ def create_app() -> Flask:
     ma.init_app(app)
     assets.init_app(app)
     login_manager.init_app(app)
-    login_manager.login_view = "views.show"
-    login_manager.session_protection = "strong"
+
+    with app.app_context():
+        login_manager.login_view = "views.show"
+        login_manager.session_protection = "strong"
 
     scss_bundle = Bundle(
         "scss/global.scss",
         filters="scss,autoprefixer6,cssmin",
         output="css/min.bundle.css",
+        # https://webassets.readthedocs.io/en/latest/bundles.html#bundles
+        depends="scss/**/*.scss",
     )
 
     babel_filter = get_filter(
