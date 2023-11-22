@@ -1,6 +1,8 @@
 {% macro navbar(page_name='') -%}
 <div class="navbar">
-  <div class="navbar__wrapper">
+  <div
+    class="container-md container-lg display-flex items-center h-full gap-md-8 gap-lg-12"
+  >
     <a
       class="navbar__brand"
       href="{{ url_for('views.show', page_name='index') }}"
@@ -32,11 +34,14 @@
       </div>
       <div class="navbar__collapse-right">
         {% if current_user.is_authenticated %}
-        <a class="navbar__pill" href="{{ url_for('views.profile') }}">
+        <a
+          class="btn btn--large btn--primary btn--rounded btn--cursus"
+          href="{{ url_for('views.profile') }}"
+        >
           Profile
         </a>
         <a
-          class="navbar__pill navbar__pill--outline"
+          class="btn btn--outline btn--cursus btn--rounded btn--large"
           href="{{ url_for('logout') }}"
         >
           Logout

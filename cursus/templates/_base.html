@@ -77,8 +77,8 @@
     />
 
     {% block css %} {% assets filters="cssmin", output="css/core.bundle.css",
-    "css/index.css", "css/_grid.css", "css/_dropdown.css", "css/_navbar.css",
-    "css/_footer.css", "css/_button.css" %}
+    "css/index.css", "css/_grid.css", "css/_dropdown.css", "css/_footer.css",
+    "css/_button.css" %}
     <link rel="stylesheet" href="{{ ASSET_URL }}" />
     {% endassets %} {% endblock %} {% endblock %} {% assets "css_all" %}
     <link rel="stylesheet" href="{{ ASSET_URL }}" />

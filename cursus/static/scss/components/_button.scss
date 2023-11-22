@@ -18,6 +18,9 @@
   border-color: #eee;
   background-color: initial;
 
+  /* Primary button: .btn--primary
+   * Emphasize on background color with a color-contrast text
+   */
   &--primary {
     background-color: rgb(var(--color-cursus) / 1);
     border-color: rgb(var(--color-indigo-600) / 1);
@@ -40,6 +43,9 @@
     }
   }
 
+  /* Secondary button: .btn--secondary
+   * Emphasize on text color with a lighter background
+   */
   &--secondary {
     background-color: rgb(var(--color-gray-100) / 1);
     color: rgb(var(--color-gray-500) / 1);
@@ -60,8 +66,33 @@
         border-color: rgb(var(--color-indigo-200) / 1);
       }
     }
+  }
 
+  /* Outline button: .btn--outline
+   * Emphasize on border color with a transparent background
+   */
+  &--outline {
+    background-color: transparent;
+    color: rgb(var(--color-gray-500) / 1);
+    border-color: rgb(var(--color-gray-200) / 1);
 
+    &:hover {
+      border-color: rgb(var(--color-gray-300) / 1);
+    }
+
+    &.btn--cursus {
+      color: rgb(var(--color-indigo-500) / 1);
+      border-color: rgb(var(--color-indigo-500) / 1);
+
+      &:hover {
+        border-color: rgb(var(--color-indigo-600) / 1);
+        color: rgb(var(--color-indigo-600) / 1);
+      }
+    }
+  }
+
+  &--disabled {
+    cursor: not-allowed;
   }
 
   &--rounded {

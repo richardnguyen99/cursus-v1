@@ -2,6 +2,80 @@
 
 @each $breakpoint, $variant in $breakpoint-variant-map {
   @include breakpoint($breakpoint) {
+    .items#{$variant}-start {
+      align-items: flex-start !important;
+    }
+
+    .items#{$variant}-end {
+      align-items: flex-end !important;
+    }
+
+    .items#{$variant}-center {
+      align-items: center !important;
+    }
+
+    .items#{$variant}-baseline {
+      align-items: baseline !important;
+    }
+
+    .items#{$variant}-stretch {
+      align-items: stretch !important;
+    }
+
+    .justify#{$variant}-start {
+      justify-content: flex-start !important;
+    }
+
+    .justify#{$variant}-end {
+      justify-content: flex-end !important;
+    }
+
+    .justify#{$variant}-center {
+      justify-content: center !important;
+    }
+
+    .justify#{$variant}-between {
+      justify-content: space-between !important;
+    }
+
+    .justify#{$variant}-around {
+      justify-content: space-around !important;
+    }
+
+    .mx#{$variant}-auto {
+      margin-left: auto !important;
+      margin-right: auto !important;
+    }
+
+    .ml#{$variant}-auto {
+      margin-left: auto !important;
+    }
+
+    .mr#{$variant}-auto {
+      margin-right: auto !important;
+    }
+
+    .my#{$variant}-auto {
+      margin-top: auto !important;
+      margin-bottom: auto !important;
+    }
+
+    .mt#{$variant}-auto {
+      margin-top: auto !important;
+    }
+
+    .mb#{$variant}-auto {
+      margin-bottom: auto !important;
+    }
+
+    .w#{$variant}-full {
+      width: 100% !important;
+    }
+
+    .h#{$variant}-full {
+      height: 100% !important;
+    }
+
     @each $position in $position-values {
       .position#{$variant}-#{$position} {
         position: $position !important;
@@ -26,6 +100,14 @@
     @for $i from 0 through 24 {
       .gap#{$variant}-#{$i} {
         gap: #{$i * 0.25}rem;
+      }
+
+      .w#{$variant}-#{$i} {
+        width: #{$i * 0.25}rem;
+      }
+
+      .h#{$variant}-#{$i} {
+        height: #{$i * 0.25}rem;
       }
 
       .px#{$variant}-#{$i} {
