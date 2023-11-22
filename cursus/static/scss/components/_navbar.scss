@@ -1,3 +1,5 @@
+/* Navbar component to navigate among pages */
+
 .navbar {
   position: fixed;
   display: block;
@@ -30,7 +32,7 @@
     }
   }
 
-  &__collpase {
+  &__collapse {
     display: none;
 
     %collapse {
@@ -43,7 +45,11 @@
 
     &-left,
     &-right {
-      @extend %collapse;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      height: 100%;
+      gap: 1rem;
     }
 
     @include breakpoint(lg) {
@@ -61,6 +67,10 @@
     height: 100%;
     gap: 1rem;
     font-weight: 500;
+    line-height: 1.5;
+
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
 
     &:hover {
       color: rgb(var(--color-cursus) / 1);

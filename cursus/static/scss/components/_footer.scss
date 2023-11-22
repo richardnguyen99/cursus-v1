@@ -1,0 +1,59 @@
+/* Footer component to contain additional information */
+
+.footer {
+  position: relative;
+  z-index: 100;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+
+  font-size: var(--cursus-font-lg, 1.25rem);
+  background: rgb(var(--cursus-color-primary) / 1);
+  color: white;
+  height: 7.25rem;
+
+  &__legality {
+    display: flex;
+    justify-content: center;
+
+    &__wrapper {
+      display: flex;
+      align-items: center;
+      gap: 3rem;
+
+      @include breakpoint(lg) {
+        margin-left: auto;
+      }
+    }
+
+    &__link {
+      text-decoration: none;
+
+      padding-top: 0.75rem;
+      padding-bottom: 0.75rem;
+
+      border-bottom: 1px solid transparent;
+
+      &:hover {
+        border-bottom: 1px solid white;
+      }
+    }
+  }
+
+  &__title {
+    text-align: center;
+
+    @include breakpoint(lg) {
+      text-align: left;
+    }
+  }
+
+  @include breakpoint(md) {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+  }
+
+  @include breakpoint(lg) {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+}

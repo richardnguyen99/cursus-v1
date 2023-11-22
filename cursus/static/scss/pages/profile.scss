@@ -1,3 +1,5 @@
 .profile {
   position: relative;
+  background: rgb(var(--color-gray-100) / 0.75);
+  min-height: calc(100vh - 11.75rem); // minus navbar height + footer height
 }
