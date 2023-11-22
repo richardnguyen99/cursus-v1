@@ -81,7 +81,7 @@ def create_app() -> Flask:
         filters="scss,autoprefixer6,cssmin",
         output="css/min.bundle.css",
         # https://webassets.readthedocs.io/en/latest/bundles.html#bundles
-        depends="scss/**/*.scss",
+        depends="scss/**/_*.scss",
     )
 
     babel_filter = get_filter(
