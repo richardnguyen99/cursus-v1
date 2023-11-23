@@ -88,26 +88,27 @@ def handle_not_found(error):
     )
 
 
-@view_bp.route("/login", methods=["GET"])
+@view_bp.route("/login", methods=["GET", "HEAD"])
 def login():
     if current_user.is_authenticated:
         return flask.redirect(flask.url_for("views.show", page_name="index"))
 
     req = flask.request
 
-    if req.method != "GET":
+    if req.method != "GET" and req.method != "HEAD":
         raise exceptions.MethodNotAllowedError(
             f"Method {req.method} not allowed for this endpoint"
         )
 
+    # Redirect to the next page after logging in
     next = req.args.get("next")
 
     return flask.render_template("login.html", next=next), 200
 
 
-@view_bp.route("/", defaults={"page_name": "index"}, methods=["GET"])
-@view_bp.route("/<page_name>", methods=["GET"])
-def show(page_name):
+@view_bp.route("/", defaults={"page_name": "index"})
+@view_bp.route("/<page_name>")
+def show(page_name: str):
     req = flask.request
 
     url = req.path
@@ -116,7 +117,7 @@ def show(page_name):
     if endpoint not in SUPPORT_PUBLIC_ENDPOINTS:
         raise exceptions.NotFoundError(f"Page {page_name} not found")
 
-    if req.method != "GET":
+    if req.method != "GET" and req.method != "HEAD":
         raise exceptions.MethodNotAllowedError(
             f"Method {req.method} not allowed for this endpoint"
         )
@@ -126,14 +127,14 @@ def show(page_name):
     return resp, 200
 
 
-@view_bp.route("/docs/<page_name>", methods=["GET"])
+@view_bp.route("/docs/<page_name>", methods=["GET", "HEAD"])
 def docs(page_name: str):
     req = flask.request
 
     if page_name not in SUPPORT_DOCS_ENDPOINTS:
         raise exceptions.NotFoundError(f"Page {page_name} not found")
 
-    if req.method != "GET":
+    if req.method != "GET" and req.method != "HEAD":
         raise exceptions.MethodNotAllowedError(
             f"Method {req.method} not allowed for this `/docs/` endpoint"
         )
@@ -144,16 +145,53 @@ def docs(page_name: str):
 
 
 @view_bp.route("/profile", methods=["GET"])
+@view_bp.route("/profile/", methods=["GET"])
 @login_required
 def profile():
-    if not current_user.is_authenticated:
-        return flask.redirect(flask.url_for("views.login"))
+    return flask.redirect(
+        flask.url_for("views.profile_account", sub_page="account")
+    )
 
+
+@view_bp.route("/profile/<sub_page>")
+def profile_account(sub_page: str):
     req = flask.request
 
-    if req.method != "GET":
+    if req.method != "GET" and req.method != "HEAD":
         raise exceptions.MethodNotAllowedError(
             f"Method {req.method} not allowed for this endpoint"
         )
 
-    return flask.render_template("profile.html"), 200
+    content = flask.render_template(f"profile-{sub_page}.html")
+
+    if "X-Requested-SPA" in req.headers:
+        resp = flask.make_response(content, 200)
+        resp.headers["Content-Type"] = "text/html"
+        resp.headers["Cache-Control"] = "private, max-age=300"
+    else:
+        resp = flask.render_template(
+            "_profile.html",
+            page_name="profile",
+            sub_page=content,
+        )
+
+    return resp, 200
+
+
+@view_bp.after_request
+def after(response: flask.Response):
+    req = flask.request
+
+    response.add_etag()
+    if req.path.startswith("/profile"):
+        if "Cache-Control" not in response.headers:
+            response.headers[
+                "Cache-Control"
+            ] = "max-age=0, private, must-revalidate"
+
+        return response
+
+    # Cache static assets for 1 week
+    response.headers["Cache-Control"] = "public, max-age=604800"
+
+    return response.make_conditional(req)

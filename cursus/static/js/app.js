@@ -17,7 +17,7 @@
   }
 })();
 
-let deferredPrompt;
+let deferredPrompt = null;
 const btnAdd = document.querySelector("#installButton");
 
 window.addEventListener("beforeinstallprompt", (e) => {

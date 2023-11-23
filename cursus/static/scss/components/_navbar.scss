@@ -93,7 +93,7 @@
       display: none;
     }
 
-    &__button {
+    &__btn {
       position: relative;
       display: flex;
       flex-direction: row;
@@ -110,12 +110,11 @@
       margin-bottom: 0.5rem;
     }
 
-    &__button:hover {
-      background: rgb(var(--color-cursus) / 1);
-      opacity: 0.1;
+    &__btn:hover {
+      background: rgb(var(--color-cursus) / 0.1);
     }
 
-    &__button i {
+    &__btn i {
       display: flex;
       flex-direction: row;
       align-items: center;

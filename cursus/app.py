@@ -76,28 +76,29 @@ def create_app() -> Flask:
         login_manager.login_view = "views.show"
         login_manager.session_protection = "strong"
 
-    scss_bundle = Bundle(
-        "scss/global.scss",
-        filters="scss,autoprefixer6,cssmin",
-        output="css/min.bundle.css",
-        # https://webassets.readthedocs.io/en/latest/bundles.html#bundles
-        depends="scss/**/_*.scss",
-    )
+        scss_bundle = Bundle(
+            "scss/global.scss",
+            filters="scss,autoprefixer6,cssmin",
+            output="css/min.bundle.css",
+            # https://webassets.readthedocs.io/en/latest/bundles.html#bundles
+            depends="scss/**/_*.scss",
+        )
 
-    babel_filter = get_filter(
-        "babel",
-        presets=app.config["BABEL_PRESET_ENV_PATH"],
-    )
-    js_bundle = Bundle(
-        "js/app.js",
-        "js/dropdown.js",
-        "js/index.js",
-        filters=(babel_filter, "uglifyjs"),
-        output="js/min.bundle.js",
-    )
+        babel_filter = get_filter(
+            "babel",
+            presets=app.config["BABEL_PRESET_ENV_PATH"],
+        )
+        js_bundle = Bundle(
+            "js/app.js",
+            "js/dropdown.js",
+            "js/index.js",
+            "js/profile.js",
+            output="js/min.bundle.js",
+            filters=(babel_filter, "uglifyjs"),
+        )
 
-    assets.register("css_all", scss_bundle)
-    assets.register("js_all", js_bundle)
+        assets.register("css_all", scss_bundle)
+        assets.register("js_all", js_bundle)
 
     @login_manager.user_loader
     def load_user(id):
@@ -160,6 +161,11 @@ def create_app() -> Flask:
             f'"{req.remote_addr}" {req.method} {req.path} \
 {response.status_code} {response.content_length}'
         )
+
+        if req.path.startswith("/static"):
+            print(req.path)
+            # Cache static assets for 1 week
+            response.headers["Cache-Control"] = "public, max-age=604800"
 
         return response
 

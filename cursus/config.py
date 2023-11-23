@@ -33,7 +33,15 @@ class Config(object):
 
     # Config for Flask Assets
     # https://webassets.readthedocs.io/en/latest/builtin_filters.html#uglifyjs
-    UGLIFYJS_EXTRA_ARGS = ["--compress", "--mangle", "--toplevel"]
+    UGLIFYJS_EXTRA_ARGS = [
+        "--compress",
+        "--mangle",
+        "--toplevel",
+        "--wrap",
+        "Cursus",
+        "--webkit",
+        "--module",
+    ]
 
     # https://webassets.readthedocs.io/en/latest/builtin_filters.html#autoprefixer
     AUTOPREFIXER_BROWSER = ["> 1%", "last 2 versions", "ie >= 10", "iOS >= 7"]

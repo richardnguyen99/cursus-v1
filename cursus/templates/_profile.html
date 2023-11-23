@@ -1,0 +1,66 @@
+{% extends "_base.html" %} {% block title %}Profile{% endblock %} {% block css
+%} {{ super() }} {% assets filters="scss,autoprefixer6,cssmin",
+output="css/profile.bundle.css", "scss/pages/profile.scss" %}
+<link rel="stylesheet" href="{{ ASSET_URL }}" />
+{% endassets %} {% endblock %} {% block main %} {{ super() }}
+<div class="profile">
+  <div class="container-sm conntainer-md container-lg">
+    <div class="row">
+      <div class="col-lg-3">
+        <div class="profile__sticky-nav">
+          <ul class="profile__nav">
+            <li>
+              <a
+                id="profile-link"
+                href="javascript:void(0)"
+                class="profile__nav"
+              >
+                <i class="fas fa-user"></i>
+                <p>Account</p>
+              </a>
+            </li>
+            <li>
+              <a
+                id="profile-token"
+                href="javascript:void(0)"
+                class="profile__nav"
+              >
+                <i class="fas fa-user"></i>
+                <p>Tokens</p>
+              </a>
+            </li>
+            <li>
+              <a
+                id="profile-update"
+                href="javascript:void(0)"
+                class="profile__nav"
+              >
+                <i class="fas fa-user"></i>
+                <p>Update</p>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-lg-9">
+        <div class="profile__info">
+          <div class="profile__info-wrap row">
+            <div class="col-4">
+              <div class="profile__img">
+                <img src="" alt="avatar" />
+              </div>
+            </div>
+            <div class="col-8">
+              <div class="profile__heading">
+                <h1 class="profile__name">John Doe</h1>
+                <p class="profile__username">@johndoe</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="profile__spa">{{ sub_page }}</div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

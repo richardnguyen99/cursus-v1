@@ -25,7 +25,6 @@ function toggleDropdown(dropdownId) {
 function handleClickOutside(event) {
   // Handle closing of dropdown menus when clicking outside
   if (!event.target.matches(".dropdown__btn")) {
-    console.log(event.target);
     const dropdowns = document.getElementsByClassName("dropdown__menu");
 
     for (let dropdown of dropdowns) {
