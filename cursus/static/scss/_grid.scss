@@ -72,6 +72,22 @@
       width: 100% !important;
     }
 
+    .w#{$variant}-screen {
+      width: 100vw !important;
+    }
+
+    .w#{$variant}-min {
+      width: min-content !important;
+    }
+
+    .w#{$variant}-max {
+      width: max-content !important;
+    }
+
+    .w#{$variant}-fit {
+      width: fit-content !important;
+    }
+
     .h#{$variant}-full {
       height: 100% !important;
     }
@@ -93,7 +109,7 @@
         flex-grow: 0;
         flex-shrink: 0;
         flex-basis: auto;
-        max-width: percentage($i / 12);
+        width: percentage($i / 12);
       }
     }
 

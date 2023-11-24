@@ -1,1 +1,35 @@
-<h1>Token</h1>
+<h2>Active token</h2>
+<p>This token is associated with your account. Please keep it secret!</p>
+<div>
+  <div class="profile__form-input">
+    <div class="profile__display">NO ACTIVE API TOKEN</div>
+    <div class="profile__action">
+      <div class="profile__action__btn">
+        <i class="fi fi-rr-clipboard"></i>
+      </div>
+    </div>
+  </div>
+  <div class="w-full">
+    <div class="display-flex items-center gap-2 ml-auto w-fit mt-4">
+      <button
+        type="button"
+        class="btn btn--medium btn--secondary btn--danger btn--icon"
+      >
+        <i class="fi fi-rr-trash"></i>
+      </button>
+      <button type="button" class="btn btn--medium btn--primary btn--cursus">
+        <i class="fi fi-rr-refresh"></i>
+        Generate
+      </button>
+    </div>
+  </div>
+</div>
+<h2>Usage</h2>
+<p>You can include this API token as a header in your request.</p>
+<pre>
+  <code>
+{
+  "X-CURSUS-API-TOKEN": "YOUR_API_TOKEN"
+}
+  </code>
+</pre>

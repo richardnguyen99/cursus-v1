@@ -4,8 +4,8 @@ output="css/profile.bundle.css", "scss/pages/profile.scss" %}
 <link rel="stylesheet" href="{{ ASSET_URL }}" />
 {% endassets %} {% endblock %} {% block main %} {{ super() }}
 <div class="profile">
-  <div class="container-sm conntainer-md container-lg">
-    <div class="row">
+  <div class="container-sm conntainer-md container-lg py-8">
+    <div class="display-flex gap-8">
       <div class="col-lg-3">
         <div class="profile__sticky-nav">
           <ul class="profile__nav">
@@ -13,7 +13,7 @@ output="css/profile.bundle.css", "scss/pages/profile.scss" %}
               <a
                 id="profile-link"
                 href="javascript:void(0)"
-                class="profile__nav"
+                class="profile__nav-item"
               >
                 <i class="fas fa-user"></i>
                 <p>Account</p>
@@ -23,7 +23,7 @@ output="css/profile.bundle.css", "scss/pages/profile.scss" %}
               <a
                 id="profile-token"
                 href="javascript:void(0)"
-                class="profile__nav"
+                class="profile__nav-item"
               >
                 <i class="fas fa-user"></i>
                 <p>Tokens</p>
@@ -33,7 +33,7 @@ output="css/profile.bundle.css", "scss/pages/profile.scss" %}
               <a
                 id="profile-update"
                 href="javascript:void(0)"
-                class="profile__nav"
+                class="profile__nav-item"
               >
                 <i class="fas fa-user"></i>
                 <p>Update</p>
@@ -43,22 +43,31 @@ output="css/profile.bundle.css", "scss/pages/profile.scss" %}
         </div>
       </div>
       <div class="col-lg-9">
-        <div class="profile__info">
-          <div class="profile__info-wrap row">
-            <div class="col-4">
-              <div class="profile__img">
-                <img src="" alt="avatar" />
-              </div>
+        <div class="profile__info w-full">
+          <div class="display-flex gap-6 w-full">
+            <div class="profile__img">
+              <img src="/static/img/logo-180.png" alt="avatar" />
             </div>
-            <div class="col-8">
+            <div class="items-center display-flex justify-between w-full">
               <div class="profile__heading">
-                <h1 class="profile__name">John Doe</h1>
-                <p class="profile__username">@johndoe</p>
+                <div class="profile__name">
+                  <h1 class="profile__fullname">John Doe</h1>
+                  <p class="profile__username">@johndoe</p>
+                </div>
               </div>
+              <button
+                type="button"
+                class="btn btn--primary btn--neutral btn--large"
+              >
+                <i class="fi fi-rr-pencil"></i>
+                Edit Profile
+              </button>
             </div>
           </div>
         </div>
-        <div class="profile__spa">{{ sub_page }}</div>
+        <div class="profile__detail mt-8">
+          <div class="profile__spa">{{ sub_page }}</div>
+        </div>
       </div>
     </div>
   </div>
