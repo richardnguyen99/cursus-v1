@@ -167,12 +167,13 @@ def profile_account(sub_page: str):
     if "X-Requested-SPA" in req.headers:
         resp = flask.make_response(content, 200)
         resp.headers["Content-Type"] = "text/html"
-        resp.headers["Cache-Control"] = "private, max-age=300"
     else:
-        resp = flask.render_template(
-            "_profile.html",
-            page_name="profile",
-            sub_page=content,
+        resp = flask.make_response(
+            flask.render_template(
+                "_profile.html",
+                page_name="profile",
+                sub_page=content,
+            )
         )
 
     return resp, 200
