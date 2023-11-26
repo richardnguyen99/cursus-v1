@@ -1,11 +1,65 @@
+/** @typedef {"account" | "token" | "update"} Page */
+
+function _mountAccount() {
+  console.log("account page mounted");
+
+  return;
+}
+
+function _mountToken() {
+  console.log("token page mounted");
+
+  /**
+   * @type {HTMLElement}
+   */
+  const generateToken = document.querySelector("#generate-btn");
+
+  /**
+   * @type {HTMLElement}
+   */
+  const revokeToken = document.querySelector("#revoke-btn");
+
+  if (generateToken)
+    generateToken.addEventListener("click", handleGenerateToken);
+
+  if (revokeToken) revokeToken.addEventListener("click", handleRevokeToken);
+
+  return;
+}
+
+function _mountUpdate() {
+  console.log("update page mounted");
+
+  return;
+}
+
 /**
+ * Callback function to mount the fragment sub page to the DOM
  *
  * @param {HTMLElement} element
  * @param {string} innerHTML
  * @returns {void}
  */
-function callback(element, innerHTML) {
+function onMount(element, innerHTML) {
   element.innerHTML = innerHTML;
+}
+
+/**
+ * Callback function after the page is mounted
+ *
+ * @param {Page} page
+ * @returns {void}
+ */
+function onMounted(page) {
+  if (page === "update") {
+    _mountUpdate();
+    return;
+  } else if (page === "token") {
+    _mountToken();
+    return;
+  }
+
+  _mountAccount();
 }
 
 /**
@@ -18,6 +72,11 @@ function handleClick(element, page) {
   return function (e) {
     e.preventDefault();
 
+    const currentPage = window.location.pathname.split("/")[2];
+
+    // Do nothing if the current page is the same as the page to be loaded
+    if (currentPage === page) return;
+
     const xhr = new XMLHttpRequest();
 
     xhr.open("GET", `/profile/${page}`, true);
@@ -25,7 +84,8 @@ function handleClick(element, page) {
 
     xhr.onload = function () {
       if (this.status === 200) {
-        callback(element, this.responseText);
+        onMount(element, this.responseText);
+        onMounted(page);
 
         window.history.pushState("", "", `/profile/${page}`);
       }
@@ -33,6 +93,39 @@ function handleClick(element, page) {
 
     xhr.send();
   };
+}
+
+/**
+ * Callback function to generate a new token on click
+ *
+ * @param {MouseEvent} e
+ * @returns {void}
+ */
+function handleGenerateToken(e) {
+  console.log("generate token");
+  const xhr = new XMLHttpRequest();
+
+  xhr.open("GET", "/profile/generate_token", true);
+
+  xhr.onload = function () {
+    if (this.status === 200) {
+      const response = JSON.parse(this.responseText);
+
+      console.log(response);
+    }
+  };
+
+  return;
+}
+
+/**
+ * Callback function to revoke the currently active token on click
+ *
+ * @param {MouseEvent} e
+ * @returns {void}
+ */
+function handleRevokeToken(e) {
+  return;
 }
 
 (function () {
@@ -68,10 +161,21 @@ function handleClick(element, page) {
     updateLink.addEventListener("click", handleClick(profileSpa, "update"));
 
   if (profileSpa && !loaded) {
-    const innerText = profileSpa.innerText;
-    profileSpa.innerText = "";
+    const page = window.location.pathname.split("/")[2];
+    const xhr = new XMLHttpRequest();
 
-    profileSpa.innerHTML = innerText;
-    loaded = true;
+    xhr.open("GET", `/profile/${page}`, true);
+    xhr.setRequestHeader("X-Requested-SPA", "true");
+
+    xhr.onload = function () {
+      if (this.status === 200) {
+        onMount(profileSpa, this.responseText);
+        onMounted(page);
+
+        loaded = true;
+      }
+    };
+
+    xhr.send();
   }
 })();

@@ -95,6 +95,7 @@ def create_app() -> Flask:
             "js/profile.js",
             output="js/min.bundle.js",
             filters=(babel_filter, "uglifyjs"),
+            depends="js/**/*",
         )
 
         assets.register("css_all", scss_bundle)

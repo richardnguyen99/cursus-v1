@@ -98,8 +98,6 @@
     {% import 'macros/footer.html' as footer %} {{ footer.footer() }} {% assets
     "js_all" %}
     <script src="{{ ASSET_URL }}"></script>
-    {% endassets %} {% block js %}
-    <script text="text/javascript"></script>
-    {% endblock %}
+    {% endassets %} {% block js %} {% endblock %}
   </body>
 </html>

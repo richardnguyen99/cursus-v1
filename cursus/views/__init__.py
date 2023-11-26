@@ -2,12 +2,16 @@
 """
 
 import flask
+import cuid2
 
 from flask_login import current_user, login_required
 from werkzeug.exceptions import BadRequest, NotFound
 
 from cursus.util import exceptions
 from .oauth import authorize, callback
+
+API_TOKEN_LENGTH = 32
+API_TOKEN_GENERATOR = cuid2.Cuid(length=API_TOKEN_LENGTH)
 
 SUPPORT_PUBLIC_ENDPOINTS = {
     "",
@@ -144,6 +148,31 @@ def docs(page_name: str):
     return resp, 200
 
 
+@view_bp.route("/profile/generate_token", methods=["GET"])
+@login_required
+def profile_generate():
+    """Generate an API token for the current user"""
+    req = flask.request
+
+    if req.method != "GET" and req.method != "HEAD":
+        raise exceptions.MethodNotAllowedError(
+            f"Method {req.method} not allowed for this endpoint"
+        )
+
+    token = API_TOKEN_GENERATOR.generate()
+
+    return (
+        flask.json(
+            {
+                "id": current_user.id,
+                "active_token": token,
+                "revoked_token": "revoked-token",
+            }
+        ),
+        200,
+    )
+
+
 @view_bp.route("/profile", methods=["GET"])
 @view_bp.route("/profile/", methods=["GET"])
 @login_required
@@ -155,6 +184,9 @@ def profile():
 
 @view_bp.route("/profile/<sub_page>")
 def profile_account(sub_page: str):
+    if not current_user.is_authenticated:
+        return flask.redirect(flask.url_for("views.profile"))
+
     req = flask.request
 
     if req.method != "GET" and req.method != "HEAD":
@@ -172,7 +204,6 @@ def profile_account(sub_page: str):
             flask.render_template(
                 "_profile.html",
                 page_name="profile",
-                sub_page=content,
             )
         )
 
