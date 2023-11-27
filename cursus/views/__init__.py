@@ -149,9 +149,15 @@ def docs(page_name: str):
 
 
 @view_bp.route("/profile/generate_token", methods=["GET"])
-@login_required
 def profile_generate():
     """Generate an API token for the current user"""
+    if not current_user.is_authenticated:
+        return flask.json(
+            {
+                "message": "You must be logged in to generate an API token",
+            }
+        )
+
     req = flask.request
 
     if req.method != "GET" and req.method != "HEAD":
