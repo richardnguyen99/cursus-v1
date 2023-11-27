@@ -17,7 +17,7 @@ from sqlalchemy.orm import Mapped, mapped_column, Relationship, relationship
 
 from cursus.util.extensions import db
 
-cuid_gnerator: cuid2.Cuid = cuid2.Cuid(length=12)
+cuid_generator: cuid2.Cuid = cuid2.Cuid(length=12)
 
 
 class ActiveToken(db.Model):
@@ -67,3 +67,8 @@ class ActiveToken(db.Model):
         elif isinstance(other, ActiveToken):
             return self.token == other.token
         return False
+
+    @staticmethod
+    def generate_token() -> str:
+        """Generate a new token"""
+        return cuid_generator.generate()

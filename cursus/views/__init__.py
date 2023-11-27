@@ -7,11 +7,10 @@ import cuid2
 from flask_login import current_user, login_required
 from werkzeug.exceptions import BadRequest, NotFound
 
-from cursus.util import exceptions
 from .oauth import authorize, callback
-
-API_TOKEN_LENGTH = 32
-API_TOKEN_GENERATOR = cuid2.Cuid(length=API_TOKEN_LENGTH)
+from cursus.models import ActiveToken
+from cursus.util import exceptions
+from cursus.util.extensions import db
 
 SUPPORT_PUBLIC_ENDPOINTS = {
     "",
@@ -152,10 +151,11 @@ def docs(page_name: str):
 def profile_generate():
     """Generate an API token for the current user"""
     if not current_user.is_authenticated:
-        return flask.json(
-            {
-                "message": "You must be logged in to generate an API token",
-            }
+        return (
+            flask.json.jsonify(
+                {"message": "You must be logged in to generate an API token"}
+            ),
+            401,
         )
 
     req = flask.request
@@ -165,14 +165,27 @@ def profile_generate():
             f"Method {req.method} not allowed for this endpoint"
         )
 
-    token = API_TOKEN_GENERATOR.generate()
+    token = ActiveToken(
+        token=ActiveToken.generate_token(),
+        user_id=current_user.id,
+    )
+
+    old_token = ActiveToken.query.filter_by(user_id=current_user.id).first()
+
+    if old_token:
+        db.session.delete(old_token)
+        db.session.commit()
+
+    # Commit the token to the database
+    db.session.add(token)
+    db.session.commit()
 
     return (
-        flask.json(
+        flask.json.jsonify(
             {
                 "id": current_user.id,
-                "active_token": token,
-                "revoked_token": "revoked-token",
+                "active_token": str(token),
+                "revoked_token": str(old_token),
             }
         ),
         200,
