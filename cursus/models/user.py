@@ -17,6 +17,7 @@ from sqlalchemy import (
 )
 from sqlalchemy.orm import Mapped, mapped_column, Relationship, relationship
 
+from .token import ActiveToken
 from cursus.util.extensions import db
 
 
@@ -58,6 +59,11 @@ class User(db.Model, UserMixin):
         nullable=True,
     )
 
+    active_token: Mapped[str] = mapped_column(
+        String(11),
+        ForeignKey("active_tokens.token"),
+    )
+
     accounts: Relationship[list["Account"]] = relationship(
         "Account",
         backref="user",
@@ -70,6 +76,12 @@ class User(db.Model, UserMixin):
         backref="user",
         lazy=True,
         collection_class=list,
+    )
+
+    active_token: Relationship["ActiveToken"] = relationship(
+        "ActiveToken",
+        backref="user",
+        lazy=True,
     )
 
     def __init__(self, name: str, email: str, image: str):
