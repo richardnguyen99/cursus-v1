@@ -132,6 +132,25 @@ function handleGenerateToken(e) {
  * @returns {void}
  */
 function handleRevokeToken(e) {
+  const xhr = new XMLHttpRequest();
+
+  xhr.open("GET", "/profile/revoke_token", true);
+
+  xhr.onload = function () {
+    if (this.status === 200) {
+      /** @type {TokenResponseType} */
+      const response = JSON.parse(this.responseText);
+
+      const profileApiDisplay = document.querySelector("#profile-api-display");
+
+      if (profileApiDisplay) {
+        profileApiDisplay.innerHTML = `<p>No active token</p>`;
+      }
+    }
+  };
+
+  xhr.send();
+
   return;
 }
 

@@ -151,6 +151,47 @@ def docs(page_name: str):
     return resp, 200
 
 
+@view_bp.route("/profile/revoke_token", methods=["GET"])
+def profile_revoke():
+    """Revoke an API token from the current user"""
+
+    if not current_user.is_authenticated:
+        return (
+            flask.json.jsonify(
+                {
+                    "type": "error",
+                    "message": "You must be logged in to revoke an API token",
+                }
+            ),
+            401,
+        )
+
+    req = flask.request
+
+    if req.method != "GET" and req.method != "HEAD":
+        raise exceptions.MethodNotAllowedError(
+            f"Method {req.method} not allowed for this endpoint"
+        )
+
+    old_token = ActiveToken.query.filter_by(user_id=current_user.id).first()
+
+    if old_token:
+        db.session.delete(old_token)
+        db.session.commit()
+
+        return (
+            flask.json.jsonify(
+                {"type": "success", "message": "Token revoked"}
+            ),
+            200,
+        )
+
+    return (
+        flask.json.jsonify({"type": "info", "message": "No token found"}),
+        200,
+    )
+
+
 @view_bp.route("/profile/generate_token", methods=["GET"])
 def profile_generate():
     """Generate an API token for the current user"""
