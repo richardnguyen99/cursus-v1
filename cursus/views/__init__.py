@@ -125,7 +125,11 @@ def show(page_name: str):
             f"Method {req.method} not allowed for this endpoint"
         )
 
-    resp = flask.render_template(f"{page_name}.html", page_name=page_name)
+    resp = flask.render_template(
+        f"{page_name}.html",
+        page_name=page_name,
+        current_user=current_user,
+    )
 
     return resp, 200
 
@@ -150,6 +154,7 @@ def docs(page_name: str):
 @view_bp.route("/profile/generate_token", methods=["GET"])
 def profile_generate():
     """Generate an API token for the current user"""
+
     if not current_user.is_authenticated:
         return (
             flask.json.jsonify(
@@ -213,7 +218,11 @@ def profile_account(sub_page: str):
             f"Method {req.method} not allowed for this endpoint"
         )
 
-    content = flask.render_template(f"profile-{sub_page}.html")
+    content = flask.render_template(
+        f"profile-{sub_page}.html",
+        user_id=current_user.id,
+        active_token=current_user.token,
+    )
 
     if "X-Requested-SPA" in req.headers:
         resp = flask.make_response(content, 200)

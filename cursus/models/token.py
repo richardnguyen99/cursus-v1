@@ -13,11 +13,17 @@ from sqlalchemy import (
     DateTime,
     ForeignKey,
 )
-from sqlalchemy.orm import Mapped, mapped_column, Relationship, relationship
+from sqlalchemy.orm import (
+    Mapped,
+    mapped_column,
+    Relationship,
+    relationship,
+    backref,
+)
 
 from cursus.util.extensions import db
 
-cuid_generator: cuid2.Cuid = cuid2.Cuid(length=12)
+cuid_generator: cuid2.Cuid = cuid2.Cuid(length=64)
 
 
 class ActiveToken(db.Model):
@@ -30,7 +36,7 @@ class ActiveToken(db.Model):
     )
 
     token: Mapped[str] = mapped_column(
-        String(12),
+        String(64),
         nullable=False,
         index=True,
         unique=True,
@@ -49,6 +55,11 @@ class ActiveToken(db.Model):
             ondelete="CASCADE",
             onupdate="CASCADE",
         ),
+    )
+
+    user = relationship(
+        "User",
+        back_populates="token",
     )
 
     def __init__(self, token: str, user_id: str) -> None:

@@ -2,7 +2,13 @@
 <p>This token is associated with your account. Please keep it secret!</p>
 <div>
   <div class="profile__form-input">
-    <div class="profile__display">NO ACTIVE API TOKEN</div>
+    <div id="profile-api-display" class="profile__display">
+      {% if active_token is none %}
+      <p class="text-center">No active token</p>
+      {% else %}
+      <p class="text-center">{{ active_token }}</p>
+      {% endif %}
+    </div>
     <div class="profile__action">
       <div class="profile__action__btn">
         <i class="fi fi-rr-clipboard"></i>

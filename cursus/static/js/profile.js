@@ -1,4 +1,5 @@
 /** @typedef {"account" | "token" | "update"} Page */
+/** @typedef {{ "active_token": string, "id": string, "revoked_token": string }} TokenResponseType */
 
 function _mountAccount() {
   console.log("account page mounted");
@@ -102,18 +103,24 @@ function handleClick(element, page) {
  * @returns {void}
  */
 function handleGenerateToken(e) {
-  console.log("generate token");
   const xhr = new XMLHttpRequest();
 
   xhr.open("GET", "/profile/generate_token", true);
 
   xhr.onload = function () {
     if (this.status === 200) {
+      /** @type {TokenResponseType} */
       const response = JSON.parse(this.responseText);
 
-      console.log(response);
+      const profileApiDisplay = document.querySelector("#profile-api-display");
+
+      if (profileApiDisplay) {
+        profileApiDisplay.innerHTML = `<p>${response.active_token}</p>`;
+      }
     }
   };
+
+  xhr.send();
 
   return;
 }
