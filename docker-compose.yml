@@ -2,6 +2,7 @@ version: "3"
 
 services:
   web:
+    container_name: web-container
     build:
       context: .
       dockerfile: ./Dockerfile
@@ -14,7 +15,7 @@ services:
       - ./cursus:/cursus/cursus
 
   postgres:
-    container_name: postgres
+    container_name: postgres-container
     image: postgres:15
     env_file: .env
     ports:
@@ -23,8 +24,16 @@ services:
       - postgres_data:/var/lib/postgresql/data/
     restart: always
 
+  redis:
+    container_name: redis-container
+    image: redis:6.2.6
+    env_file: .env
+    ports:
+      - "6379:6379"
+    restart: always
+
   pgadmin:
-    container_name: pgadmin
+    container_name: pgadmin-container
     image: dpage/pgadmin4
     env_file: .env
     ports:
@@ -36,15 +45,16 @@ services:
       - postgres
 
   nginx:
+    container_name: nginx-container
     build:
       context: ./nginx
       dockerfile: ./Dockerfile
     environment:
       - APP_SERVER_UPSTREAM=cursus-web
-      - APP_SERVER_SERVICE=cursus-web-1
+      - APP_SERVER_SERVICE=web-container
       - APP_SERVER_PORT=5001
       - APP_ADMIN_UPSTREAM=cursus-pgadmin
-      - APP_ADMIN_SERVICE=pgadmin
+      - APP_ADMIN_SERVICE=pgadmin-container
       - APP_ADMIN_PORT=5050
     volumes:
       - ./nginx:/etc/nginx/templates
