@@ -1,5 +1,15 @@
 version: "3"
 
+# Networks is used to create a network and ip addresses for containers.
+# These are used to prevent dynamic ip addresses from being assigned to
+# containers.
+networks:
+  cursus-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: "172.26.0.0/24"
+
 services:
   web:
     container_name: web-container
@@ -11,8 +21,13 @@ services:
       - "5000:5001"
     depends_on:
       - postgres
+      - redis
     volumes:
       - ./cursus:/cursus/cursus
+    restart: always
+    networks:
+      cursus-network:
+        ipv4_address: 172.26.0.3
 
   postgres:
     container_name: postgres-container
@@ -23,6 +38,9 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     restart: always
+    networks:
+      cursus-network:
+        ipv4_address: 172.26.0.2
 
   redis:
     container_name: redis-container
@@ -31,6 +49,9 @@ services:
     ports:
       - "6379:6379"
     restart: always
+    networks:
+      cursus-network:
+        ipv4_address: 172.26.0.4
 
   pgadmin:
     container_name: pgadmin-container
@@ -43,6 +64,9 @@ services:
     restart: always
     depends_on:
       - postgres
+    networks:
+      cursus-network:
+        ipv4_address: 172.26.0.5
 
   nginx:
     container_name: nginx-container
@@ -64,6 +88,9 @@ services:
       - web
       - postgres
       - pgadmin
+    networks:
+      cursus-network:
+        ipv4_address: 172.26.0.6
 
 volumes:
   postgres_data:

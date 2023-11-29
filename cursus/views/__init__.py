@@ -2,7 +2,6 @@
 """
 
 import flask
-import cuid2
 
 from flask_login import current_user, login_required
 from werkzeug.exceptions import BadRequest, NotFound
@@ -111,7 +110,7 @@ def login():
 
 @view_bp.route("/", defaults={"page_name": "index"})
 @view_bp.route("/<page_name>")
-# @cache.cached(timeout=60)
+@cache.cached(timeout=60)
 def show(page_name: str):
     req = flask.request
 
