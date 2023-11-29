@@ -10,7 +10,7 @@ from werkzeug.exceptions import BadRequest, NotFound
 from .oauth import authorize, callback
 from cursus.models import ActiveToken
 from cursus.util import exceptions
-from cursus.util.extensions import db
+from cursus.util.extensions import db, cache
 
 SUPPORT_PUBLIC_ENDPOINTS = {
     "",
@@ -111,6 +111,7 @@ def login():
 
 @view_bp.route("/", defaults={"page_name": "index"})
 @view_bp.route("/<page_name>")
+# @cache.cached(timeout=60)
 def show(page_name: str):
     req = flask.request
 

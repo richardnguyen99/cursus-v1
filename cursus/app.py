@@ -14,7 +14,7 @@ from logging.config import dictConfig
 
 from .apis import find_bp, university_bp as university_bp_v1
 from .views import view_bp, oauth_bp
-from .util.extensions import db, migrate, ma, login_manager, assets
+from .util.extensions import db, migrate, ma, login_manager, assets, cache
 from .models import User, ActiveToken
 
 
@@ -71,6 +71,7 @@ def create_app() -> Flask:
     ma.init_app(app)
     assets.init_app(app)
     login_manager.init_app(app)
+    cache.init_app(app)
 
     with app.app_context():
         login_manager.login_view = "views.show"
