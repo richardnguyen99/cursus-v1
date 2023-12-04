@@ -176,9 +176,11 @@ def create_app() -> Flask:
         )
 
         if req.path.startswith("/static"):
-            print(req.path)
             # Cache static assets for 1 week
             response.headers["Cache-Control"] = "public, max-age=604800"
+            response.add_etag()
+
+            return response.make_conditional(req)
 
         return response
 

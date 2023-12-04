@@ -113,7 +113,6 @@ def login():
 @cache.cached(timeout=60)
 def show(page_name: str):
     req = flask.request
-
     url = req.path
     endpoint = url.split("/")[1]
 
