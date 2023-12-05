@@ -125,14 +125,26 @@ function handleGenerateToken(e) {
   xhr.open("GET", "/profile/generate_token", true);
 
   xhr.onload = function () {
+    const profileApiDisplay = document.querySelector("#profile-api-display");
+    const profileTokenActionMessage = document.querySelector(
+      "#token-action-message"
+    );
+
+    const response = JSON.parse(this.responseText);
+
     if (this.status === 200) {
-      /** @type {TokenResponseType} */
-      const response = JSON.parse(this.responseText);
-
-      const profileApiDisplay = document.querySelector("#profile-api-display");
-
       if (profileApiDisplay) {
         profileApiDisplay.innerHTML = `<p>${response.active_token}</p>`;
+      }
+
+      if (profileTokenActionMessage) {
+        profileTokenActionMessage.innerHTML = `<p class="profile--success">${response.message}</p>`;
+      }
+    }
+
+    if (this.status === 403) {
+      if (profileTokenActionMessage) {
+        profileTokenActionMessage.innerHTML = `<p class="profile--danger">${response.message}</p>`;
       }
     }
   };

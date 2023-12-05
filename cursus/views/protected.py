@@ -4,13 +4,15 @@
 """
 
 import flask
+import json
+import datetime
 
 from flask_login import current_user, login_required
 
 from . import view_bp
 from cursus.util.extensions import db, cache
 from cursus.models import ActiveToken
-from cursus.util import exceptions
+from cursus.util import exceptions, datetime as cursus_datetime
 
 
 @view_bp.route("/profile/revoke_token", methods=["GET"])
@@ -74,6 +76,13 @@ def profile_generate():
     """Generate an API token for the current user"""
 
     if not current_user.is_authenticated:
+        if "Referer" not in flask.request.headers:
+            return flask.redirect(
+                flask.url_for(
+                    "views.login",
+                )
+            )
+
         return (
             flask.json.jsonify(
                 {"message": "You must be logged in to generate an API token"}
@@ -86,6 +95,53 @@ def profile_generate():
     if req.method != "GET" and req.method != "HEAD":
         raise exceptions.MethodNotAllowedError(
             f"Method {req.method} not allowed for this endpoint"
+        )
+
+    num_generated_token = cache.get(f"{current_user.id}-generatedTime")
+
+    if num_generated_token is not None:
+        item = json.loads(num_generated_token)
+
+        if item["generatedTime"] >= 5:
+            return (
+                flask.json.jsonify(
+                    {
+                        "type": "error",
+                        "message": "\
+You have reached the maximum number of tokens generated per day",
+                    }
+                ),
+                403,
+            )
+
+        item["generatedTime"] += 1
+
+        # Compute time to live until the end of the day
+        created_time = datetime.datetime.strptime(
+            item["created_at"], "%a, %d %b %Y %H:%M:%S GMT"
+        )
+        ttl = cursus_datetime.datetime_until_end_of_day(created_time)
+
+        cache.set(
+            f"{current_user.id}-generatedTime",
+            json.dumps(item),
+            timeout=ttl.seconds,
+        )
+
+    else:
+        generatedTime = datetime.datetime.now(datetime.timezone.utc).strftime(
+            "%a, %d %b %Y %H:%M:%S GMT"
+        )
+
+        item = {
+            "generatedTime": 1,
+            "created_at": generatedTime,
+        }
+
+        cache.set(
+            f"{current_user.id}-generatedTime",
+            json.dumps(item),
+            timeout=cursus_datetime.datetime_until_end_of_day().seconds,
         )
 
     token = ActiveToken(
@@ -121,6 +177,7 @@ def profile_generate():
         flask.json.jsonify(
             {
                 "id": current_user.id,
+                "message": "Token generated successfully",
                 "active_token": str(token),
                 "revoked_token": str(old_token),
             }

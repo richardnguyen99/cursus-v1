@@ -150,6 +150,22 @@
       height: 100%;
 
     }
+
+    &__message {
+      position: relative;
+      display: flex;
+      font-size: 14px;
+      align-items: center;
+
+      & .profile--danger {
+        color: rgb(var(--color-red-500) / 1);
+      }
+
+      & .profile--success {
+        color: rgb(var(--color-green-500) / 1);
+      }
+    }
+
   }
 
   &__spa {

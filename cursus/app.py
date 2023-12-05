@@ -82,17 +82,26 @@ def create_app() -> Flask:
         login_manager.session_protection = "strong"
 
         scss_bundle = Bundle(
-            "scss/global.scss",
-            filters="scss,autoprefixer6,cssmin",
-            output="css/min.bundle.css",
-            # https://webassets.readthedocs.io/en/latest/bundles.html#bundles
-            depends="scss/**/_*.scss",
+            Bundle(
+                "scss/global.scss",
+                filters="scss,autoprefixer6,cssmin",
+                output="css/min.bundle.css",
+                # https://webassets.readthedocs.io/en/latest/bundles.html#bundles
+                depends="scss/**/_*.scss",
+            ),
+            Bundle(
+                "scss/pages/*.scss",
+                filters="scss,autoprefixer6,cssmin",
+                output="css/pages.bundle.css",
+                depends="scss/pages/**/*.scss",
+            ),
         )
 
         babel_filter = get_filter(
             "babel",
             presets=app.config["BABEL_PRESET_ENV_PATH"],
         )
+
         js_bundle = Bundle(
             "js/app.js",
             "js/dropdown.js",
