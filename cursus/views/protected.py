@@ -9,7 +9,7 @@ from flask_login import current_user, login_required
 from werkzeug.exceptions import BadRequest, NotFound
 
 from . import view_bp
-from cursus.util.extensions import db
+from cursus.util.extensions import db, cache
 from cursus.models import ActiveToken
 from cursus.util import exceptions
 

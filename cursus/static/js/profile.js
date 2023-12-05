@@ -2,14 +2,10 @@
 /** @typedef {{ "active_token": string, "id": string, "revoked_token": string }} TokenResponseType */
 
 function _mountAccount() {
-  console.log("account page mounted");
-
   return;
 }
 
 function _mountToken() {
-  console.log("token page mounted");
-
   /**
    * @type {HTMLElement}
    */
@@ -29,8 +25,6 @@ function _mountToken() {
 }
 
 function _mountUpdate() {
-  console.log("update page mounted");
-
   return;
 }
 
@@ -64,12 +58,21 @@ function onMounted(page) {
 }
 
 /**
+ * Update the navigation tab to reflect the current page
  *
- * @param {HTMLElement} element
+ * @param {Page} page
+ */
+function updateNavTab(page) {
+  const navTabs = document.querySelect;
+}
+
+/**
+ *
+ * @param {HTMLElement} spaContainer
  * @param {string} page
  * @returns {function(Event): void}
  */
-function handleClick(element, page) {
+function handleClick(spaContainer, page) {
   return function (e) {
     e.preventDefault();
 
@@ -85,8 +88,22 @@ function handleClick(element, page) {
 
     xhr.onload = function () {
       if (this.status === 200) {
-        onMount(element, this.responseText);
+        onMount(spaContainer, this.responseText);
         onMounted(page);
+
+        const navTabs = document.querySelectorAll(".profile__nav-item");
+
+        navTabs.forEach((tab) => {
+          tab.classList.remove("profile--active");
+        });
+
+        if (page === "account") {
+          navTabs[0].classList.add("profile--active");
+        } else if (page === "token") {
+          navTabs[1].classList.add("profile--active");
+        } else {
+          navTabs[2].classList.add("profile--active");
+        }
 
         window.history.pushState("", "", `/profile/${page}`);
       }
@@ -156,6 +173,7 @@ function handleRevokeToken(e) {
 
 (function () {
   let loaded = false;
+  let activePage = "";
 
   /**
    * @type {HTMLElement}
@@ -199,6 +217,14 @@ function handleRevokeToken(e) {
         onMounted(page);
 
         loaded = true;
+
+        if (page === "account") {
+          accountLink.classList.add("profile--active");
+        } else if (page === "token") {
+          tokenLink.classList.add("profile--active");
+        } else {
+          updateLink.classList.add("profile--active");
+        }
       }
     };
 
