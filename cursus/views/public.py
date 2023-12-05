@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-"""List of custom exceptions used by the Cursus application
+"""List of public endpoitns used by the Cursus application
 """
 
 import flask
