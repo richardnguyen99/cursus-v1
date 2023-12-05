@@ -6,7 +6,6 @@
 import flask
 
 from flask_login import current_user, login_required
-from werkzeug.exceptions import BadRequest, NotFound
 
 from . import view_bp
 from cursus.util.extensions import db, cache
@@ -36,15 +35,30 @@ def profile_revoke():
             f"Method {req.method} not allowed for this endpoint"
         )
 
-    old_token = ActiveToken.query.filter_by(user_id=current_user.id).first()
+    old_token = (
+        db.session.query(ActiveToken)
+        .filter_by(user_id=current_user.id)
+        .first()
+    )
 
     if old_token:
         db.session.delete(old_token)
         db.session.commit()
 
+        cache.set(old_token.token, False, timeout=60 * 60 * 24 * 7)
+
+        revoked_token = cache.get(old_token.token)
+
         return (
             flask.json.jsonify(
-                {"type": "success", "message": "Token revoked"}
+                {
+                    "type": "success",
+                    "message": "Token revoked",
+                    "data": {
+                        "token": old_token.token,
+                        "revoked": revoked_token,
+                    },
+                }
             ),
             200,
         )
