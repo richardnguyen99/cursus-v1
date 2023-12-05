@@ -56,7 +56,7 @@ def profile_revoke():
                     "message": "Token revoked",
                     "data": {
                         "token": old_token.token,
-                        "revoked": revoked_token,
+                        "active": revoked_token,
                     },
                 }
             ),
@@ -93,11 +93,25 @@ def profile_generate():
         user_id=current_user.id,
     )
 
-    old_token = ActiveToken.query.filter_by(user_id=current_user.id).first()
+    cached_token = cache.get(token.token)
 
+    # Check if revoked token exists in the cache and generate a new one if does
+    while cached_token and cached_token == False:
+        token.token = ActiveToken.generate_token()
+        cached_token = cache.get(token.token)
+
+    old_token = (
+        db.session.query(ActiveToken)
+        .filter_by(user_id=current_user.id)
+        .first()
+    )
+
+    # Delete the old token if exists
     if old_token:
         db.session.delete(old_token)
         db.session.commit()
+
+        cache.set(old_token.token, False, timeout=60 * 60 * 24 * 7)
 
     # Commit the token to the database
     db.session.add(token)
