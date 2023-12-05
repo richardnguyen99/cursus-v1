@@ -5,16 +5,20 @@
 
 import os
 import flask
+import datetime
 
+from werkzeug import exceptions as WkzExceptions
 from flask import Flask
 from flask_assets import Bundle
 from webassets.bundle import get_filter
 from flask_login import logout_user, login_required
 from logging.config import dictConfig
 
+from .error import handle_not_found
 from .apis import find_bp, university_bp as university_bp_v1
 from .views import view_bp, oauth_bp
 from .util.extensions import db, migrate, ma, login_manager, assets, cache
+from .util import exceptions as CursusExceptions
 from .models import User, ActiveToken
 
 
@@ -165,6 +169,25 @@ def create_app() -> Flask:
 
         return resp
 
+    app.register_error_handler(404, handle_not_found)
+    app.register_error_handler(
+        WkzExceptions.NotFound,
+        handle_not_found,
+    )
+    app.register_error_handler(
+        CursusExceptions.NotFoundError,
+        handle_not_found,
+    )
+    app.register_error_handler(400, handle_not_found)
+    app.register_error_handler(
+        WkzExceptions.BadRequest,
+        handle_not_found,
+    )
+    app.register_error_handler(
+        CursusExceptions.BadRequestError,
+        handle_not_found,
+    )
+
     @app.after_request
     def after(response: flask.Response):
         current_app = flask.current_app
@@ -176,9 +199,14 @@ def create_app() -> Flask:
         )
 
         if req.path.startswith("/static"):
-            # Cache static assets for 1 week
-            response.headers["Cache-Control"] = "public, max-age=604800"
+            # Cache static assets for 1 year
+            response.headers["Cache-Control"] = "public, max-age=31536000"
             response.add_etag()
+            response.last_modified = datetime.datetime.utcnow()
+
+            response.access_control_allow_methods = ["GET"]
+            response.access_control_allow_origin = "*"
+            response.access_control_max_age = 3600
 
             return response.make_conditional(req)
 

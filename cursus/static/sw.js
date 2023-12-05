@@ -7,17 +7,16 @@ importScripts(
 if (workbox) {
   console.log(`Yay! Workbox is loaded 🎉`);
 
-  workbox.precaching.precacheAndRoute([
-    {
-      url: "/",
-      revision: "1",
-    },
-  ]);
-
   workbox.routing.registerRoute(
     /\.(?:js|css)$/,
     workbox.strategies.staleWhileRevalidate({
       cacheName: "static-resources",
+      plugins: [
+        new workbox.expiration.Plugin({
+          maxEntries: 60,
+          maxAgeSeconds: 30 * 24 * 60 * 60, // 30 Days
+        }),
+      ],
     })
   );
 
