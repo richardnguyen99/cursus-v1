@@ -191,7 +191,6 @@ def create_app() -> Flask:
                 "Cache-Control" in req.headers
                 and req.headers["Cache-Control"] == "no-cache"
             ):
-                print(f"{req.url} request has no-cache header")
                 return response.make_conditional(req)
 
             response.headers["Cache-Control"] = "public, max-age=31536000"
