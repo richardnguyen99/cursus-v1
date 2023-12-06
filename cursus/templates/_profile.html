@@ -1,8 +1,5 @@
-{% extends "_base.html" %} {% block title %}Profile{% endblock %} {% block css
-%} {{ super() }} {% assets filters="scss,autoprefixer6,cssmin",
-output="css/profile.bundle.css", "scss/pages/profile.scss" %}
-<link rel="stylesheet" href="{{ ASSET_URL }}" />
-{% endassets %} {% endblock %} {% block main %} {{ super() }}
+{% extends "_base.html" %} {% block title %}Profile{% endblock %} {% block main
+%} {{ super() }}
 <div class="profile">
   <div class="container-sm conntainer-md container-lg py-8">
     <div class="display-flex gap-8">

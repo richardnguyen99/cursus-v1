@@ -9,6 +9,7 @@ from flask_migrate import Migrate
 from flask_marshmallow import Marshmallow
 from flask_login import LoginManager
 from flask_assets import Environment
+from flask_caching import Cache
 
 
 class Base(DeclarativeBase):
@@ -20,3 +21,4 @@ migrate = Migrate()
 ma = Marshmallow()
 login_manager = LoginManager()
 assets = Environment()
+cache = Cache()

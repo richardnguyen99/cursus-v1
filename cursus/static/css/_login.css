@@ -3,7 +3,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: calc(100vh - 16.75rem);
+  min-height: calc(100vh - 11.75rem); /* minus navbar height + footer height */
   margin-left: 1rem;
   margin-right: 1rem;
 }

@@ -18,7 +18,7 @@
   &__nav {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: 0.5rem;
 
     list-style: none;
 
@@ -34,6 +34,18 @@
 
       &:hover {
         background: rgb(var(--color-gray-100) / 1);
+      }
+
+      &.profile--active::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 0;
+        width: 0.25rem;
+        height: 80%;
+        background: rgb(var(--color-cursus) / 1);
+        border-radius: 6px 8px 8px 6px;
+        transform: translateY(-50%);
       }
     }
   }
@@ -101,6 +113,8 @@
     display: flex;
     align-items: center;
 
+    color: rgb(var(--color-gray-400) / 1);
+
     padding: 0.5rem 1rem;
     width: 100%;
     border: 1px solid rgb(var(--color-gray-200) / 1);
@@ -108,6 +122,32 @@
 
     border-top-left-radius: 8px;
     border-bottom-left-radius: 8px;
+  }
+
+  &__tooltip {
+    display: none;
+    position: absolute;
+    top: -75%;
+    left: 50%;
+
+    transform: translateX(-50%);
+    z-index: 1;
+    padding: 0.25rem 0.5rem;
+    border-radius: 6px;
+
+    background: rgb(var(--color-white) / 1);
+    border: 1px solid rgb(var(--color-gray-200) / 1);
+
+    &-text {
+      font-size: 13px;
+      line-height: 1;
+      font-weight: 700;
+      color: rgb(var(--color-gray-800) / 1);
+    }
+
+    &.profile--copied {
+      display: block;
+    }
   }
 
   &__action {
@@ -127,15 +167,68 @@
       border-color: rgb(var(--color-gray-400) / 1);
     }
 
+
+
     &__btn {
+      position: relative;
       display: flex;
       align-items: center;
       justify-content: center;
 
       width: 100%;
       height: 100%;
-
     }
+
+    &__btn i {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      transform-origin: center;
+
+      display: block;
+      width: 1rem;
+      height: 1rem;
+      transition: all 0.1s ease-in-out;
+    }
+
+    &__btn .fi-rr-clipboard {
+      opacity: 1;
+      scale: 100%;
+    }
+
+    &__btn .fi-rr-check {
+      opacity: 0;
+      scale: 50%;
+    }
+
+    &__btn.profile--success .fi-rr-check {
+      display: block;
+      color: rgb(var(--color-green-500) / 1);
+      opacity: 1;
+      scale: 100%;
+    }
+
+    &__btn.profile--success .fi-rr-clipboard {
+      opacity: 0;
+      scale: 50%;
+    }
+
+    &__message {
+      position: relative;
+      display: flex;
+      font-size: 14px;
+      align-items: center;
+
+      & .profile--danger {
+        color: rgb(var(--color-red-500) / 1);
+      }
+
+      & .profile--success {
+        color: rgb(var(--color-green-500) / 1);
+      }
+    }
+
   }
 
   &__spa {

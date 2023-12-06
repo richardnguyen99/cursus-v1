@@ -10,11 +10,19 @@ css %} {{ super() }}
     </h2>
   </div>
   <div class="docs__banner__image">
-    <img src="/static/img/docs-banner.png" width="1440" height="360" alt="Main doc banner">
+    <img
+      src="/static/img/docs-banner.png"
+      width="1440"
+      height="360"
+      alt="Main doc banner"
+    />
   </div>
 </div>
 <div class="docs__card-wrapper mb-24">
-  <a href="{{ url_for("views.docs", page_name="search.html") }}" class="docs__card">
+  <a
+    href="{{ url_for('views.docs.show', page_name='search') }}"
+    class="docs__card"
+  >
     <div class="docs__card__header">
       <i class="fi fi-rr-search"></i>
       <h2 class="docs__card__header__title">Search</h2>
@@ -25,7 +33,10 @@ css %} {{ super() }}
       </p>
     </div>
   </a>
-  <a href="{{ url_for("views.docs", page_name="details.html") }}" class="docs__card">
+  <a
+    href="{{ url_for('views.docs.show', page_name='details') }}"
+    class="docs__card"
+  >
     <div class="docs__card__header">
       <i class="fi fi-rr-school"></i>
       <h2 class="docs__card__header__title">Details</h2>
@@ -34,7 +45,10 @@ css %} {{ super() }}
       Retrieve detailed information with the institution code name
     </div>
   </a>
-  <a href="{{ url_for("views.docs", page_name="courses.html") }}" class="docs__card">
+  <a
+    href="{{ url_for('views.docs.show', page_name='courses') }}"
+    class="docs__card"
+  >
     <div class="docs__card__header">
       <i class="fi fi-rr-books"></i>
       <h2 class="docs__card__header__title">Courses</h2>
@@ -43,7 +57,10 @@ css %} {{ super() }}
       Search and get a list of courses offered by a universities
     </div>
   </a>
-  <a href="{{ url_for("views.docs", page_name="campus.html") }}" class="docs__card">
+  <a
+    href="{{ url_for('views.docs.show', page_name='campus') }}"
+    class="docs__card"
+  >
     <div class="docs__card__header">
       <i class="fi fi-rs-marker"></i>
       <h2 class="docs__card__header__title">Campus</h2>
@@ -52,7 +69,10 @@ css %} {{ super() }}
       Search schools by campus address, or get the campus address yourself
     </div>
   </a>
-  <a href="{{ url_for("views.docs", page_name="domains.html") }}" class="docs__card">
+  <a
+    href="{{ url_for('views.docs.show', page_name='domains') }}"
+    class="docs__card"
+  >
     <div class="docs__card__header">
       <i class="fi fi-rs-at"></i>
       <h2 class="docs__card__header__title">Domains</h2>
@@ -61,7 +81,10 @@ css %} {{ super() }}
       Get a list of domains that associate with a university
     </div>
   </a>
-  <a href="{{ url_for("views.docs", page_name="more.html") }}" class="docs__card">
+  <a
+    href="{{ url_for('views.docs.show', page_name='more') }}"
+    class="docs__card"
+  >
     <div class="docs__card__header">
       <i class="fi fi-rs-circle-ellipsis"></i>
       <h2 class="docs__card__header__title">More</h2>

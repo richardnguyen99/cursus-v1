@@ -10,14 +10,16 @@ dependencies = [
     "Flask-Marshmallow>=0.15.0",
     "Flask-Login>=0.6.3",
     "Flask-Assets>=2.1.0",
+    "Flask-Caching>=2.1.0",
     "marshmallow-sqlalchemy>=0.29.0",
     "requests>=2.31.0",
     "cuid2>=2.0.0",
+    "redis>=5.0.0",
     "cssmin",
     "jsmin",
 ]
 name = "cursus"
-version = "0.0.2"
+version = "0.0.4"
 description = "An open-source API repository for university courses."
 license = { file = "LICENSE" }
 authors = [{ name = "Richard H Nguyen", email = "richard@richardhnguyen.com" }]

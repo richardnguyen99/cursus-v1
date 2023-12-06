@@ -72,6 +72,12 @@ class User(db.Model, UserMixin):
         collection_class=list,
     )
 
+    token = relationship(
+        "ActiveToken",
+        uselist=False,
+        back_populates="user",
+    )
+
     def __init__(self, name: str, email: str, image: str):
         self.name = name
         self.email = email

@@ -2,22 +2,38 @@
 <p>This token is associated with your account. Please keep it secret!</p>
 <div>
   <div class="profile__form-input">
-    <div class="profile__display">NO ACTIVE API TOKEN</div>
-    <div class="profile__action">
+    <div id="profile-api-display" class="profile__display">
+      {% if active_token is none %}
+      <p class="text-center">No active token</p>
+      {% else %}
+      <p class="text-center">{{ active_token }}</p>
+      {% endif %}
+    </div>
+    <button id="copy-token-btn" class="profile__action" type="button">
+      <div class="profile__tooltip">
+        <span class="profile__tooltip-text">Copied</span>
+      </div>
       <div class="profile__action__btn">
         <i class="fi fi-rr-clipboard"></i>
+        <i class="fi fi-rr-check"></i>
       </div>
-    </div>
+    </button>
   </div>
   <div class="w-full">
     <div class="display-flex items-center gap-2 ml-auto w-fit mt-4">
+      <div id="token-action-message" class="profile__action__message"></div>
       <button
+        id="revoke-btn"
         type="button"
         class="btn btn--medium btn--secondary btn--danger btn--icon"
       >
         <i class="fi fi-rr-trash"></i>
       </button>
-      <button type="button" class="btn btn--medium btn--primary btn--cursus">
+      <button
+        id="generate-btn"
+        type="button"
+        class="btn btn--medium btn--primary btn--cursus"
+      >
         <i class="fi fi-rr-refresh"></i>
         Generate
       </button>

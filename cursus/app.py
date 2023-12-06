@@ -5,6 +5,7 @@
 
 import os
 import flask
+import datetime
 
 from flask import Flask
 from flask_assets import Bundle
@@ -12,10 +13,10 @@ from webassets.bundle import get_filter
 from flask_login import logout_user, login_required
 from logging.config import dictConfig
 
-from .apis import find_bp, university_bp as university_bp_v1
+from .apis import api_bp as api_bp_v1
 from .views import view_bp, oauth_bp
-from .util.extensions import db, migrate, ma, login_manager, assets
-from .models import User
+from .util.extensions import db, migrate, ma, login_manager, assets, cache
+from .models import User, ActiveToken
 
 
 if os.environ.get("FLASK_ENV") != "development":
@@ -71,23 +72,33 @@ def create_app() -> Flask:
     ma.init_app(app)
     assets.init_app(app)
     login_manager.init_app(app)
+    cache.init_app(app)
 
     with app.app_context():
         login_manager.login_view = "views.show"
         login_manager.session_protection = "strong"
 
         scss_bundle = Bundle(
-            "scss/global.scss",
-            filters="scss,autoprefixer6,cssmin",
-            output="css/min.bundle.css",
-            # https://webassets.readthedocs.io/en/latest/bundles.html#bundles
-            depends="scss/**/_*.scss",
+            Bundle(
+                "scss/global.scss",
+                filters="scss,autoprefixer6,cssmin",
+                output="css/min.bundle.css",
+                # https://webassets.readthedocs.io/en/latest/bundles.html#bundles
+                depends="scss/**/_*.scss",
+            ),
+            Bundle(
+                "scss/pages/*.scss",
+                filters="scss,autoprefixer6,cssmin",
+                output="css/pages.bundle.css",
+                depends="scss/pages/**/*.scss",
+            ),
         )
 
         babel_filter = get_filter(
             "babel",
             presets=app.config["BABEL_PRESET_ENV_PATH"],
         )
+
         js_bundle = Bundle(
             "js/app.js",
             "js/dropdown.js",
@@ -95,6 +106,7 @@ def create_app() -> Flask:
             "js/profile.js",
             output="js/min.bundle.js",
             filters=(babel_filter, "uglifyjs"),
+            depends="js/**/*",
         )
 
         assets.register("css_all", scss_bundle)
@@ -102,9 +114,20 @@ def create_app() -> Flask:
 
     @login_manager.user_loader
     def load_user(id):
-        user = db.session.query(User).filter_by(id=id).first()
+        user_with_token = (
+            db.session.query(ActiveToken.token, User)
+            .select_from(User)
+            .outerjoin(ActiveToken, User.id == ActiveToken.user_id)
+            .filter(User.id == id)
+            .first()
+        )
 
-        return user
+        # The above query returns a tuple of an API token and a User object
+        # However, Flask-Login expects a User object, so we have to set the
+        # active token manually
+        user_with_token[1].active_token = user_with_token[0]
+
+        return user_with_token[1]
 
     @login_manager.unauthorized_handler
     def handle_needs_login():
@@ -120,8 +143,7 @@ def create_app() -> Flask:
         return flask.redirect(flask.url_for("views.show", page_name="index"))
 
     # Register views
-    app.register_blueprint(find_bp)
-    app.register_blueprint(university_bp_v1)
+    app.register_blueprint(api_bp_v1)
     app.register_blueprint(view_bp)
     app.register_blueprint(oauth_bp)
 
@@ -163,9 +185,24 @@ def create_app() -> Flask:
         )
 
         if req.path.startswith("/static"):
-            print(req.path)
-            # Cache static assets for 1 week
-            response.headers["Cache-Control"] = "public, max-age=604800"
+            # Cache static assets for 1 year
+            response.add_etag()
+            response.last_modified = datetime.datetime.utcnow()
+
+            response.access_control_allow_methods = ["GET"]
+            response.access_control_allow_origin = "*"
+            response.access_control_max_age = 3600
+            response.headers["XXX"] = "YYY"
+
+            if (
+                "Cache-Control" in response.headers
+                and response.headers["Cache-Control"] == "no-cache"
+            ):
+                return response.make_conditional(req)
+
+            response.headers["Cache-Control"] = "public, max-age=31536000"
+
+            return response.make_conditional(req)
 
         return response
 
