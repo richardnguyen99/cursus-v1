@@ -103,13 +103,30 @@
           </li>
         </ul>
         <hr class="navbar__dropdown__separator" />
-        <a
-          href="{{ url_for('views.show', page_name='login') }}"
-          class="btn btn--fluid btn--round btn--primary navbar__dropdown-btn"
-        >
-          {% if current_user.is_authenticated %} Logout {% else %} Login {%
-          endif %}
-        </a>
+        <div class="display-flex flex-col gap-3">
+          {% if current_user.is_authenticated %}
+          <a
+            href="{{ url_for('views.profile') }}"
+            class="btn btn--fluid btn--round btn--primary navbar__dropdown-btn"
+          >
+            Profile
+          </a>
+          <a
+            href="{{ url_for('logout') }}"
+            class="btn btn--fluid btn--round btn--secondary navbar__dropdown-btn"
+          >
+            Logout
+          </a>
+
+          {% else %}
+          <a
+            href="{{ url_for('views.show', page_name='login') }}"
+            class="btn btn--fluid btn--round btn--primary navbar__dropdown-btn"
+          >
+            Login
+          </a>
+          {% endif %}
+        </div>
       </div>
     </div>
   </div>

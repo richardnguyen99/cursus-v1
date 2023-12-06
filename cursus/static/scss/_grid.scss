@@ -42,6 +42,22 @@
       justify-content: space-around !important;
     }
 
+    .flex#{$variant}-row {
+      flex-direction: row !important;
+    }
+
+    .flex#{$variant}-row-reverse {
+      flex-direction: row-reverse !important;
+    }
+
+    .flex#{$variant}-col {
+      flex-direction: column !important;
+    }
+
+    .flex#{$variant}-col-reverse {
+      flex-direction: column-reverse !important;
+    }
+
     .mx#{$variant}-auto {
       margin-left: auto !important;
       margin-right: auto !important;

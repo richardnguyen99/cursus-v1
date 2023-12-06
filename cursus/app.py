@@ -92,6 +92,7 @@ def create_app() -> Flask:
                 output="css/pages.bundle.css",
                 depends="scss/pages/**/*.scss",
             ),
+            depends="scss/**/_*.scss",
         )
 
         babel_filter = get_filter(

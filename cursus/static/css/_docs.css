@@ -27,8 +27,20 @@
 
   max-width: 640px;
 
-  font-size: 5rem;
+  font-size: 3rem;
   font-weight: var(--cursus-font-black, 900);
+}
+
+@media screen and (min-width: 768px) {
+  .docs__banner__text {
+    font-size: 4rem;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .docs__banner__text {
+    font-size: 5rem;
+  }
 }
 
 .docs__banner__sub-text {
@@ -38,9 +50,21 @@
 
   max-width: 768px;
 
-  font-size: 20px;
+  font-size: 16px;
   font-weight: var(--cursus-font-bold, 600);
   color: rgb(var(--cursus-color-black) / 0.6);
+}
+
+@media screen and (min-width: 768px) {
+  .docs__banner__sub-text {
+    font-size: 18px;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .docs__banner__sub-text {
+    font-size: 20px;
+  }
 }
 
 .docs__banner__image {

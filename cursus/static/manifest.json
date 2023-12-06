@@ -2,7 +2,7 @@
   "name": "cursus",
   "short_name": "cursus",
   "description": "An open-source API repository for university courses",
-  "theme_color": "#8250df",
+  "theme_color": "#6366f1",
   "background_color": "#ffffff",
   "display": "standalone",
   "orientation": "portrait",
