@@ -1,20 +1,17 @@
-{% extends "_base.html" %} {% block title %}Home{% endblock %} {% block css %}
-{{ super() }}
-<link rel="stylesheet" href="/static/css/_hero.css" />
-{% endblock %} {% block main %} {{ super() }}
+{% extends "_base.html" %} {% block title %}Home{% endblock %} {% block main %} {{ super() }}
 <section class="hero__section container-lg position-relative">
   <div class="hero__banner">
     <img
-      class="hero__banner-image"
+      class="hero__banner__image"
       src="/static/img/logo-text-256.png"
       alt="Logo banner"
     />
-    <div class="hero__banner-text">
+    <div class="hero__banner__text">
       A public API for universities and courses data
     </div>
   </div>
 </section>
-<div style="overflow-x: clip" class="container-sm container-md container-lg position-relative">
+<div class="container-sm container-md container-lg position-relative">
   <img
     class="hero__card__dot-1"
     src="/static/img/dot-grid-512.png"
