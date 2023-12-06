@@ -15,7 +15,6 @@ from werkzeug import exceptions as WerkzeugExceptions
 from cursus.models import ActiveToken
 from cursus.util import CursusException
 from cursus.util.extensions import cache, db
-from cursus.util.datetime import datetime_until_end_of_day
 
 from .university import (
     university_find,
@@ -41,6 +40,9 @@ api_bp.add_url_rule(
 
 @api_bp.before_request
 def before_request():
+    """Process actions all requests that are made to the API endpoints"""
+
+    # Missing API token
     if "X-CURSUS-API-TOKEN" not in request.headers:
         raise CursusException.BadRequestError(
             "API endpoints require an authorized API token"
@@ -49,14 +51,16 @@ def before_request():
     token = request.headers["X-CURSUS-API-TOKEN"]
     token_from_cache = cache.get(token)
 
-    if token_from_cache and token_from_cache is False:
+    # Token is found from cache but it's blacklisted
+    if token_from_cache == False:
         raise CursusException.UnauthorizedError("Invalid API Token")
 
-    cache_item = json.loads(token_from_cache)
-
+    # Token is found from cache and it's not revoked
     if token_from_cache:
+        cache_item = json.loads(token_from_cache)
+
         if "request_count" in cache_item and cache_item["request_count"] >= 50:
-            raise CursusException.UnauthorizedError(
+            raise CursusException.ForbiddenError(
                 "API Token rate limit exceeded"
             )
 
@@ -70,10 +74,13 @@ def before_request():
     if token_from_db is None:
         raise CursusException.UnauthorizedError("Invalid API Token")
 
+    now = datetime.datetime.utcnow()
+
     cache_item = {
         "token": token_from_db.token,
         "user_id": token_from_db.user_id,
-        "created": datetime.datetime.utcnow().strftime(
+        "created": now.strftime("%a, %d %b %Y %H:%M:%S GMT"),
+        "expired": (now + datetime.timedelta(days=1)).strftime(
             "%a, %d %b %Y %H:%M:%S GMT"
         ),
         "request_count": 0,
@@ -85,35 +92,42 @@ def before_request():
 
 @api_bp.after_request
 def after_request(response: flask.Response):
+    """Perform actions after a request has been processed"""
+
     response.headers["Content-Type"] = "application/json"
 
-    if response.status_code != 200:
+    # A response that made it to the endpoint handler either succeeded (200) or
+    # failed (404) to retrieve the requested resource. In both cases, we want
+    # to increment the request count for the API token.
+    #
+    # Other HTTP status codes are already handled by the error handlers.
+    if response.status_code != 200 and response.status_code != 404:
         return response
 
     token = request.headers["X-CURSUS-API-TOKEN"]
     cache_item = cache.get(token)
 
-    if cache_item is None:
-        raise CursusException.InternalServerError(
-            "Cache item not found after processing request"
-        )
+    cache_obj = json.loads(cache_item)
+    cache_obj["request_count"] += 1
 
-    cache_item = json.loads(cache_item)
-    cache_item["request_count"] += 1
+    # Compute the time to live up to one day starting from the time the token
+    # was first created.
 
     created_time = datetime.datetime.strptime(
-        cache_item["created"], "%a, %d %b %Y %H:%M:%S GMT"
+        cache_obj["created"], "%a, %d %b %Y %H:%M:%S GMT"
     )
 
-    ttl = datetime_until_end_of_day(created_time)
+    ttl = datetime.datetime.utcnow() - created_time
 
-    cache.set(token, json.dumps(cache_item), timeout=ttl.seconds)
+    cache.set(token, json.dumps(cache_obj), timeout=ttl.seconds)
 
     return response
 
 
 @api_bp.errorhandler(WerkzeugExceptions.HTTPException)
 def handle_http_error(error: WerkzeugExceptions.HTTPException):
+    """Handle generic Werkzeug HTTP exceptions"""
+
     return (
         jsonify(
             {
@@ -130,6 +144,12 @@ def handle_http_error(error: WerkzeugExceptions.HTTPException):
 
 @api_bp.errorhandler(CursusException.CursusError)
 def handle_api_error(error: CursusException.CursusError):
+    """Handle generic Cursus API exceptions
+
+    When an API endpoint raises a `CursusError`, which accepts all status codes
+    as an argument, this error handler will return a JSON response with the
+    error code, message, and reason.
+    """
     return (
         jsonify(
             {

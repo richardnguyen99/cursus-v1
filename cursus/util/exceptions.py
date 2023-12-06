@@ -47,6 +47,13 @@ class UnauthorizedError(CursusError):
         super().__init__(401, "Unauthorized", reason)
 
 
+class ForbiddenError(CursusError):
+    """Exception raised when a forbidden request is made"""
+
+    def __init__(self, reason: str):
+        super().__init__(403, "Forbidden", reason)
+
+
 class NotFoundError(CursusError):
     """Exception raised when a request to a non-existent resource is made"""
 
