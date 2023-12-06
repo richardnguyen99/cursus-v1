@@ -1,6 +1,8 @@
 /** @typedef {"account" | "token" | "update"} Page */
 /** @typedef {{ "active_token": string, "id": string, "revoked_token": string }} TokenResponseType */
 
+let actionMessageTimeoutId = null;
+
 function _mountAccount() {
   return;
 }
@@ -16,10 +18,14 @@ function _mountToken() {
    */
   const revokeToken = document.querySelector("#revoke-btn");
 
+  const copyToken = document.querySelector("#copy-token-btn");
+
   if (generateToken)
     generateToken.addEventListener("click", handleGenerateToken);
 
   if (revokeToken) revokeToken.addEventListener("click", handleRevokeToken);
+
+  if (copyToken) copyToken.addEventListener("click", handleCopyToken);
 
   return;
 }
@@ -162,13 +168,17 @@ function handleGenerateToken(e) {
  */
 function handleRevokeToken(e) {
   const xhr = new XMLHttpRequest();
+  const apiToken = document.querySelector("#profile-api-display p");
+
+  if (apiToken.innerText === "No active token") return;
 
   xhr.open("GET", "/profile/revoke_token", true);
 
   xhr.onload = function () {
+    const response = JSON.parse(this.responseText);
+
     if (this.status === 200) {
       /** @type {TokenResponseType} */
-      const response = JSON.parse(this.responseText);
 
       const profileApiDisplay = document.querySelector("#profile-api-display");
 
@@ -181,6 +191,39 @@ function handleRevokeToken(e) {
   xhr.send();
 
   return;
+}
+
+/**
+ * Callback function to copy the token to the clipboard on click
+ *
+ * @param {MouseEvent} e
+ */
+function handleCopyToken(e) {
+  const actionMessage = document.querySelector("#token-action-message");
+  const apiToken = document.querySelector("#profile-api-display p");
+
+  const tooltip = e.currentTarget.children[0];
+  const btnWrapper = e.currentTarget.children[1];
+
+  if (actionMessageTimeoutId) {
+    clearTimeout(actionMessageTimeoutId);
+    actionMessageTimeoutId = null;
+  }
+
+  actionMessageTimeoutId = setTimeout(() => {
+    if (actionMessage) {
+      tooltip.classList.remove("profile--copied");
+      btnWrapper.classList.remove("profile--success");
+      icon.className = "fi fi-rr-clipboard";
+    }
+  }, 2000);
+
+  if (actionMessage) {
+    btnWrapper.classList.add("profile--success");
+    tooltip.classList.add("profile--copied");
+  }
+
+  navigator.clipboard.writeText(apiToken.innerText);
 }
 
 (function () {

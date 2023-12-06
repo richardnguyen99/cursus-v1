@@ -9,11 +9,15 @@
       <p class="text-center">{{ active_token }}</p>
       {% endif %}
     </div>
-    <div class="profile__action">
+    <button id="copy-token-btn" class="profile__action" type="button">
+      <div class="profile__tooltip">
+        <span class="profile__tooltip-text">Copied</span>
+      </div>
       <div class="profile__action__btn">
         <i class="fi fi-rr-clipboard"></i>
+        <i class="fi fi-rr-check"></i>
       </div>
-    </div>
+    </button>
   </div>
   <div class="w-full">
     <div class="display-flex items-center gap-2 ml-auto w-fit mt-4">
