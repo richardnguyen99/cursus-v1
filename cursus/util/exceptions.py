@@ -40,6 +40,13 @@ class BadRequestError(CursusError):
         super().__init__(400, "Bad Request", reason)
 
 
+class UnauthorizedError(CursusError):
+    """Exception raised when an unauthorized request is made"""
+
+    def __init__(self, reason: str):
+        super().__init__(401, "Unauthorized", reason)
+
+
 class NotFoundError(CursusError):
     """Exception raised when a request to a non-existent resource is made"""
 

@@ -2,6 +2,7 @@
 """
 
 import flask
+import datetime
 
 from .oauth import authorize, callback
 
@@ -38,10 +39,17 @@ oauth_bp.add_url_rule(
 
 @view_bp.after_request
 def after(response: flask.Response):
+    req = flask.request
     if "X-Response-SPA" in response.headers:
         return response
 
     response.add_etag()
+    if (
+        "Cache-Control" in response.headers
+        and response.headers["Cache-Control"] == "no-cache"
+    ):
+        return response.make_conditional(req)
+
     response.headers["Cache-Control"] = "public, max-age=0, must-revalidate"
 
     return response.make_conditional(flask.request)
@@ -49,3 +57,4 @@ def after(response: flask.Response):
 
 from . import public
 from . import protected
+from . import error

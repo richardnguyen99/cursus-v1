@@ -195,10 +195,20 @@ def profile():
     )
 
 
+SUPPORT_PROFILE_SUB_PAGES = (
+    "account",
+    "token",
+    "update",
+)
+
+
 @view_bp.route("/profile/<sub_page>")
 def profile_account(sub_page: str):
     if not current_user.is_authenticated:
         return flask.redirect(flask.url_for("views.profile"))
+
+    if sub_page not in SUPPORT_PROFILE_SUB_PAGES:
+        raise exceptions.NotFoundError(f"Page {sub_page} not found")
 
     req = flask.request
 

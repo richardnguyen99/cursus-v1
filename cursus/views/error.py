@@ -7,10 +7,13 @@ import flask
 
 from werkzeug import exceptions as WkzExceptions
 
-from .util import exceptions as CursusExceptions
+from . import view_bp
+from ..util import exceptions as CursusExceptions
 
 
-def handle_not_found(error) -> tuple[str, int]:
+@view_bp.app_errorhandler(CursusExceptions.NotFoundError)
+@view_bp.app_errorhandler(WkzExceptions.NotFound)
+def handle_not_found(error) -> flask.Response:
     """Error handler for not founding a page
 
     By default, Flask will return a 404 response when it cannot find a page
@@ -31,7 +34,7 @@ def handle_not_found(error) -> tuple[str, int]:
             ...
 
     Args:
-        error (`type[Exception] | int`): An integer value or an exception
+        error (`type[Exception]`): An integer value or an exception
         object that repsernts the 404 HTTP status code
 
     Returns:
@@ -41,19 +44,37 @@ def handle_not_found(error) -> tuple[str, int]:
 
     req = flask.request
     msg = f"Not found: {req.url}"
+    code = 400
+    code_msg = "Bad Request"
 
-    if isinstance(error, CursusExceptions.NotFoundError):
+    if isinstance(error, CursusExceptions.CursusError):
         msg = str(error)
-    elif isinstance(error, WkzExceptions.NotFound):
+        code = error.status_code
+        code_msg = error.status_msg
+    elif isinstance(error, WkzExceptions.HTTPException):
         msg = error.get_description()
+        code = error.code or 400
+        code_msg = error.name
 
-    return (
+    if "application/json" in req.headers["Accept"]:
+        return flask.json.jsonify(
+            {
+                "error": {
+                    "code": code,
+                    "message": code_msg,
+                    "reason": msg,
+                }
+            },
+            code,
+        )
+
+    return flask.make_response(
         flask.render_template(
             "4xx.html",
-            title="Not found",
-            status_message="Not found",
-            status_code=404,
+            title=code_msg,
+            status_message=code_msg,
+            status_code=code,
             reason=msg,
         ),
-        404,
+        code,
     )
