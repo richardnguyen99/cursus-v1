@@ -1,7 +1,5 @@
 {% extends "_base.html" %} {% block title %}Documentation{% endblock %} {% block
-css %} {{ super() }}
-<link rel="stylesheet" href="/static/css/_docs.css" />
-{% endblock %} {% block main %} {{ super() }}
+main %} {{ super() }}
 <div class="docs__banner">
   <div class="docs__banner__heading">
     <h1 class="docs__banner__text">Documentation</h1>
@@ -18,7 +16,7 @@ css %} {{ super() }}
     />
   </div>
 </div>
-<div class="docs__card-wrapper mb-24">
+<div class="docs__card-container mb-24">
   <a
     href="{{ url_for('views.docs.show', page_name='search') }}"
     class="docs__card"

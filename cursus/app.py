@@ -184,12 +184,14 @@ def create_app() -> Flask:
             response.access_control_allow_methods = ["GET"]
             response.access_control_allow_origin = "*"
             response.access_control_max_age = 3600
-            response.headers["XXX"] = "YYY"
 
+            # If the client wishes to send a no-cache header, the content of
+            # static files will not be cached
             if (
-                "Cache-Control" in response.headers
-                and response.headers["Cache-Control"] == "no-cache"
+                "Cache-Control" in req.headers
+                and req.headers["Cache-Control"] == "no-cache"
             ):
+                print(f"{req.url} request has no-cache header")
                 return response.make_conditional(req)
 
             response.headers["Cache-Control"] = "public, max-age=31536000"
