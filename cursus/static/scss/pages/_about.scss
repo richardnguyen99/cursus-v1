@@ -1,0 +1,172 @@
+.about {
+  &__section {
+    position: relative;
+    z-index: 1;
+    overflow: visible;
+  }
+
+  &__section>h1 {
+    font-family: var(--cursus-font-serif);
+    font-size: 3rem;
+    font-weight: var(--cursus-font-bold, 600);
+    color: rgb(var(--cursus-color-black) / 0.8);
+    text-align: center;
+    margin-bottom: var(--cursus-gutter-20, 5rem);
+  }
+
+  &__section>h2 {
+    font-size: 2rem;
+    letter-spacing: -0.025em;
+    font-weight: var(--cursus-font-bold, 700);
+    color: rgb(var(--cursus-color-black) / 0.8);
+    margin-bottom: var(--cursus-gutter-4, 1rem);
+  }
+
+  &__section>p {
+    line-height: 1.5;
+    margin-bottom: var(--cursus-gutter-12, 3rem);
+  }
+
+  &__section a {
+    display: inline-block;
+    font-weight: var(--cursus-font-bold, 600);
+    color: rgb(var(--cursus-color-black) / 0.8);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: all 0.2s ease-in-out;
+
+    & a:hover {
+      color: rgb(var(--cursus-color-primary) / 1);
+      border-bottom: 1px solid rgb(var(--cursus-color-primary) / 1);
+    }
+  }
+
+
+
+  &__callout {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+
+    padding: 1rem;
+    background-color: rgb(var(--cursus-color-primary) / 0.1);
+    border-left: 4px solid rgb(var(--cursus-color-primary) / 1);
+    color: rgb(var(--cursus-color-primary) / 1);
+    margin-bottom: var(--cursus-gutter-12, 3rem);
+  }
+
+  &__callout>svg {
+    width: 2rem;
+    height: 2rem;
+    color: rgb(var(--cursus-color-primary) / 1);
+
+    flex-shrink: 0;
+  }
+
+  &__callout>p {
+    margin: 0;
+    font-size: 0.875rem;
+    color: rgb(var(--cursus-color-primary) / 1);
+  }
+
+  &__callout a {
+    color: rgb(var(--cursus-color-primary) / 1);
+  }
+
+  &__callout a:hover {
+    color: rgb(var(--cursus-color-primary--hover) / 1);
+    border-bottom: 1px solid rgb(var(--cursus-color-primary--hover) / 1);
+  }
+
+
+  &__banner {
+    position: relative;
+
+    margin-left: auto;
+    margin-right: auto;
+
+    padding-top: var(--cursus-gutter-20, 5rem);
+    padding-bottom: var(--cursus-gutter-20, 5rem);
+
+    &__heading {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    &__text {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--cursus-font-serif);
+
+      max-width: 640px;
+
+      font-size: 4rem;
+      font-weight: var(--cursus-font-black, 900);
+
+      @include breakpoint(md) {
+        font-size: 5rem;
+      }
+
+      @include breakpoint(lg) {
+        font-size: 6rem;
+      }
+    }
+
+    &__sub-text {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+
+      max-width: 768px;
+
+      font-size: 16px;
+      font-weight: var(--cursus-font-bold, 600);
+      color: rgb(var(--cursus-color-black) / 0.6);
+
+      @include breakpoint(md) {
+        font-size: 18px
+      }
+
+      @include breakpoint(lg) {
+        font-size: 20px;
+      }
+    }
+
+    &__image {
+      position: absolute;
+      left: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      z-index: -10;
+
+      height: 330px;
+
+      display: flex;
+      justify-content: center;
+    }
+
+    &__image img {
+      object-fit: cover;
+    }
+  }
+
+
+  &__bg-1 {
+    position: absolute;
+    left: auto;
+    top: -1px;
+    right: auto;
+    bottom: auto;
+    z-index: 1;
+    width: 400vw;
+    max-width: 3500px;
+  }
+}
