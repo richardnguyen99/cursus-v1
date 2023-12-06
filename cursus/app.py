@@ -9,9 +9,11 @@ import datetime
 
 from flask import Flask
 from flask_assets import Bundle
+from flask_swagger_ui import get_swaggerui_blueprint
 from webassets.bundle import get_filter
 from flask_login import logout_user, login_required
 from logging.config import dictConfig
+
 
 from .apis import api_bp as api_bp_v1
 from .views import view_bp, oauth_bp
@@ -103,6 +105,20 @@ def create_app() -> Flask:
 
         assets.register("css_all", scss_bundle)
         assets.register("js_all", js_bundle)
+
+    SWAGGER_URL = (
+        "/api/v1/docs/"  # URL for exposing Swagger UI (without trailing '/')
+    )
+    API_URL = app.config["SWAGGER_API_SPEC_URL"]
+
+    # Call factory function to create our blueprint
+    swaggerui_blueprint = get_swaggerui_blueprint(
+        SWAGGER_URL,
+        API_URL,
+        config={"app_name": "Test application"},  # Swagger UI config overrides
+    )
+
+    app.register_blueprint(swaggerui_blueprint)
 
     @login_manager.user_loader
     def load_user(id):
