@@ -114,6 +114,11 @@ def after_request(response: flask.Response):
     """Perform actions after a request has been processed"""
 
     response.headers["Content-Type"] = "application/json"
+    response.headers["Access-Control-Allow-Origin"] = "*"
+    response.headers["Access-Control-Allow-Methods"] = "GET"
+    response.headers[
+        "Access-Control-Allow-Headers"
+    ] = "Content-Type, X-CURSUS-API-TOKEN"
 
     # A response that made it to the endpoint handler either succeeded (200) or
     # failed (404) to retrieve the requested resource. In both cases, we want
