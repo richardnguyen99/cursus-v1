@@ -67,7 +67,11 @@ def before_request():
             "API endpoints require an authorized API token"
         )
 
+    if request.method == "OPTIONS":
+        return None
+
     token = request.headers["X-CURSUS-API-TOKEN"]
+
     token_from_cache = cache.get(token)
 
     # Token is found from cache but it's blacklisted
@@ -113,10 +117,15 @@ def before_request():
 def after_request(response: flask.Response):
     """Perform actions after a request has been processed"""
 
-    response.headers["Content-Type"] = "application/json"
-    response.headers["Access-Control-Allow-Origin"] = "*"
-    response.headers["Access-Control-Allow-Methods"] = "GET,OPTIONS"
-    response.headers["Access-Control-Allow-Headers"] = "X-CURSUS-API-TOKEN"
+    response.headers.add("Content-Type", "application/json")
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    response.headers.add("Access-Control-Allow-Methods", "GET, OPTIONS")
+    response.headers.add(
+        "Access-Control-Allow-Headers", "origin, x-cursus-api-token"
+    )
+
+    if flask.request.method == "OPTIONS":
+        return response
 
     # A response that made it to the endpoint handler either succeeded (200) or
     # failed (404) to retrieve the requested resource. In both cases, we want
