@@ -166,14 +166,6 @@ def before_request():
 def after_request(response: flask.Response):
     """Perform actions after a request has been processed"""
 
-    # A response that made it to the endpoint handler either succeeded (200) or
-    # failed (404) to retrieve the requested resource. In both cases, we want
-    # to increment the request count for the API token.
-    #
-    # Other HTTP status codes are already handled by the error handlers.
-    if response.status_code != 200 and response.status_code != 404:
-        return response
-
     response.headers.add("Access-Control-Allow-Origin", "*")
     response.headers.add(
         "Access-Control-Allow-Headers",
@@ -182,6 +174,14 @@ def after_request(response: flask.Response):
     response.headers.add("Access-Control-Allow-Methods", "GET, OPTIONS")
     response.headers.add("Access-Control-Allow-Credentials", "true")
     response.headers.add("Access-Control-Max-Age", "86400")
+
+    # A response that made it to the endpoint handler either succeeded (200) or
+    # failed (404) to retrieve the requested resource. In both cases, we want
+    # to increment the request count for the API token.
+    #
+    # Other HTTP status codes are already handled by the error handlers.
+    if response.status_code != 200 and response.status_code != 404:
+        return response
 
     if request.method == "OPTIONS":
         return response
