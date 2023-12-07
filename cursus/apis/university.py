@@ -21,11 +21,6 @@ def university_index():
 def university_find():
     """University find endpoint with query string"""
 
-    if flask.request.method != "GET" or flask.request.method != "OPTIONS":
-        raise CursusException.MethodNotAllowedError(
-            "This endpoint only accepts GET requests"
-        )
-
     # Get request query string
     query_string = flask.request.query_string.decode("utf-8")
 

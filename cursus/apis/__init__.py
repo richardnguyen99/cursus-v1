@@ -24,6 +24,42 @@ from .university import (
 )
 
 
+def check_preflight_request(request: flask.Request) -> bool:
+    """Check if the request is a preflight request
+
+    A preflight request is a CORS request that checks if the API endpoint is
+    allowed to be accessed outside of the domain. This function checks if the
+    request is a preflight request by checking if the request method is OPTIONS
+    and if the request headers contain the `Origin` header.
+
+    Args:
+        request (flask.Request): The request object
+
+    Returns:
+        bool: True if the request is a preflight request, False otherwise
+    """
+
+    if "Origin" not in request.headers:
+        return False
+
+    if "Access-Control-Request-Method" not in request.headers:
+        return False
+
+    if request.headers["Access-Control-Request-Method"] != "GET":
+        return False
+
+    if "Access-Control-Request-Headers" not in request.headers:
+        return False
+
+    if (
+        "x-cursus-api-token"
+        != request.headers["Access-Control-Request-Headers"].lower()
+    ):
+        return False
+
+    return True
+
+
 api_bp: Blueprint = Blueprint(
     name="api", import_name=__name__, url_prefix="/api/v1/"
 )
@@ -61,23 +97,27 @@ def swagger():
 def before_request():
     """Process actions all requests that are made to the API endpoints"""
 
+    if request.method != "OPTIONS" and request.method != "GET":
+        raise CursusException.MethodNotAllowedError(
+            "Only GET requests are allowed"
+        )
+
+    # Prelight request to check if the API endpoint is allowed to be accessed
+    # outside of the domain
+    if request.method == "OPTIONS":
+        if check_preflight_request(request):
+            # Returning a non-None value from a before_request handler will
+            # cause Flask to skip the normal request handling and continue to
+            # the after request handler.
+            return flask.make_response()
+
+        raise CursusException.BadRequestError("Invalid preflight request")
+
     # Missing API token
     if "X-CURSUS-API-TOKEN" not in request.headers:
         raise CursusException.BadRequestError(
             "API endpoints require an authorized API token"
         )
-
-    if request.method == "OPTIONS":
-        response = flask.make_response("", 200)
-
-        response.headers.add("Content-Type", "application/json")
-        response.headers.add("Access-Control-Allow-Origin", "*")
-        response.headers.add("Access-Control-Allow-Methods", "GET, OPTIONS")
-        response.headers.add(
-            "Access-Control-Allow-Headers", "origin, x-cursus-api-token"
-        )
-
-        return response
 
     token = request.headers["X-CURSUS-API-TOKEN"]
 
@@ -126,14 +166,24 @@ def before_request():
 def after_request(response: flask.Response):
     """Perform actions after a request has been processed"""
 
-    response.headers.add("Access-Control-Allow-Origin", "*")
-
     # A response that made it to the endpoint handler either succeeded (200) or
     # failed (404) to retrieve the requested resource. In both cases, we want
     # to increment the request count for the API token.
     #
     # Other HTTP status codes are already handled by the error handlers.
     if response.status_code != 200 and response.status_code != 404:
+        return response
+
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    response.headers.add(
+        "Access-Control-Allow-Headers",
+        "X-CURSUS-API-TOKEN, Content-Type, Accept, Origin",
+    )
+    response.headers.add("Access-Control-Allow-Methods", "GET, OPTIONS")
+    response.headers.add("Access-Control-Allow-Credentials", "true")
+    response.headers.add("Access-Control-Max-Age", "86400")
+
+    if request.method == "OPTIONS":
         return response
 
     token = request.headers["X-CURSUS-API-TOKEN"]
