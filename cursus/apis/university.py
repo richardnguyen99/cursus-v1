@@ -21,7 +21,7 @@ def university_index():
 def university_find():
     """University find endpoint with query string"""
 
-    if flask.request.method != "GET":
+    if flask.request.method != "GET" or flask.request.method != "OPTIONS":
         raise CursusException.MethodNotAllowedError(
             "This endpoint only accepts GET requests"
         )
@@ -46,7 +46,22 @@ def university_find():
         reason = "Query string must contain a `school` argument"
         raise CursusException.BadRequestError(reason)
 
-    limit = min(parsed_dict.get("limit", 5), 5)
+    # Set the default limit
+    limit = 5
+
+    if "limit" in parsed_dict and parsed_dict["limit"]:
+        try:
+            limit_from_query = int(parsed_dict["limit"])
+
+            if limit_from_query > 0:
+                limit = min(limit_from_query, 10)
+            else:
+                raise ValueError
+        except ValueError:
+            reason = "Query string `limit` argument must be a positive integer\
+in the range [1, 10]"
+            raise CursusException.BadRequestError(reason)
+
     search_string = parsed_dict["school"]
 
     # Search string with ignored-case pattern

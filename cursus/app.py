@@ -115,7 +115,7 @@ def create_app() -> Flask:
     swaggerui_blueprint = get_swaggerui_blueprint(
         SWAGGER_URL,
         API_URL,
-        config={"app_name": "Test application"},  # Swagger UI config overrides
+        config={"app_name": "Test application"},
     )
 
     app.register_blueprint(swaggerui_blueprint)

@@ -380,23 +380,27 @@
       "ApiError": {
         "type": "object",
         "properties": {
-          "code": {
-            "type": "integer",
-            "description": "Error code"
-          },
-          "message": {
-            "type": "string",
-            "description": "Error message"
-          },
-          "reason": {
-            "type": "string",
-            "description": "Reason for the error"
+          "error": {
+            "code": {
+              "type": "integer",
+              "description": "Error code"
+            },
+            "message": {
+              "type": "string",
+              "description": "Error message"
+            },
+            "reason": {
+              "type": "string",
+              "description": "Reason for the error"
+            }
           }
         },
         "example": {
-          "code": 404,
-          "message": "Not Found",
-          "reason": "The requested resource could not be found but may be available in the future. Subsequent requests by the client are permissible."
+          "error": {
+            "code": 404,
+            "message": "Not Found",
+            "reason": "The requested resource could not be found but may be available in the future. Subsequent requests by the client are permissible."
+          }
         }
       }
     }
