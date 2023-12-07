@@ -41,17 +41,18 @@ def university_find():
     # list into a single value.
     parsed_dict = {key: value[0] for key, value in query_dict.items()}
 
-    # Check if query string contains a `s` argument and has a value
+    # Check if query string contains a `school` argument and has a value
     if "school" not in parsed_dict or not parsed_dict["school"]:
         reason = "Query string must contain a `school` argument"
         raise CursusException.BadRequestError(reason)
 
+    limit = min(parsed_dict.get("limit", 5), 5)
     search_string = parsed_dict["school"]
 
     # Search string with ignored-case pattern
     universities = University.query.filter(
         University.full_name.ilike(f"%{search_string}%")
-    ).limit(10)
+    ).limit(limit)
 
     # Schema dump options
     fields = {

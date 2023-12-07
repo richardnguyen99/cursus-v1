@@ -1,0 +1,520 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "description": "OpenAPI documentation for Cursus API usage.\n\nBefore trying out and executing the API calls, please make sure you have a valid API key. To get an API key, please [login](/login) and obtain one from your [profile page](/profile).",
+    "version": "1.0.0",
+    "title": "Cursus API documentation",
+    "termsOfService": "...",
+    "contact": {
+      "email": "richard@richardhnguyen.com"
+    },
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/license/mit/"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://cursus.onrender.com/api/v1/",
+      "description": "Production server"
+    }
+  ],
+  "host": "cursus.onrender.com",
+  "basePath": "/api/v1/",
+  "tags": [
+    {
+      "name": "university",
+      "description": "All information about your university"
+    }
+  ],
+  "schemes": [
+    "https"
+  ],
+  "components": {
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-CURSUS-API-TOKEN"
+      }
+    },
+    "schemas": {
+      "RetrievalUniversityList": {
+        "type": "object",
+        "properties": {
+          "count": {
+            "type": "integer",
+            "description": "Number of universities returned"
+          },
+          "message": {
+            "type": "string",
+            "description": "Message that describes the result of the operation"
+          },
+          "data": {
+            "type": "array",
+            "description": "Array of RetrievalUniversity objects",
+            "items": {
+              "$ref": "#/components/schemas/RetrievalUniversity"
+            }
+          }
+        },
+        "example": {
+          "count": 2,
+          "message": "OK",
+          "data": [
+            {
+              "id": "5e9f5b9b9c6f6c0004f9e4b1",
+              "full_name": "Massachusetts Institution of Technology",
+              "short_name": "MIT"
+            },
+            {
+              "id": "5e9f5b9b9c6f6c0004f9e4b2",
+              "full_name": "Boston University",
+              "short_name": "bostonedu"
+            }
+          ]
+        }
+      },
+      "UniversityResult": {
+        "type": "object",
+        "description": "University results with a detailed information",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Message that describes the result of the operation"
+          },
+          "data": {
+            "$ref": "#/components/schemas/University"
+          }
+        },
+        "example": {
+          "data": {
+            "campuses": [
+              {
+                "address_city": "Cambridge",
+                "address_state": "Massachusetts",
+                "address_street": "77 Massachusetts Avenue",
+                "address_zip_code": "02139",
+                "country": {
+                  "alpha3": "USA",
+                  "iso3166_2": "ISO 3166-2:US",
+                  "name": "United States of America",
+                  "region": "Americas",
+                  "subregion": "Northern America"
+                },
+                "country_code": "US"
+              }
+            ],
+            "created_at": "2023-11-06T20:50:07.979731+00:00",
+            "domains": [
+              {
+                "domain_name": "https://www.mit.edu/",
+                "iso639_1": "en-US",
+                "type": "index"
+              },
+              {
+                "domain_name": "https://web.mit.edu/",
+                "iso639_1": "en-US",
+                "type": "index"
+              },
+              {
+                "domain_name": "https://mitadmissions.org/",
+                "iso639_1": "en-US",
+                "type": "admissions"
+              },
+              {
+                "domain_name": "https://studentlife.mit.edu/",
+                "iso639_1": "en-US",
+                "type": "student life"
+              },
+              {
+                "domain_name": "https://catalog.mit.edu/",
+                "iso639_1": "en-US",
+                "type": "catalog"
+              },
+              {
+                "domain_name": "https://oge.mit.edu/",
+                "iso639_1": "en-US",
+                "type": "graduate"
+              },
+              {
+                "domain_name": "https://www.mitathletics.com/",
+                "iso639_1": "en-US",
+                "type": "athletics"
+              },
+              {
+                "domain_name": "https://libraries.mit.edu/",
+                "iso639_1": "en-US",
+                "type": "libraries"
+              },
+              {
+                "domain_name": "https://registrar.mit.edu/",
+                "iso639_1": "en-US",
+                "type": "registrar"
+              },
+              {
+                "domain_name": "https://alum.mit.edu/",
+                "iso639_1": "en-US",
+                "type": "alumni"
+              }
+            ],
+            "established": 1861,
+            "former_name": "Massachusetts Institute of Technology",
+            "founders": [
+              {
+                "biography_link": "https://libraries.mit.edu/mithistory/william-barton-rogers-1804-1882",
+                "first_name": "William Barton",
+                "last_name": "Rogers",
+                "middle_name": "-",
+                "suffix": "-"
+              }
+            ],
+            "full_name": "Massachusetts Institute of Technology",
+            "id": 112,
+            "motto": "Mind and Hand",
+            "short_name": "mit",
+            "updated_at": "2023-11-06T20:50:07.979731+00:00"
+          },
+          "message": "OK"
+        }
+      },
+      "University": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "University ID stored in the database"
+          },
+          "full_name": {
+            "type": "string",
+            "description": "University full name, for example: \"Massachusetts Institution of Technology\""
+          },
+          "short_name": {
+            "type": "string",
+            "description": "University short name, for example: \"MIT\""
+          },
+          "established": {
+            "type": "integer",
+            "description": "Year the university was established"
+          },
+          "former_names": {
+            "type": "string",
+            "description": "Former name of the university"
+          },
+          "motto": {
+            "type": "string",
+            "description": "University's motto"
+          },
+          "campuses": {
+            "type": "array",
+            "description": "Array of campuses",
+            "items": {
+              "$ref": "#/components/schemas/Campus"
+            }
+          },
+          "domains": {
+            "type": "array",
+            "description": "Array of domains",
+            "items": {
+              "$ref": "#/components/schemas/Domain"
+            }
+          },
+          "founders": {
+            "type": "array",
+            "description": "Array of founders",
+            "items": {
+              "$ref": "#/components/schemas/Founder"
+            }
+          },
+          "created_at": {
+            "type": "string",
+            "description": "Date and time the university was created in the database",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "description": "Date and time the university was last updated in the database",
+            "format": "date-time"
+          }
+        }
+      },
+      "RetrievalUniversity": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "University ID stored in the database"
+          },
+          "full_name": {
+            "type": "string",
+            "description": "University full name, for example: \"Massachusetts Institution of Technology\""
+          },
+          "short_name": {
+            "type": "string",
+            "description": "University short name, for example: \"MIT\""
+          }
+        },
+        "example": {
+          "id": "5e9f5b9b9c6f6c0004f9e4b1",
+          "full_name": "Massachusetts Institution of Technology",
+          "short_name": "MIT"
+        }
+      },
+      "Founder": {
+        "type": "object",
+        "properties": {
+          "biography_link": {
+            "type": "string",
+            "description": "Link to the biography of the founder",
+            "format": "uri"
+          },
+          "first_name": {
+            "type": "string",
+            "description": "First name of the founder"
+          },
+          "last_name": {
+            "type": "string",
+            "description": "Last name of the founder"
+          },
+          "middle_name": {
+            "type": "string",
+            "description": "Middle name of the founder"
+          },
+          "suffix": {
+            "type": "string",
+            "description": "Suffix of the founder"
+          }
+        }
+      },
+      "Domain": {
+        "type": "object",
+        "properties": {
+          "domain_name": {
+            "type": "string",
+            "description": "Domain name of the university"
+          },
+          "iso639_1": {
+            "type": "string",
+            "description": "ISO 639-1 code of the domain"
+          },
+          "type": {
+            "type": "string",
+            "description": "Type of the domain"
+          }
+        }
+      },
+      "Country": {
+        "type": "object",
+        "properties": {
+          "alpha": {
+            "type": "string",
+            "description": "Alpha-2 code of the country"
+          },
+          "iso3166_2": {
+            "type": "string",
+            "description": "ISO 3166-2 code of the country"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the country"
+          },
+          "region": {
+            "type": "string",
+            "description": "Region of the country"
+          },
+          "subregion": {
+            "type": "string",
+            "description": "Subregion of the country"
+          }
+        },
+        "example": {
+          "alpha3": "USA",
+          "iso3166_2": "ISO 3166-2:US",
+          "name": "United States of America",
+          "region": "Americas",
+          "subregion": "Northern America"
+        }
+      },
+      "Campus": {
+        "type": "object",
+        "properties": {
+          "address_city": {
+            "type": "string",
+            "description": "City of the campus"
+          },
+          "address_state": {
+            "type": "string",
+            "description": "State of the campus"
+          },
+          "address_street": {
+            "type": "string",
+            "description": "Street of the campus"
+          },
+          "address_zip_code": {
+            "type": "string",
+            "description": "Zip code of the campus"
+          },
+          "country": {
+            "$ref": "#/components/schemas/Country"
+          },
+          "country_code": {
+            "type": "string",
+            "description": "Country code of the campus"
+          }
+        },
+        "example": {
+          "address_city": "Cambridge",
+          "address_state": "Massachusetts",
+          "address_street": "77 Massachusetts Avenue",
+          "address_zip_code": "02139",
+          "country": {
+            "alpha3": "USA",
+            "iso3166_2": "ISO 3166-2:US",
+            "name": "United States of America",
+            "region": "Americas",
+            "subregion": "Northern America"
+          },
+          "country_code": "US"
+        }
+      },
+      "ApiError": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "Error code"
+          },
+          "message": {
+            "type": "string",
+            "description": "Error message"
+          },
+          "reason": {
+            "type": "string",
+            "description": "Reason for the error"
+          }
+        },
+        "example": {
+          "code": 404,
+          "message": "Not Found",
+          "reason": "The requested resource could not be found but may be available in the future. Subsequent requests by the client are permissible."
+        }
+      }
+    }
+  },
+  "paths": {
+    "/university/find": {
+      "get": {
+        "tags": [
+          "university"
+        ],
+        "summary": "Find university by name",
+        "description": "Retrieve a university or college by searching for its name",
+        "operationId": "findUniversityByName",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "school",
+            "in": "query",
+            "description": "School name to retrieve",
+            "required": true,
+            "type": "string",
+            "default": "Boston University"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Limit the number of results. Default is `10`. Max is `10`",
+            "required": false,
+            "type": "integer",
+            "default": 10
+          }
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation with a RetrievalUniversity object",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RetrievalUniversityList"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Failed to serve the requested resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/university/{short_name}": {
+      "get": {
+        "tags": [
+          "university"
+        ],
+        "summary": "Retrieve information of a university",
+        "description": "Find the best match and retrieve information of a university by its short name",
+        "operationId": "findUniversityByShortName",
+        "produces": [
+          "application/json",
+          "application/xml"
+        ],
+        "parameters": [
+          {
+            "name": "short_name",
+            "in": "path",
+            "description": "Short name of the university to retrieve",
+            "required": true,
+            "type": "string",
+            "default": "mit"
+          }
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation with a RetrievalUniversity object",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UniversityResult"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Failed to serve the requested resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "externalDocs": {
+      "description": "Find out more about Swagger",
+      "url": "http://swagger.io"
+    }
+  }
+}

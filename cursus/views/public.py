@@ -39,6 +39,11 @@ def login():
     return flask.render_template("login.html", next=next), 200
 
 
+@view_bp.route("/demo", methods=["GET"])
+def show_demo():
+    return flask.redirect(flask.url_for("swagger_ui.show"))
+
+
 @view_bp.route("/", defaults={"page_name": "index"})
 @view_bp.route("/<page_name>")
 def show(page_name: str):

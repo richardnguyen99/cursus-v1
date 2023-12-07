@@ -22,6 +22,7 @@ class Config(object):
     DEBUG = False
     DATABASE_URL = os.environ.get("DATABASE_URL")
     FLASK_ENV = os.environ.get("FLASK_ENV")
+    SWAGGER_API_SPEC_URL = os.environ.get("SWAGGER_API_SPEC_URL")
 
     # Config for Flask SQLAlchemy and Alembic
     SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL")
