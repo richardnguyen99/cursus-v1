@@ -68,7 +68,16 @@ def before_request():
         )
 
     if request.method == "OPTIONS":
-        return None
+        response = flask.make_response("", 200)
+
+        response.headers.add("Content-Type", "application/json")
+        response.headers.add("Access-Control-Allow-Origin", "*")
+        response.headers.add("Access-Control-Allow-Methods", "GET, OPTIONS")
+        response.headers.add(
+            "Access-Control-Allow-Headers", "origin, x-cursus-api-token"
+        )
+
+        return response
 
     token = request.headers["X-CURSUS-API-TOKEN"]
 
@@ -117,15 +126,7 @@ def before_request():
 def after_request(response: flask.Response):
     """Perform actions after a request has been processed"""
 
-    response.headers.add("Content-Type", "application/json")
     response.headers.add("Access-Control-Allow-Origin", "*")
-    response.headers.add("Access-Control-Allow-Methods", "GET, OPTIONS")
-    response.headers.add(
-        "Access-Control-Allow-Headers", "origin, x-cursus-api-token"
-    )
-
-    if flask.request.method == "OPTIONS":
-        return response
 
     # A response that made it to the endpoint handler either succeeded (200) or
     # failed (404) to retrieve the requested resource. In both cases, we want
