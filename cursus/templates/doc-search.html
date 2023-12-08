@@ -1,7 +1,6 @@
 {% extends "_base.html" %} {% block title %}Search - Docs{% endblock %} {% block
-css %} {{ super() }}
-<link rel="stylesheet" href="/static/css/_docs.css" />
-{% endblock %} {% block main %} {{ super() }}
+main %} {{ super() }} {% from "macros/heading1.html" import heading1 with
+context %}
 <div class="docs__banner">
   <div class="docs__banner__heading">
     <h1 class="docs__banner__text">Search</h1>
@@ -25,5 +24,6 @@ css %} {{ super() }}
       <p>Search</p>
     </div>
   </div>
+  {{ heading1("search", "Search for universities")}}
 </section>
 {% endblock %}
