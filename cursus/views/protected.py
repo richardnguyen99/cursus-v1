@@ -191,7 +191,10 @@ You have reached the maximum number of tokens generated per day",
 @login_required
 def profile():
     return flask.redirect(
-        flask.url_for("views.profile_account", sub_page="account")
+        flask.url_for(
+            "views.profile_account",
+            sub_page="account",
+        )
     )
 
 
@@ -231,6 +234,7 @@ def profile_account(sub_page: str):
             flask.render_template(
                 "_profile.html",
                 page_name="profile",
+                current_user=current_user,
             )
         )
 

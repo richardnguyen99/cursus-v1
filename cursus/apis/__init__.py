@@ -159,7 +159,7 @@ def before_request():
     }
 
     # Cache rate limit for one day (in seconds)
-    cache.set(token, json.dumps(cache_item), timeout=60 * 60 * 24)
+    cache.set(token, json.dumps(cache_item), timeout=60 * 60)
 
 
 @university_bp.after_request
@@ -200,6 +200,9 @@ def after_request(response: flask.Response):
     )
 
     ttl = datetime.datetime.utcnow() - created_time
+
+    if ttl.seconds < 0:
+        ttl = datetime.timedelta(minutes=60)
 
     cache.set(token, json.dumps(cache_obj), timeout=ttl.seconds)
 

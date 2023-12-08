@@ -46,12 +46,12 @@
           >
             <div class="display-flex items-center gap-6">
               <div class="profile__img">
-                <img src="/static/img/logo-180.png" alt="avatar" />
+                <img src="{{ current_user.image }}" alt="avatar" />
               </div>
               <div class="profile__heading">
                 <div class="profile__name">
-                  <h1 class="profile__fullname">John Doe</h1>
-                  <p class="profile__username">@johndoe</p>
+                  <h1 class="profile__fullname">{{ current_user.name }}</h1>
+                  <p class="profile__username">{{ current_user.email }}</p>
                 </div>
               </div>
             </div>

@@ -122,6 +122,8 @@ def create_app() -> Flask:
 
     @login_manager.user_loader
     def load_user(id):
+        """Load a user from the database"""
+
         user_with_token = (
             db.session.query(ActiveToken.token, User)
             .select_from(User)
