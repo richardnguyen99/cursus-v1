@@ -22,10 +22,15 @@
 }
 
 /* Medium container breaks up to medium breakpoint (768px) */
+.container-md {
+  max-width: $container-md;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
 @include breakpoint(md) {
 
-  .container,
-  .container-md {
+  .container {
     max-width: $container-md;
     padding-left: 1.5rem;
     padding-right: 1.5rem;

@@ -4,15 +4,18 @@
   min-height: calc(100vh - 11.75rem); // minus navbar height + footer height
 
   &__sticky-nav {
-    position: sticky;
-    top: 88px;
-    z-index: 1;
 
     background-color: rgb(var(--color-white) / 1);
     box-shadow: 0 0.5rem 1rem rgb(var(--color-black) / 0.15);
 
     padding: 1rem;
     border-radius: 12px;
+
+    @include breakpoint(lg) {
+      position: sticky;
+      top: 88px;
+      z-index: 1;
+    }
   }
 
   &__nav {
@@ -57,7 +60,8 @@
     background-color: rgb(var(--color-white) / 1);
     box-shadow: 0 0.5rem 1rem rgb(var(--color-black) / 0.15);
 
-    padding: 1rem;
+    padding: 1rem 2rem;
+
     border-radius: 12px;
   }
 
@@ -94,7 +98,7 @@
     background-color: rgb(var(--color-white) / 1);
     box-shadow: 0 0.5rem 1rem rgb(var(--color-black) / 0.15);
 
-    padding: 1rem;
+    padding: 2rem;
     border-radius: 12px;
   }
 
@@ -116,12 +120,18 @@
     color: rgb(var(--color-gray-400) / 1);
 
     padding: 0.5rem 1rem;
-    width: 100%;
+    width: calc(100% - 2rem);
     border: 1px solid rgb(var(--color-gray-200) / 1);
     border-right-color: transparent;
 
     border-top-left-radius: 8px;
     border-bottom-left-radius: 8px;
+
+    &>p {
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
   }
 
   &__tooltip {
@@ -216,9 +226,14 @@
 
     &__message {
       position: relative;
-      display: flex;
       font-size: 14px;
-      align-items: center;
+
+
+      // For vertical ellipsis
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
 
       & .profile--danger {
         color: rgb(var(--color-red-500) / 1);
@@ -246,9 +261,20 @@
       margin-bottom: 1.5rem;
     }
 
-    &>div,
+    &>div {
+      margin-bottom: 1rem;
+    }
+
     &>pre {
       margin-bottom: 1rem;
+      white-space: pre-wrap;
+
+      position: relative;
+      display: block;
+      padding: 1rem;
+      border-radius: 12px;
+
+      background-color: rgb(var(--color-gray-50) / 1);
     }
   }
 }
