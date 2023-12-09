@@ -1,6 +1,11 @@
-{% extends "_base.html" %} {% block title %}Search - Docs{% endblock %} {% block
-main %} {{ super() }} {% from "macros/heading1.html" import heading1 with
-context %}
+{% extends "_base.html" %} 
+
+{% block title %}Search - Docs{% endblock %} 
+{% block main %} 
+{{ super() }} 
+
+{% from "macros/heading.html" import heading1, heading2, heading3 with context %}
+
 <div class="docs__banner">
   <div class="docs__banner__heading">
     <h1 class="docs__banner__text">Search</h1>
@@ -14,6 +19,7 @@ context %}
     />
   </div>
 </div>
+
 <section class="container-sm container-md container-lg mb-24">
   <div class="docs__breadcrumb">
     <div class="docs__breadcrumb__container">
@@ -24,6 +30,81 @@ context %}
       <p>Search</p>
     </div>
   </div>
-  {{ heading1("search", "Search for universities")}}
+
+  <div class="docs__display">
+    {% call heading1("search") %}
+      Search for university by name
+    {% endcall %} 
+
+    {% call heading2("search_endpoint") %}
+      <code class="inline">/api/v1/university/find</code>
+    {% endcall %}
+
+    <p>
+      The <code class="inline">/find</code> endpoint allows you to search for a 
+      university by alike name and returns a list of best matched universities
+      with <b>full name</b> and <b>short name</b>.
+    </p>
+
+    <pre>
+      <code class="language-bash">
+        curl --request GET \
+        -H 'X-CURSUS-API-TOKEN': &lt;YOUR_API_TOKEN&gt;' \
+        --url 'https://cursus.onrender.com/api/v1/university/find?school=harvard'
+      </code>
+    </pre>
+
+    {% call heading3("search_params") %}
+      Query parameters
+    {% endcall %}
+    <ul>
+      <li>
+        <code class="inline">school</code>: The name suggestion of the university
+        you are looking for (insensitive case).
+      </li>
+      <li>
+       <code class="inline">limit</code>&nbsp;<b>(Optional)</b>: The number of results to return from 
+        range <code class="inline">1</code> to <code class="inline">10</code>. 
+        Default is <code class="inline">5</code>.
+      </li>
+    </ul>
+
+    {% call heading3("search_return") %}
+      Return object
+    {% endcall %}
+    <ul>
+      <li>
+        On success, the HTTP status code in the response header is 
+        <code class="inline">200 (OK)</code> to indicate the request was 
+        successful and the response body contains an array of universities that
+        are best matched with the query.
+      </li>
+      <li>
+        On error, the response body is an error object to describe the error.
+    </ul>
+
+    {% call heading3("search_notes") %}
+      Notes 
+    {% endcall %}
+    <ul>
+      <li>Your <code class="inline">API_TOKEN</code> can be found in the 
+        <b>Profile</b> page once you signed in.
+      </li>
+      <li>
+        The API endpoint only supports JSON format. If the request does not 
+        accept JSON, the response will fail.
+      </li>
+      <li>
+        For more information about the endpoint, please visit the 
+        <a 
+          href="{{ url_for('swagger_ui.show', _anchor='/university/findUniversityByName') }}"
+          title="{{ url_for('swagger_ui.show', _anchor='/university/findUniversityByName') }}"
+        >
+          Swagger documentation for this endpoint
+        </a>.
+      </li>
+    </ul>
+
+  </div>
 </section>
 {% endblock %}

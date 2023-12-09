@@ -1,7 +1,11 @@
-{% extends "_base.html" %} {% block title %}More - Docs{% endblock %} {% block
-css %} {{ super() }}
-<link rel="stylesheet" href="/static/css/_docs.css" />
-{% endblock %} {% block main %} {{ super() }}
+{% extends "_base.html" %} 
+
+{% block title %}More - Docs{% endblock %} 
+{% block main %} 
+{{ super() }} 
+
+{% from "macros/heading.html" import heading1, heading2, heading3 with context %}
+
 <div class="docs__banner">
   <div class="docs__banner__heading">
     <h1 class="docs__banner__text">More</h1>
@@ -15,6 +19,7 @@ css %} {{ super() }}
     />
   </div>
 </div>
+
 <section class="container-sm container-md container-lg mb-24">
   <div class="docs__breadcrumb">
     <div class="docs__breadcrumb__container">
@@ -25,5 +30,10 @@ css %} {{ super() }}
       <p>More</p>
     </div>
   </div>
+
+  <div class="docs__display">
+    (To be defined ...)
+  </div>
 </section>
 {% endblock %}
+
