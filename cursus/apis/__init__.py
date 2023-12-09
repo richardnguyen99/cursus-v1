@@ -60,6 +60,28 @@ def check_preflight_request(request: flask.Request) -> bool:
     return True
 
 
+def make_cors_headers(response: flask.Response) -> flask.Response:
+    """Make CORS headers for the response
+
+    Args:
+        response (flask.Response): The response object
+
+    Returns:
+        flask.Response: The response object with CORS headers
+    """
+
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    response.headers.add(
+        "Access-Control-Allow-Headers",
+        "X-CURSUS-API-TOKEN, Content-Type, Accept, Origin",
+    )
+    response.headers.add("Access-Control-Allow-Methods", "GET, OPTIONS")
+    response.headers.add("Access-Control-Allow-Credentials", "true")
+    response.headers.add("Access-Control-Max-Age", "86400")
+
+    return response
+
+
 api_bp: Blueprint = Blueprint(
     name="api", import_name=__name__, url_prefix="/api/v1/"
 )
@@ -166,14 +188,7 @@ def before_request():
 def after_request(response: flask.Response):
     """Perform actions after a request has been processed"""
 
-    response.headers.add("Access-Control-Allow-Origin", "*")
-    response.headers.add(
-        "Access-Control-Allow-Headers",
-        "X-CURSUS-API-TOKEN, Content-Type, Accept, Origin",
-    )
-    response.headers.add("Access-Control-Allow-Methods", "GET, OPTIONS")
-    response.headers.add("Access-Control-Allow-Credentials", "true")
-    response.headers.add("Access-Control-Max-Age", "86400")
+    make_cors_headers(response)
 
     # A response that made it to the endpoint handler either succeeded (200) or
     # failed (404) to retrieve the requested resource. In both cases, we want
@@ -213,7 +228,7 @@ def after_request(response: flask.Response):
 def handle_http_error(error: WerkzeugExceptions.HTTPException):
     """Handle generic Werkzeug HTTP exceptions"""
 
-    return (
+    resp = flask.make_response(
         jsonify(
             {
                 "error": {
@@ -226,6 +241,10 @@ def handle_http_error(error: WerkzeugExceptions.HTTPException):
         error.code,
     )
 
+    make_cors_headers(resp)
+
+    return resp
+
 
 @university_bp.errorhandler(CursusException.CursusError)
 def handle_api_error(error: CursusException.CursusError):
@@ -235,7 +254,7 @@ def handle_api_error(error: CursusException.CursusError):
     as an argument, this error handler will return a JSON response with the
     error code, message, and reason.
     """
-    return (
+    resp = flask.make_response(
         jsonify(
             {
                 "error": {
@@ -247,6 +266,10 @@ def handle_api_error(error: CursusException.CursusError):
         ),
         error.status_code,
     )
+
+    make_cors_headers(resp)
+
+    return resp
 
 
 api_bp.register_blueprint(university_bp)

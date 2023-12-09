@@ -94,12 +94,18 @@ def create_app() -> Flask:
         )
 
         js_bundle = Bundle(
-            "js/app.js",
-            "js/dropdown.js",
-            "js/index.js",
-            "js/profile.js",
-            output="js/min.bundle.js",
-            filters=(babel_filter, "uglifyjs"),
+            Bundle(
+                "js/app.js",
+                "js/dropdown.js",
+                "js/index.js",
+                "js/profile.js",
+                output="js/min.bundle.js",
+                filters=(babel_filter, "uglifyjs"),
+            ),
+            Bundle(
+                "js/vendor/prism.js",
+                output="js/vendor.bundle.js",
+            ),
             depends="js/**/*",
         )
 

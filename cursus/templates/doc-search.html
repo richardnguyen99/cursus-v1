@@ -46,11 +46,11 @@
       with <b>full name</b> and <b>short name</b>.
     </p>
 
-    <pre>
-      <code class="language-bash">
-        curl --request GET \
-        -H 'X-CURSUS-API-TOKEN': &lt;YOUR_API_TOKEN&gt;' \
-        --url 'https://cursus.onrender.com/api/v1/university/find?school=harvard'
+    <pre class="no-line-numbers">
+      <code class="language-bash" data-prismjs-copy="Copy">
+curl --request GET \
+-H 'X-CURSUS-API-TOKEN': &lt;YOUR_API_TOKEN&gt; \
+--url 'cursus.onrender.com/api/v1/university/find?school=cali&limit=2'
       </code>
     </pre>
 
@@ -77,8 +77,28 @@
         On success, the HTTP status code in the response header is 
         <code class="inline">200 (OK)</code> to indicate the request was 
         successful and the response body contains an array of universities that
-        are best matched with the query.
+        are best matched with the query. For example:
       </li>
+      <pre>
+        <code class="language-json">
+{
+    "count": 2,
+    "data": [
+        {
+            "full_name": "University of California, Berkeley",
+            "id": 121,
+            "short_name": "berkeley-edu"
+        },
+        {
+            "full_name": "California Institute of Technology",
+            "id": 126,
+            "short_name": "caltech"
+        }
+    ],
+    "message": "OK"
+}
+        </code>
+      </pre>
       <li>
         On error, the response body is an error object to describe the error.
     </ul>

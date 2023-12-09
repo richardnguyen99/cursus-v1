@@ -76,12 +76,21 @@
       href="https://cdn-uicons.flaticon.com/2.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css"
     />
 
-    {% block css %} {% assets filters="cssmin", output="css/core.bundle.css",
-    "css/index.css", "css/_dropdown.css" %}
-    <link rel="stylesheet" href="{{ ASSET_URL }}" />
-    {% endassets %} {% endblock %} {% assets "css_all" %}
-    <link rel="stylesheet" href="{{ ASSET_URL }}" />
-    {% endassets %} {% endblock %}
+    {% block css %} 
+    {% assets filters="autoprefixer6, cssmin", output="css/vendor.bundle.css", "css/prism.css" %}
+      <link rel="stylesheet" href="{{ ASSET_URL }}" />
+    {% endassets %} 
+
+    {% assets filters="cssmin", output="css/core.bundle.css", "css/index.css", "css/_dropdown.css" %}
+      <link rel="stylesheet" href="{{ ASSET_URL }}" />
+    {% endassets %} 
+
+    {% assets "css_all" %}
+      <link rel="stylesheet" href="{{ ASSET_URL }}" />
+    {% endassets %} 
+    {% endblock %} 
+
+    {% endblock %}
   </head>
   <body>
     <button type="button" id="installButton" class="display-none">
