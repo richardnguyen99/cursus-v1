@@ -4,6 +4,7 @@
 """
 
 import os
+import hashlib
 import flask
 import datetime
 
@@ -19,6 +20,13 @@ from .apis import api_bp as api_bp_v1
 from .views import view_bp, oauth_bp
 from .util.extensions import db, migrate, ma, login_manager, assets, cache
 from .models import User, ActiveToken
+
+
+def generate_content_hash(image_path):
+    with open(image_path, "rb") as f:
+        content = f.read()
+        content_hash = hashlib.md5(content).hexdigest()
+    return content_hash
 
 
 if os.environ.get("FLASK_ENV") != "development":
@@ -190,6 +198,12 @@ def create_app() -> Flask:
 
         return resp
 
+    @app.route("/static/img/<filename>")
+    def get_image(filename):
+        return flask.send_from_directory(
+            os.path.join(app.root_path, "static", "img"), filename
+        )
+
     @app.after_request
     def after(response: flask.Response):
         current_app = flask.current_app
@@ -226,5 +240,14 @@ def create_app() -> Flask:
     @app.teardown_appcontext
     def shutdown_session(exception=None):  # pylint: disable=unused-argument
         db.session.remove()
+
+    @app.context_processor
+    def inject_content_hash():
+        def content_hash_for_image(filename):
+            """Generate a content hash for cache-busting images"""
+            image_path = os.path.join(app.root_path, "static", "img", filename)
+            return generate_content_hash(image_path)
+
+        return dict(content_hash_for_image=content_hash_for_image)
 
     return app

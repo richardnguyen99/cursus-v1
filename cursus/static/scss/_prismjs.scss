@@ -15,9 +15,10 @@ div.code-toolbar {
       opacity: 0;
     }
 
-    &:hover>.toolbar>.toolbar-item:last-child {
-      opacity: 1;
-    }
+  }
+
+  &:hover>.toolbar>.toolbar-item:last-child {
+    opacity: 1;
   }
 }
 

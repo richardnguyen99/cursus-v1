@@ -12,7 +12,7 @@
   </div>
   <div class="docs__banner__image">
     <img
-      src="/static/img/docs-courses-banner.png"
+      src="{{ url_for('get_image', filename='docs-courses-banner.png') }}?v={{ content_hash_for_image('docs-courses-banner.png') }}"
       width="1440"
       height="360"
       alt="Courses doc banner"

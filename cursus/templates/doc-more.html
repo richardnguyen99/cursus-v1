@@ -11,12 +11,12 @@
     <h1 class="docs__banner__text">More</h1>
   </div>
   <div class="docs__banner__image">
-    <img
-      src="/static/img/docs-more-banner.png"
-      width="1440"
-      height="360"
-      alt="More doc banner"
-    />
+      <img
+        src="{{ url_for('get_image', filename='docs-more-banner.png') }}?v={{ content_hash_for_image('docs-more-banner.png') }}"
+        width="1440"
+        height="360"
+        alt="More doc banner"
+      />
   </div>
 </div>
 

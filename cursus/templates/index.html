@@ -3,7 +3,7 @@
   <div class="hero__banner">
     <img
       class="hero__banner__image"
-      src="/static/img/logo-text-256.png"
+      src="{{ url_for('get_image', filename='logo-text-256.png') }}?v={{ content_hash_for_image('logo-text-256.png') }}"
       alt="Logo banner"
     />
     <div class="hero__banner__text">
@@ -14,7 +14,7 @@
 <div class="container-sm container-md container-lg position-relative">
   <img
     class="hero__card__dot-1"
-    src="/static/img/dot-grid-512.png"
+    src="{{ url_for('get_image', filename='dot-grid-512.png') }}?v={{ content_hash_for_image('dot-grid-512.png') }}"
     alt="dot-grid-512"
   />
   <div class="hero__card">

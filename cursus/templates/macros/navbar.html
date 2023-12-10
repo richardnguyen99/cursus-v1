@@ -9,7 +9,7 @@
     >
       <img
         class="navbar__brand__logo"
-        src="/static/img/logo-180.png"
+        src="{{ url_for('get_image', filename='logo-180.png') }}?v={{ content_hash_for_image('logo-180.png') }}"
         alt="Cursus"
       />
       <p class="navbar__brand__text">Cursus</p>

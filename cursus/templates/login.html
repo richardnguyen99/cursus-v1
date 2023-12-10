@@ -1,4 +1,7 @@
-{% extends "_base.html" %} {% block title %}Login{% endblock %}{% block main %}
+{% extends "_base.html" %} 
+{% block title %}Login{% endblock %}
+
+{% block main %}
 {{ super() }}
 <section class="login__section">
   <h1 class="login__heading">Login</h1>
@@ -8,7 +11,7 @@
       class="login__btn login__btn--google"
     >
       <img
-        src="{{ url_for('static', filename='img/google-g-logo.svg') }}"
+        src="{{ url_for('get_image', filename='google-g-logo.svg') }}?v={{ content_hash_for_image('google-g-logo.svg') }}"
         alt="Google Logo"
         class="login__btn-img"
       />
@@ -19,7 +22,7 @@
       class="login__btn login__btn--github"
     >
       <img
-        src="{{ url_for('static', filename='img/github-mark-white.svg') }}"
+        src="{{ url_for('get_image', filename='github-mark-white.svg') }}?v={{ content_hash_for_image('github-mark-white.svg') }}"
         alt="GitHub Logo"
         class="login__btn-img"
       />
@@ -30,7 +33,7 @@
       class="login__btn login__btn--discord"
     >
       <img
-        src="{{ url_for('static', filename='img/discord-clyde-logo.svg') }}"
+        src="{{ url_for('get_image', filename='discord-clyde-logo.svg') }}?v={{ content_hash_for_image('discord-clyde-logo.svg') }}"
         alt="GitHub Logo"
         class="login__btn-img"
       />
