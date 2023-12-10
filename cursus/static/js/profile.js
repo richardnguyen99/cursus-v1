@@ -4,10 +4,13 @@
 let actionMessageTimeoutId = null;
 
 function _mountAccount() {
+  document.title = "Account - Profile - Cursus";
+
   return;
 }
 
 function _mountToken() {
+  document.title = "Tokens - Profile - Cursus";
   /**
    * @type {HTMLElement}
    */
@@ -31,6 +34,8 @@ function _mountToken() {
 }
 
 function _mountUpdate() {
+  document.title = "Update - Profile - Cursus";
+
   return;
 }
 

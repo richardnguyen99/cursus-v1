@@ -4,29 +4,14 @@
 """
 
 import os
-import hashlib
-import flask
-import datetime
 
 from flask import Flask
-from flask_assets import Bundle
-from flask_swagger_ui import get_swaggerui_blueprint
-from webassets.bundle import get_filter
-from flask_login import logout_user, login_required
 from logging.config import dictConfig
 
 
 from .apis import api_bp as api_bp_v1
 from .views import view_bp, oauth_bp
 from .util.extensions import db, migrate, ma, login_manager, assets, cache
-from .models import User, ActiveToken
-
-
-def generate_content_hash(image_path):
-    with open(image_path, "rb") as f:
-        content = f.read()
-        content_hash = hashlib.md5(content).hexdigest()
-    return content_hash
 
 
 if os.environ.get("FLASK_ENV") != "development":
@@ -84,170 +69,43 @@ def create_app() -> Flask:
     login_manager.init_app(app)
     cache.init_app(app)
 
-    with app.app_context():
-        login_manager.login_view = "views.show"
-        login_manager.session_protection = "strong"
-
-        scss_bundle = Bundle(
-            "scss/global.scss",
-            filters="scss,autoprefixer6,cssmin",
-            output="css/min.bundle.css",
-            # https://webassets.readthedocs.io/en/latest/bundles.html#bundles
-            depends="scss/**/_*.scss",
-        )
-
-        babel_filter = get_filter(
-            "babel",
-            presets=app.config["BABEL_PRESET_ENV_PATH"],
-        )
-
-        js_bundle = Bundle(
-            Bundle(
-                "js/app.js",
-                "js/dropdown.js",
-                "js/index.js",
-                "js/profile.js",
-                output="js/min.bundle.js",
-                filters=(babel_filter, "uglifyjs"),
-            ),
-            Bundle(
-                "js/vendor/prism.js",
-                output="js/vendor.bundle.js",
-            ),
-            depends="js/**/*",
-        )
-
-        assets.register("css_all", scss_bundle)
-        assets.register("js_all", js_bundle)
-
-    SWAGGER_URL = (
-        "/api/v1/docs/"  # URL for exposing Swagger UI (without trailing '/')
-    )
-    API_URL = app.config["SWAGGER_API_SPEC_URL"]
-
-    # Call factory function to create our blueprint
-    swaggerui_blueprint = get_swaggerui_blueprint(
-        SWAGGER_URL,
-        API_URL,
-        config={"app_name": "Test application"},
-    )
-
-    app.register_blueprint(swaggerui_blueprint)
-
-    @login_manager.user_loader
-    def load_user(id):
-        """Load a user from the database"""
-
-        user_with_token = (
-            db.session.query(ActiveToken.token, User)
-            .select_from(User)
-            .outerjoin(ActiveToken, User.id == ActiveToken.user_id)
-            .filter(User.id == id)
-            .first()
-        )
-
-        # The above query returns a tuple of an API token and a User object
-        # However, Flask-Login expects a User object, so we have to set the
-        # active token manually
-        user_with_token[1].active_token = user_with_token[0]
-
-        return user_with_token[1]
-
-    @login_manager.unauthorized_handler
-    def handle_needs_login():
-        flask.flash("You have to be logged in to access this page.")
-        return flask.redirect(
-            flask.url_for("views.login", next=flask.request.endpoint)
-        )
-
-    @app.route("/logout")
-    @login_required
-    def logout():
-        logout_user()
-        return flask.redirect(flask.url_for("views.show", page_name="index"))
-
-    # Register views
+    # Register blueprints
     app.register_blueprint(api_bp_v1)
     app.register_blueprint(view_bp)
     app.register_blueprint(oauth_bp)
 
-    @app.route("/ping")
-    def ping():
-        resp = flask.make_response(flask.json.dumps({"message": "pong"}), 200)
-        resp.headers["Content-Type"] = "application/json"
+    # Register after request functions
+    from .requests import after
 
-        return resp
+    app.after_request(after)
 
-    @app.route("/sw.js")
-    def sw():
-        resp = flask.make_response(
-            flask.send_from_directory("static", "sw.js"), 200
-        )
-        resp.headers["Content-Type"] = "application/javascript"
-        resp.headers["Cache-Control"] = "no-cache"
+    with app.app_context():
+        login_manager.login_view = "views.show"
+        login_manager.session_protection = "strong"
 
-        return resp
+        # Register general routes
+        from .routes import logout, ping, sw, robots, get_image
 
-    @app.route("/robots.txt")
-    def robots():
-        resp = flask.make_response(
-            flask.send_from_directory("static", "robots.txt"), 200
-        )
-        resp.headers["Content-Type"] = "text/plain"
-        resp.headers["Cache-Control"] = "no-cache"
+        from .swagger import swagger_blueprint
 
-        return resp
+        app.register_blueprint(swagger_blueprint())
 
-    @app.route("/static/img/<filename>")
-    def get_image(filename):
-        return flask.send_from_directory(
-            os.path.join(app.root_path, "static", "img"), filename
+        from .assets import scss_bundle, js_bundle
+
+        assets.register("css_all", scss_bundle)
+        assets.register("js_all", js_bundle)
+
+        from .context import (
+            inject_content_hash,
+            shutdown_session,
+            load_user,
+            handle_needs_login,
         )
 
-    @app.after_request
-    def after(response: flask.Response):
-        current_app = flask.current_app
-        req = flask.request
+        login_manager.user_loader(load_user)
+        login_manager.unauthorized_handler(handle_needs_login)
 
-        current_app.logger.info(
-            f'"{req.remote_addr}" {req.method} {req.path} \
-{response.status_code} {response.content_length}'
-        )
-
-        if req.path.startswith("/static"):
-            # Cache static assets for 1 year
-            response.add_etag()
-            response.last_modified = datetime.datetime.utcnow()
-
-            response.access_control_allow_methods = ["GET"]
-            response.access_control_allow_origin = "*"
-            response.access_control_max_age = 3600
-
-            # If the client wishes to send a no-cache header, the content of
-            # static files will not be cached
-            if (
-                "Cache-Control" in req.headers
-                and req.headers["Cache-Control"] == "no-cache"
-            ):
-                return response.make_conditional(req)
-
-            response.headers["Cache-Control"] = "public, max-age=31536000"
-
-            return response.make_conditional(req)
-
-        return response
-
-    @app.teardown_appcontext
-    def shutdown_session(exception=None):  # pylint: disable=unused-argument
-        db.session.remove()
-
-    @app.context_processor
-    def inject_content_hash():
-        def content_hash_for_image(filename):
-            """Generate a content hash for cache-busting images"""
-            image_path = os.path.join(app.root_path, "static", "img", filename)
-            return generate_content_hash(image_path)
-
-        return dict(content_hash_for_image=content_hash_for_image)
+        app.teardown_appcontext(shutdown_session)
+        app.context_processor(inject_content_hash)
 
     return app
