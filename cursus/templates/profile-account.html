@@ -7,22 +7,30 @@
     <p id="profile-email-describe" class="profile__field__description">
       Email is used to log in to your account and to receive notifications.
     </p>
-    <div class="profile__field__input-wrapper">
-      <input
-        disabled="true"
-        id="profile-email"
-        aria-describedby="profile-email-describe"
-        data-cursus-init-value="{{ current_user.email}}"
-        placeholder="Enter your email"
-        value="{{ current_user.email }}"
-        class="profile__field__input"
-        title="This field is currently disabled due to lack of functionality."
-      />
+    <div 
+      class="profile__field__input-wrapper"
+      title="This field is currently disabled due to lack of functionality."
+    >
+      <div class="profile__field__input disabled">
+        <input
+          disabled="true"
+          id="profile-email"
+          aria-describedby="profile-email-describe"
+          data-cursus-init-value="{{ current_user.email}}"
+          placeholder="Enter your email"
+          value="{{ current_user.email }}"
+        />
+      </div>
       <div
         for="profile-email"
         class="profile__field__input-feedback"
         title="something"
       >
+      </div>
+    </div>
+    <div class="profile__field__footer">
+      <div class="profile__field__suggestion">
+        Your account is logged in with <span>Google</span>
       </div>
     </div>
   </div>
@@ -34,14 +42,19 @@
       Please enter a display name that you are comfortable with.
     </p>
     <div class="profile__field__input-wrapper">
-      <input
-        id="profile-display-name"
-        aria-describedby="profile-display-name-describe"
-        data-cursus-init-value="{{ current_user.name }}"
-        placeholder="Enter your display name"
-        value="{{ current_user.name }}"
-        class="profile__field__input"
-      />
+      <div class="profile__field__input">
+        <input
+          id="profile-display-name"
+          aria-describedby="profile-display-name-describe"
+          data-cursus-init-value="{{ current_user.name }}"
+          placeholder="Enter your display name"
+          autocapitalize="none"
+          autocomplete="off"
+          spellcheck="false"
+          type="text"
+          title="{{ current_user.name }}"
+        />
+      </div>
       <div
         for="profile-display-name"
         class="profile__field__input-feedback"

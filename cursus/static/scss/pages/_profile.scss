@@ -307,7 +307,6 @@
       position: relative;
       display: flex;
       max-width: 100%;
-      padding: 0.5rem 1rem;
       border-radius: 8px;
       outline: none;
       width: 320px;
@@ -315,12 +314,26 @@
       background: rgb(var(--color-gray-50) / 1);
       border: 1px solid rgb(var(--color-gray-200) / 1);
 
-      &.disabled,
-      &:disabled,
-      &[disabled] {
+      &>input {
+        width: 100%;
+        border: none;
+        outline: none;
+        background: transparent;
+        font-size: 16px;
+        font-weight: 500;
+        padding: 0.5rem 1rem;
+      }
+
+      &.disabled {
         background: rgb(var(--color-gray-100) / 1);
         border: 1px solid rgb(var(--color-gray-300) / 1);
         color: rgb(var(--color-gray-400) / 1);
+        cursor: not-allowed;
+      }
+
+      &>input.disabled,
+      &>input:disabled,
+      &>input[disabled] {
         cursor: not-allowed;
       }
 
@@ -329,10 +342,12 @@
         border: 1px solid rgb(var(--color-gray-300) / 1);
       }
 
-      &:focus {
+      &:focus,
+      &:has(input:focus) {
         box-shadow: 0 0 0 2px rgb(var(--color-cursus) / 1);
         background: rgb(var(--color-cursus) / 0.1);
       }
+
 
       &-wrapper {
         display: flex;
