@@ -1,60 +1,62 @@
-<h2>Active token</h2>
-<p>This token is associated with your account. Please keep it secret!</p>
-<div>
-  <div class="profile__form-input">
-    <div id="profile-api-display" class="profile__display">
-      {% if active_token is none %}
-      <p class="text-center">No active token</p>
-      {% else %}
-      <p class="text-center">{{ active_token }}</p>
-      {% endif %}
-    </div>
-    <button id="copy-token-btn" class="profile__action" type="button">
-      <div class="profile__tooltip">
-        <span class="profile__tooltip-text">Copied</span>
+<div class="profile__detail">
+  <h2>Active token</h2>
+  <p>This token is associated with your account. Please keep it secret!</p>
+  <div>
+    <div class="profile__form-input">
+      <div id="profile-api-display" class="profile__display">
+        {% if active_token is none %}
+        <p class="text-center">No active token</p>
+        {% else %}
+        <p class="text-center">{{ active_token }}</p>
+        {% endif %}
       </div>
-      <div class="profile__action__btn">
-        <i class="fi fi-rr-clipboard"></i>
-        <i class="fi fi-rr-check"></i>
-      </div>
-    </button>
-  </div>
-  <div class="w-full">
-    <div class="display-flex items-center gap-2 ml-auto w-fit mt-4">
-      <div id="token-action-message" class="profile__action__message"></div>
-      <button
-        id="revoke-btn"
-        type="button"
-        class="btn btn--medium btn--secondary btn--danger btn--icon"
-      >
-        <i class="fi fi-rr-trash"></i>
-      </button>
-      <button
-        id="generate-btn"
-        type="button"
-        class="btn btn--medium btn--primary btn--cursus"
-      >
-        <i class="fi fi-rr-refresh"></i>
-        Generate
+      <button id="copy-token-btn" class="profile__action" type="button">
+        <div class="profile__tooltip">
+          <span class="profile__tooltip-text">Copied</span>
+        </div>
+        <div class="profile__action__btn">
+          <i class="fi fi-rr-clipboard"></i>
+          <i class="fi fi-rr-check"></i>
+        </div>
       </button>
     </div>
+    <div class="w-full">
+      <div class="display-flex items-center gap-2 ml-auto w-fit mt-4">
+        <div id="token-action-message" class="profile__action__message"></div>
+        <button
+          id="revoke-btn"
+          type="button"
+          class="btn btn--medium btn--secondary btn--danger btn--icon"
+        >
+          <i class="fi fi-rr-trash"></i>
+        </button>
+        <button
+          id="generate-btn"
+          type="button"
+          class="btn btn--medium btn--primary btn--cursus"
+        >
+          <i class="fi fi-rr-refresh"></i>
+          Generate
+        </button>
+      </div>
+    </div>
   </div>
+  <h3>Usage</h3>
+  <p>You can include this API token as a header in your request.</p>
+  <pre>
+    <code>
+  {
+    "X-CURSUS-API-TOKEN": "YOUR_API_TOKEN"
+  }
+    </code>
+  </pre>
+  <h3>Note</h3>
+  <p>
+    You can use this API token to access the API without logging in your
+    application. However, the rate limit is <code>50 requests per hour</code>.
+  </p>
+  <p>
+    You can also request to create a new token. The rate limit is
+    <code>5 tokens per day</code>.
+  </p>
 </div>
-<h2>Usage</h2>
-<p>You can include this API token as a header in your request.</p>
-<pre>
-  <code>
-{
-  "X-CURSUS-API-TOKEN": "YOUR_API_TOKEN"
-}
-  </code>
-</pre>
-<h2>Note</h2>
-<p>
-  You can use this API token to access the API without logging in your
-  application. However, the rate limit is <code>50 requests per hour</code>.
-</p>
-<p>
-  You can also request to create a new token. The rate limit is
-  <code>5 tokens per day</code>.
-</p>
