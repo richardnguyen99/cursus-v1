@@ -30,7 +30,7 @@ class History(db.Model):
     token_id: Mapped[int] = mapped_column(
         Integer,
         ForeignKey("active_tokens.id", ondelete="CASCADE", onupdate="CASCADE"),
-        index=True,
+        nullable=True,
     )
 
     type: Mapped[str] = mapped_column(
