@@ -3,8 +3,138 @@
 
 let actionMessageTimeoutId = null;
 
+/**
+ *
+ * @param {MouseEvent} e
+ */
+function handleCancelDisplayName(e) {
+  e.preventDefault();
+
+  const inputElement = document.getElementById(
+    e.currentTarget.getAttribute("data-cursus-field-cancel-at")
+  );
+
+  if (!inputElement) return;
+
+  const submitBtn = document.getElementById(
+    inputElement.getAttribute("data-cursus-submit-by")
+  );
+
+  inputElement.value = inputElement.getAttribute("data-cursus-init-value");
+
+  e.currentTarget.classList.add("display-none");
+
+  if (submitBtn) {
+    submitBtn.classList.add("btn--secondary");
+    submitBtn.classList.remove("btn--primary");
+  }
+}
+
+/**
+ *
+ * @param {MouseEvent} e
+ */
+function handleSubmitDisplayName(e) {
+  e.preventDefault();
+}
+
+/**
+ *
+ * @param {Event} e
+ */
+function handleChangeDisplayName(e) {
+  e.preventDefault();
+
+  const id = e.currentTarget.getAttribute("id");
+  const displayName = e.currentTarget.value;
+  const initialDisplayName = e.currentTarget.getAttribute(
+    "data-cursus-init-value"
+  );
+
+  const resetBtn = document.getElementById(
+    e.currentTarget.getAttribute("data-cursus-reset-by")
+  );
+
+  /**
+   * @type {HTMLButtonElement}
+   */
+  const submitBtn = document.getElementById(
+    e.currentTarget.getAttribute("data-cursus-submit-by")
+  );
+
+  const feedback = document.querySelector(
+    `.profile__field__input-feedback[for="${id}"]`
+  );
+
+  if (displayName === initialDisplayName) {
+    if (resetBtn) resetBtn.classList.add("display-none");
+
+    if (submitBtn) {
+      submitBtn.classList.add("btn--secondary");
+      submitBtn.classList.remove("btn--primary");
+    }
+  } else {
+    if (resetBtn) resetBtn.classList.remove("display-none");
+
+    if (submitBtn) {
+      submitBtn.classList.remove("btn--secondary");
+      submitBtn.classList.add("btn--primary");
+    }
+
+    if (feedback) {
+      if (displayName.length < 1 || displayName.length > 32) {
+        feedback.classList.remove("profile--success");
+        feedback.classList.add("error", "show");
+        feedback.innerText = "Must be between 1 and 32 characters";
+
+        submitBtn.classList.add(".disabled");
+        submitBtn.disabled = true;
+      } else {
+        feedback.classList.remove("success", "error", "show");
+        feedback.innerText = "";
+
+        submitBtn.classList.remove(".disabled");
+        submitBtn.disabled = false;
+      }
+    }
+  }
+}
+
+/**
+ *
+ * @param {MouseEvent} e
+ */
+function handleUpdateDisplayName(e) {
+  e.preventDefault();
+
+  const input = document.getElementById(
+    e.currentTarget.getAttribute("data-cursus-field-submit-at")
+  );
+
+  const value = input.value;
+  const initValue = input.getAttribute("data-cursus-init-value");
+
+  if (value === initValue) return;
+
+  console.log(encodeURI(`/profile/update_display_name/${value}`));
+}
+
 function _mountAccount() {
   document.title = "Account - Profile - Cursus";
+
+  const displayNameCancelBtn = document.getElementById(
+    "profile-display-cancel-name-btn"
+  );
+
+  const displayNameSubmitBtn = document.getElementById(
+    "profile-display-submit-name-btn"
+  );
+
+  if (displayNameCancelBtn)
+    displayNameCancelBtn.addEventListener("click", handleCancelDisplayName);
+
+  if (displayNameSubmitBtn)
+    displayNameSubmitBtn.addEventListener("click", handleUpdateDisplayName);
 
   return;
 }
@@ -66,6 +196,14 @@ function onMounted(page) {
   }
 
   _mountAccount();
+
+  const profile_fields = document.querySelectorAll(
+    ".profile__field__input > input"
+  );
+
+  profile_fields.forEach((field) => {
+    field.addEventListener("input", handleChangeDisplayName);
+  });
 }
 
 /**

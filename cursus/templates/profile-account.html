@@ -47,11 +47,14 @@
           id="profile-display-name"
           aria-describedby="profile-display-name-describe"
           data-cursus-init-value="{{ current_user.name }}"
+          data-cursus-reset-by="profile-display-cancel-name-btn"
+          data-cursus-submit-by="profile-display-submit-name-btn"
           placeholder="Enter your display name"
           autocapitalize="none"
           autocomplete="off"
           spellcheck="false"
           type="text"
+          value="{{ current_user.name }}"
           title="{{ current_user.name }}"
         />
       </div>
