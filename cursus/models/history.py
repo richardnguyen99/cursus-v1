@@ -3,6 +3,7 @@
 """Cursus history model for API authorization
 """
 
+from datetime import datetime
 from typing import Optional
 
 from sqlalchemy import (
@@ -27,7 +28,7 @@ class History(db.Model):
         index=True,
     )
 
-    token_id: Mapped[int] = mapped_column(
+    token_id: Mapped[Optional[int]] = mapped_column(
         Integer,
         ForeignKey("active_tokens.id", ondelete="CASCADE", onupdate="CASCADE"),
         nullable=True,
@@ -40,6 +41,12 @@ class History(db.Model):
     )
 
     at: Mapped[DateTime] = mapped_column(
-        DateTime(timezone=True),
-        nullable=False,
+        DateTime(timezone=True), nullable=False, default=datetime.now()
     )
+
+    def __init__(
+        self, user_id: str, type: str, token_id: Optional[int] = None
+    ):
+        self.user_id = user_id
+        self.type = type
+        self.token_id = token_id

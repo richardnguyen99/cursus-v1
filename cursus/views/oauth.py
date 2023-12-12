@@ -11,7 +11,7 @@ import requests
 
 from urllib.parse import urlencode
 
-from cursus.models import Account, User
+from cursus.models import Account, User, History
 from cursus.util.extensions import db
 from cursus.util.profile import get_profile
 from cursus.util.account import get_account
@@ -127,8 +127,14 @@ def callback(provider: str):
         profile.id = cuid2.Cuid(length=11).generate()
         uniform_account.userId = profile.id
 
+        registration_history = History(
+            user_id=profile.id,
+            type="register",
+        )
+
         db.session.add(profile)
         db.session.add(uniform_account)
+        db.session.add(registration_history)
 
     else:
         user = (
