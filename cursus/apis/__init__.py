@@ -73,7 +73,7 @@ def make_cors_headers(response: flask.Response) -> flask.Response:
     response.headers.add("Access-Control-Allow-Origin", "*")
     response.headers.add(
         "Access-Control-Allow-Headers",
-        "X-CURSUS-API-TOKEN, Content-Type, Accept, Origin",
+        "X-CURSUS-API-TOKEN, Accept, Origin",
     )
     response.headers.add("Access-Control-Allow-Methods", "GET, OPTIONS")
     response.headers.add("Access-Control-Allow-Credentials", "true")
@@ -142,7 +142,6 @@ def before_request():
         )
 
     token = request.headers["X-CURSUS-API-TOKEN"]
-
     token_from_cache = cache.get(token)
 
     # Token is found from cache but it's blacklisted
@@ -174,13 +173,13 @@ def before_request():
         "token": token_from_db.token,
         "user_id": token_from_db.user_id,
         "created": now.strftime("%a, %d %b %Y %H:%M:%S GMT"),
-        "expired": (now + datetime.timedelta(days=1)).strftime(
+        "expired": (now + datetime.timedelta(minutes=60)).strftime(
             "%a, %d %b %Y %H:%M:%S GMT"
         ),
         "request_count": 0,
     }
 
-    # Cache rate limit for one day (in seconds)
+    # Cache rate limit for one hour (in seconds)
     cache.set(token, json.dumps(cache_item), timeout=60 * 60)
 
 
@@ -210,16 +209,23 @@ def after_request(response: flask.Response):
     # Compute the time to live up to one day starting from the time the token
     # was first created.
 
-    created_time = datetime.datetime.strptime(
-        cache_obj["created"], "%a, %d %b %Y %H:%M:%S GMT"
+    expired_time = datetime.datetime.strptime(
+        cache_obj["expired"], "%a, %d %b %Y %H:%M:%S GMT"
     )
 
-    ttl = datetime.datetime.utcnow() - created_time
+    ttl = expired_time - datetime.datetime.utcnow()
 
     if ttl.seconds < 0:
         ttl = datetime.timedelta(minutes=60)
 
     cache.set(token, json.dumps(cache_obj), timeout=ttl.seconds)
+
+    response.headers.add("X-Cursus-Limit", "50")
+    response.headers.add(
+        "X-Cursus-Remaining", str(50 - cache_obj["request_count"])
+    )
+    response.headers.add("X-Cursus-Start", cache_obj["created"])
+    response.headers.add("X-Cursus-TTL", str(ttl.seconds))
 
     return response
 
@@ -240,8 +246,6 @@ def handle_http_error(error: WerkzeugExceptions.HTTPException):
         ),
         error.code,
     )
-
-    make_cors_headers(resp)
 
     return resp
 
@@ -266,8 +270,6 @@ def handle_api_error(error: CursusException.CursusError):
         ),
         error.status_code,
     )
-
-    make_cors_headers(resp)
 
     return resp
 

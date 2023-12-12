@@ -163,8 +163,8 @@ function _mountToken() {
   return;
 }
 
-function _mountUpdate() {
-  document.title = "Update - Profile - Cursus";
+function _mountHistory() {
+  document.title = "History - Profile - Cursus";
 
   return;
 }
@@ -187,8 +187,8 @@ function onMount(element, innerHTML) {
  * @returns {void}
  */
 function onMounted(page) {
-  if (page === "update") {
-    _mountUpdate();
+  if (page === "history") {
+    _mountHistory();
     return;
   } else if (page === "token") {
     _mountToken();
@@ -391,7 +391,7 @@ function handleCopyToken(e) {
   /**
    * @type {HTMLElement}
    */
-  const updateLink = document.querySelector("#profile-update");
+  const historyLink = document.querySelector("#profile-history");
 
   if (accountLink)
     accountLink.addEventListener("click", handleClick(profileSpa, "account"));
@@ -399,8 +399,8 @@ function handleCopyToken(e) {
   if (tokenLink)
     tokenLink.addEventListener("click", handleClick(profileSpa, "token"));
 
-  if (updateLink)
-    updateLink.addEventListener("click", handleClick(profileSpa, "update"));
+  if (historyLink)
+    historyLink.addEventListener("click", handleClick(profileSpa, "history"));
 
   if (profileSpa && !loaded) {
     const page = window.location.pathname.split("/")[2];
@@ -421,7 +421,7 @@ function handleCopyToken(e) {
         } else if (page === "token") {
           tokenLink.classList.add("profile--active");
         } else {
-          updateLink.classList.add("profile--active");
+          historyLink.classList.add("profile--active");
         }
       }
     };

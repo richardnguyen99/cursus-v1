@@ -34,6 +34,7 @@
       background: transparent;
       transition: background 0.1s ease-in-out;
       font-size: 14px;
+      gap: 0.5rem;
 
       &:hover {
         background: rgb(var(--color-gray-100) / 1);

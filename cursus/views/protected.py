@@ -201,7 +201,7 @@ def profile():
 SUPPORT_PROFILE_SUB_PAGES = (
     "account",
     "token",
-    "update",
+    "history",
 )
 
 
