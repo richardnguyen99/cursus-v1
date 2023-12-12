@@ -18,7 +18,7 @@ import flask_login
 @flask.current_app.route("/logout")
 @flask_login.login_required
 def logout():
-    flask.logout_user()
+    flask_login.logout_user()
     return flask.redirect(flask.url_for("views.show", page_name="index"))
 
 

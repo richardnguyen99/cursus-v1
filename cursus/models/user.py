@@ -5,6 +5,7 @@
 
 import cuid2
 
+from datetime import datetime
 from typing import Any, Optional
 from flask_login import UserMixin
 from sqlalchemy import (
@@ -18,6 +19,7 @@ from sqlalchemy import (
 from sqlalchemy.orm import Mapped, mapped_column, Relationship, relationship
 
 from cursus.util.extensions import db
+from .history import History
 
 
 CUID_GENERATOR: cuid2.Cuid = cuid2.Cuid(length=11)
@@ -58,6 +60,12 @@ class User(db.Model, UserMixin):
         nullable=True,
     )
 
+    created_at: Mapped[Optional[DateTime]] = mapped_column(
+        DateTime(timezone=True),
+        nullable=True,
+        default=datetime.utcnow,
+    )
+
     accounts: Relationship[list["Account"]] = relationship(
         "Account",
         backref="user",
@@ -67,6 +75,13 @@ class User(db.Model, UserMixin):
 
     sessions: Relationship[list["Session"]] = relationship(
         "Session",
+        backref="user",
+        lazy=True,
+        collection_class=list,
+    )
+
+    history: Relationship[list["History"]] = relationship(
+        "History",
         backref="user",
         lazy=True,
         collection_class=list,

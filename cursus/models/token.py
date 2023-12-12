@@ -22,6 +22,7 @@ from sqlalchemy.orm import (
 )
 
 from cursus.util.extensions import db
+from .history import History
 
 cuid_generator: cuid2.Cuid = cuid2.Cuid(length=64)
 
@@ -60,6 +61,15 @@ class ActiveToken(db.Model):
     user = relationship(
         "User",
         back_populates="token",
+    )
+
+    history: Relationship[list["History"]] = relationship(
+        "History",
+        backref="token",
+        cascade="all, delete-orphan",
+        passive_deletes=True,
+        lazy=True,
+        collection_class=list,
     )
 
     def __init__(self, token: str, user_id: str) -> None:
