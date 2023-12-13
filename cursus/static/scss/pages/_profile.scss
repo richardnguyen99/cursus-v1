@@ -407,6 +407,9 @@
     }
 
     &__suggestion {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
       font-size: 15px;
       color: rgb(var(--color-gray-600) / 1);
     }

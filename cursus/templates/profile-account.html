@@ -30,7 +30,26 @@
     </div>
     <div class="profile__field__footer">
       <div class="profile__field__suggestion">
-        Your account is logged in with <span>{{ current_user.provider }}</span>
+        Your account is logged in with&nbsp;
+        <span class="profile__provider">
+          {% if current_user.provider == 'google' %}
+            <img
+              src="{{ url_for('get_image', filename='google-g-logo.svg') }}?v={{ content_hash_for_image('google-g-logo.svg') }}"
+              alt="Google Logo"
+            />
+          {% elif current_user.provider == 'github' %}
+            <img
+              src="{{ url_for('get_image', filename='github-mark.svg') }}?v={{ content_hash_for_image('github-mark.svg') }}"
+              alt="GitHub Logo"
+            />
+          {% else %}
+            <img
+              src="{{ url_for('get_image', filename='discord-clyde-purple-logo.svg') }}?v={{ content_hash_for_image('discord-clyde-purple-logo.svg') }}"
+              alt="Discord Logo"
+            />
+          {% endif %}
+          {{ current_user.provider }}
+        </span>
       </div>
     </div>
   </div>
