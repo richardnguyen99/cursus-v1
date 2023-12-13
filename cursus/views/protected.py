@@ -138,6 +138,8 @@ You have reached the maximum number of tokens generated per day",
             timeout=ttl.seconds,
         )
 
+    # If the cache key doesn't exist, i.e. the user hasn't generated any token
+    # today
     else:
         generatedTime = datetime.datetime.now(datetime.timezone.utc).strftime(
             "%a, %d %b %Y %H:%M:%S GMT"

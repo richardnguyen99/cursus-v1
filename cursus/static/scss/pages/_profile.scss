@@ -3,6 +3,21 @@
   background: rgb(var(--color-gray-100) / 0.75);
   min-height: calc(100vh - 11.75rem); // minus navbar height + footer height
 
+  &__provider {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+    text-transform: capitalize;
+
+    &>img {
+      width: 16px;
+      height: 16px;
+      border-radius: 9999px;
+    }
+  }
+
   &__sticky-nav {
 
     background-color: rgb(var(--color-white) / 1);
@@ -403,4 +418,76 @@
     }
   }
 
+  &__history {
+    border-radius: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 0;
+    padding-left: 0;
+
+    &__short {
+      display: block;
+      width: 320px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    &__item {
+      list-style: none;
+      overflow: hidden;
+      padding: 1rem;
+      border: 1px solid rgb(var(--color-gray-200) / 1);
+      border-bottom-color: transparent;
+
+      &:first-child {
+        border-top-left-radius: 0.5rem;
+        border-top-right-radius: 0.5rem;
+      }
+
+      &:last-child {
+        border-bottom-left-radius: 0.5rem;
+        border-bottom-right-radius: 0.5rem;
+        border-bottom-color: rgb(var(--color-gray-200) / 1);
+      }
+
+      &-wrapper {
+        flex: 1 1;
+      }
+
+      &__title {
+        font-size: 1rem;
+        font-weight: 700;
+        margin-bottom: 0.25rem;
+
+        &.register {
+          color: rgb(var(--color-blue-500) / 1);
+        }
+
+        &.generate {
+          color: rgb(var(--color-green-500) / 1);
+        }
+
+        &.revoke {
+          color: rgb(var(--color-orange-500) / 1);
+        }
+      }
+
+      &__description {
+        font-size: 14px;
+        font-weight: 400;
+        color: rgb(var(--color-gray-600) / 1);
+
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+        margin-bottom: 0.75rem;
+      }
+
+      &__date {
+        font-size: 14px;
+        font-weight: 500;
+        color: rgb(var(--color-gray-800) / 1);
+      }
+    }
+  }
 }
