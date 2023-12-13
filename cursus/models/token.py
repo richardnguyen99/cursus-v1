@@ -63,15 +63,6 @@ class ActiveToken(db.Model):
         back_populates="token",
     )
 
-    history: Relationship[list["History"]] = relationship(
-        "History",
-        backref="token",
-        cascade="all, delete-orphan",
-        passive_deletes=True,
-        lazy=True,
-        collection_class=list,
-    )
-
     def __init__(self, token: str, user_id: str) -> None:
         self.token = token
         self.user_id = user_id

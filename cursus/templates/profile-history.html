@@ -1,4 +1,14 @@
 <div id="profile-history-tab" class="profile__detail">
   <h2>History</h2>
   <p>List of activities that associate with this account</p>
+
+  <ul>
+  {%- for log in logs %}  
+
+    <li>
+      {{ log.type }} - {{ log.at }}{% if log.token %} {{ log.token }}{% endif %}
+    </li>
+
+  {% endfor %}
+  </ul>
 </div>

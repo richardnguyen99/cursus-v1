@@ -124,7 +124,7 @@ class Account(db.Model):
     )
 
     provider: Mapped[str] = mapped_column(
-        String(256),
+        String(16),
         nullable=False,
     )
 

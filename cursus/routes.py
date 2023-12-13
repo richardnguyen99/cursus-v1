@@ -14,6 +14,9 @@ import os
 import flask
 import flask_login
 
+from cursus.models import User, History
+from cursus.util.extensions import db
+
 
 @flask.current_app.route("/logout")
 @flask_login.login_required

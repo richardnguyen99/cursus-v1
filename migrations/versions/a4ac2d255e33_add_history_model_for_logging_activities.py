@@ -44,26 +44,6 @@ def upgrade():
             batch_op.f("ix_history_user_id"), ["user_id"], unique=False
         )
 
-    connection = op.get_bind()
-
-    connection.execute(
-        sa.text(
-            """
-            DO $$
-            DECLARE 
-                user_id VARCHAR(11);
-            BEGIN
-                FOR user_id IN (SELECT id FROM users)
-                LOOP
-                    -- Insert history log for each user
-                    INSERT INTO history (user_id, token_id, type, at)
-                    VALUES (user_id, NULL, 'create', NOW());
-                END LOOP;
-            END $$;
-            """
-        )
-    )
-
     # ### end Alembic commands ###
 
 

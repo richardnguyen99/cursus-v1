@@ -28,14 +28,14 @@ class History(db.Model):
         index=True,
     )
 
-    token_id: Mapped[Optional[int]] = mapped_column(
-        Integer,
-        ForeignKey("active_tokens.id", ondelete="CASCADE", onupdate="CASCADE"),
+    token_used: Mapped[Optional[str]] = mapped_column(
+        String(64),
         nullable=True,
+        index=True,
     )
 
     type: Mapped[str] = mapped_column(
-        String(16),
+        String(32),
         nullable=False,
         index=True,
     )
@@ -45,8 +45,8 @@ class History(db.Model):
     )
 
     def __init__(
-        self, user_id: str, type: str, token_id: Optional[int] = None
+        self, user_id: str, type: str, token_used: Optional[str] = None
     ):
         self.user_id = user_id
         self.type = type
-        self.token_id = token_id
+        self.token_used = token_used

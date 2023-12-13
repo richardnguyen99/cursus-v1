@@ -6,12 +6,15 @@
 import flask
 import json
 import datetime
+import sqlalchemy as sa
 
 from flask_login import current_user, login_required
+from sqlalchemy.sql import func
 
 from . import view_bp
 from cursus.util.extensions import db, cache
-from cursus.models import ActiveToken
+from cursus.models import ActiveToken, History, Account
+from cursus.schema.history import HistorySchema
 from cursus.util import exceptions, datetime as cursus_datetime
 
 
@@ -44,7 +47,14 @@ def profile_revoke():
     )
 
     if old_token:
+        history_log = History(
+            user_id=current_user.id, type="revoke", token_used=old_token.token
+        )
+
         db.session.delete(old_token)
+        db.session.flush()
+
+        db.session.add(history_log)
         db.session.commit()
 
         cache.set(old_token.token, False, timeout=60 * 60 * 24 * 7)
@@ -149,6 +159,11 @@ You have reached the maximum number of tokens generated per day",
         user_id=current_user.id,
     )
 
+    history = History(
+        user_id=current_user.id,
+        type="generate",
+    )
+
     cached_token = cache.get(token.token)
 
     # Check if revoked token exists in the cache and generate a new one if does
@@ -171,6 +186,11 @@ You have reached the maximum number of tokens generated per day",
 
     # Commit the token to the database
     db.session.add(token)
+    db.session.flush()
+
+    # https://stackoverflow.com/questions/620610/sqlalchemy-obtain-primary-key-with-autoincrement-before-commit
+    history.token_used = token.token
+    db.session.add(history)
     db.session.commit()
 
     return (
@@ -220,10 +240,41 @@ def profile_account(sub_page: str):
             f"Method {req.method} not allowed for this endpoint"
         )
 
+    content_dict = {
+        "user_id": current_user.id,
+        "active_token": current_user.token,
+    }
+
+    if sub_page == "history":
+        # """
+        # SELECT T.token, H.*
+        # FROM history as H
+        # LEFT JOIN active_tokens as T
+        #   ON H.token_id = T.id
+        # WHERE H.user_id = id
+        #   ORDER BY H."at" DESC;
+        # """
+
+        history_logs = reversed(
+            db.session.query(
+                History.token_used.label("token"),
+                History.type,
+                func.to_char(
+                    History.at,
+                    "Mon DD, YYYY at HH12:MI PM",
+                ).label("at"),
+            )
+            .select_from(History)
+            .outerjoin(ActiveToken, History.token_used == ActiveToken.token)
+            .filter(History.user_id == current_user.id)
+            .all()
+        )
+
+        content_dict["logs"] = history_logs
+
     content = flask.render_template(
         f"profile-{sub_page}.html",
-        user_id=current_user.id,
-        active_token=current_user.token,
+        **content_dict,
     )
 
     if "X-Requested-SPA" in req.headers:
