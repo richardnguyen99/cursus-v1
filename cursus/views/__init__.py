@@ -40,7 +40,11 @@ oauth_bp.add_url_rule(
 @view_bp.after_request
 def after(response: flask.Response):
     req = flask.request
+
     if "X-Response-SPA" in response.headers:
+        return response
+
+    if "application/json" in response.headers["Content-Type"]:
         return response
 
     response.add_etag()

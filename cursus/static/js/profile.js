@@ -116,7 +116,58 @@ function handleUpdateDisplayName(e) {
 
   if (value === initValue) return;
 
-  console.log(encodeURI(`/profile/update_display_name/${value}`));
+  const updateUri = encodeURI(`/profile/update_name/${value}`);
+
+  fetch(updateUri, {
+    method: "PUT",
+    headers: {
+      Accept: "application/json",
+    },
+  })
+    .then((res) => {
+      return res.json();
+    })
+    .then(({ type, message, data }) => {
+      const profileFullName = document.querySelector(".profile__fullname");
+      const feedbackElement = document.querySelector(
+        `.profile__field__input-feedback[for="${input.getAttribute("id")}"]`
+      );
+      const resetBtn = document.getElementById(
+        input.getAttribute("data-cursus-reset-by")
+      );
+      const submitBtn = document.getElementById(
+        input.getAttribute("data-cursus-submit-by")
+      );
+
+      if (!feedbackElement) {
+        throw new Error("Feedback element not found");
+      }
+
+      if (type === "success") {
+        feedbackElement.classList.remove("error");
+        feedbackElement.classList.add("success", "show");
+        feedbackElement.innerText = message;
+
+        input.setAttribute("data-cursus-init-value", data.name);
+        input.value = data.name;
+        input.title = data.name;
+
+        resetBtn.classList.add("display-none");
+
+        submitBtn.classList.add("btn--secondary");
+        submitBtn.classList.remove("btn--primary");
+
+        profileFullName.innerText = data.name;
+      } else {
+        feedbackElement.classList.remove("success");
+        feedbackElement.classList.add("error", "show");
+        feedbackElement.innerText = message;
+        feedbackElement.title = message;
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+    });
 }
 
 function _mountAccount() {

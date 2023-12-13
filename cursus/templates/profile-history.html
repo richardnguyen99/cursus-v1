@@ -11,6 +11,10 @@
           <div class="profile__history__item__title register">
             Account Registration
           </div>
+        {% elif log.type.startswith('update') %}
+          <div class="profile__history__item__title update">
+            Account Update
+          </div>
         {% elif log.type.startswith('generate') %}
           <div class="profile__history__item__title generate">
             Token Generation
@@ -43,7 +47,7 @@
               {% endif %}
               {{ current_user.provider }}
             </span>
-
+          {% elif log.type.startswith('update') %}
           {% elif log.type.startswith('generate') %}
             <span class="profile__history__short" title="{{ log.token }}">{{ log.token }}</span> is 
             generated

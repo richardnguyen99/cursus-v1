@@ -3,19 +3,110 @@
 """List of protected endpoitns used by the Cursus application
 """
 
+import re
 import flask
 import json
 import datetime
-import sqlalchemy as sa
 
 from flask_login import current_user, login_required
 from sqlalchemy.sql import func
 
 from . import view_bp
 from cursus.util.extensions import db, cache
-from cursus.models import ActiveToken, History, Account
-from cursus.schema.history import HistorySchema
+from cursus.models import ActiveToken, History
 from cursus.util import exceptions, datetime as cursus_datetime
+
+
+@view_bp.route("/profile/update_name/<new_name>", methods=["PUT", "POST"])
+def profile_update(new_name: str):
+    """Update the display name of the current user"""
+
+    if not current_user.is_authenticated:
+        return (
+            flask.json.jsonify(
+                {
+                    "type": "error",
+                    "message": "You must be logged in to update your name",
+                }
+            ),
+            401,
+        )
+
+    req = flask.request
+
+    if req.method != "POST" and req.method != "PUT":
+        raise exceptions.MethodNotAllowedError(
+            f"Method {req.method} not allowed for this endpoint"
+        )
+
+    if not new_name:
+        return (
+            flask.json.jsonify(
+                {
+                    "type": "error",
+                    "message": "Name cannot be empty",
+                }
+            ),
+            400,
+        )
+
+    if len(new_name) > 32:
+        return (
+            flask.json.jsonify(
+                {
+                    "type": "error",
+                    "message": "Name cannot be longer than 32 characters",
+                }
+            ),
+            400,
+        )
+
+    if re.match(r"^[a-zA-Z0-9_.\-\s]+$", new_name) is None:
+        return (
+            flask.json.jsonify(
+                {
+                    "type": "error",
+                    "message": "Name can only contain alphanumeric characters,\
+ underscores, dashes, dots and spaces",
+                }
+            ),
+            400,
+        )
+
+    if new_name == current_user.name:
+        return (
+            flask.json.jsonify(
+                {
+                    "type": "info",
+                    "message": "Name is the same as the current one",
+                    "data": {},
+                }
+            ),
+            200,
+        )
+
+    history = History(
+        user_id=current_user.id,
+        type="update",
+    )
+
+    current_user.name = new_name
+    db.session.add(history)
+
+    db.session.commit()
+
+    return (
+        flask.json.jsonify(
+            {
+                "type": "success",
+                "message": "Name updated successfully",
+                "data": {
+                    "name": current_user.name,
+                },
+            }
+        ),
+        200,
+    )
 
 
 @view_bp.route("/profile/revoke_token", methods=["GET"])
