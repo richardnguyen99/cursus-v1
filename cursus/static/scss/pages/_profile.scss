@@ -3,16 +3,34 @@
   background: rgb(var(--color-gray-100) / 0.75);
   min-height: calc(100vh - 11.75rem); // minus navbar height + footer height
 
+  &__provider {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+    text-transform: capitalize;
+
+    &>img {
+      width: 16px;
+      height: 16px;
+      border-radius: 9999px;
+    }
+  }
+
   &__sticky-nav {
-    position: sticky;
-    top: 88px;
-    z-index: 1;
 
     background-color: rgb(var(--color-white) / 1);
     box-shadow: 0 0.5rem 1rem rgb(var(--color-black) / 0.15);
 
     padding: 1rem;
     border-radius: 12px;
+
+    @include breakpoint(lg) {
+      position: sticky;
+      top: 88px;
+      z-index: 1;
+    }
   }
 
   &__nav {
@@ -31,6 +49,7 @@
       background: transparent;
       transition: background 0.1s ease-in-out;
       font-size: 14px;
+      gap: 0.5rem;
 
       &:hover {
         background: rgb(var(--color-gray-100) / 1);
@@ -57,7 +76,8 @@
     background-color: rgb(var(--color-white) / 1);
     box-shadow: 0 0.5rem 1rem rgb(var(--color-black) / 0.15);
 
-    padding: 1rem;
+    padding: 1rem 2rem;
+
     border-radius: 12px;
   }
 
@@ -94,8 +114,41 @@
     background-color: rgb(var(--color-white) / 1);
     box-shadow: 0 0.5rem 1rem rgb(var(--color-black) / 0.15);
 
-    padding: 1rem;
+    padding: 2rem;
     border-radius: 12px;
+
+    &#profile-delete {
+      border: 2px solid rgb(var(--color-red-500) / 1);
+    }
+
+    &>h2 {
+      margin-bottom: 0.5rem;
+    }
+
+    &#profile-delete>h2 {
+      color: rgb(var(--color-red-400) / 1);
+    }
+
+    &>h3 {
+      margin-top: 0.25rem;
+      margin-bottom: 0.25rem;
+    }
+
+    &>p {
+      margin-bottom: 1.5rem;
+    }
+
+    &>pre {
+      margin-bottom: 1rem;
+      white-space: pre-wrap;
+
+      position: relative;
+      display: block;
+      padding: 1rem;
+      border-radius: 12px;
+
+      background-color: rgb(var(--color-gray-50) / 1);
+    }
   }
 
   &__form-input {
@@ -116,12 +169,17 @@
     color: rgb(var(--color-gray-400) / 1);
 
     padding: 0.5rem 1rem;
-    width: 100%;
+    width: calc(100% - 2rem);
     border: 1px solid rgb(var(--color-gray-200) / 1);
     border-right-color: transparent;
 
     border-top-left-radius: 8px;
     border-bottom-left-radius: 8px;
+
+    &>p {
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
   }
 
   &__tooltip {
@@ -216,9 +274,14 @@
 
     &__message {
       position: relative;
-      display: flex;
       font-size: 14px;
-      align-items: center;
+
+
+      // For vertical ellipsis
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
 
       & .profile--danger {
         color: rgb(var(--color-red-500) / 1);
@@ -237,18 +300,270 @@
     flex-direction: column;
 
     padding-bottom: 1rem;
+    gap: 2rem;
+  }
 
-    &>h2 {
-      margin-bottom: 0.5rem;
+  &__field {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+
+    &:last-child {
+      margin-bottom: 0;
     }
 
-    &>p {
+    &__label {
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    &__input {
+      position: relative;
+      display: flex;
+      max-width: 100%;
+      border-radius: 8px;
+      outline: none;
+      width: 320px;
+
+      background: rgb(var(--color-gray-50) / 1);
+      border: 1px solid rgb(var(--color-gray-200) / 1);
+
+      &>input {
+        width: 100%;
+        border: none;
+        outline: none;
+        background: transparent;
+        font-size: 16px;
+        font-weight: 500;
+        padding: 0.5rem 1rem;
+      }
+
+      &.disabled {
+        background: rgb(var(--color-gray-100) / 1);
+        border: 1px solid rgb(var(--color-gray-300) / 1);
+        color: rgb(var(--color-gray-400) / 1);
+        cursor: not-allowed;
+      }
+
+      &>input.disabled,
+      &>input:disabled,
+      &>input[disabled] {
+        cursor: not-allowed;
+      }
+
+      &:hover {
+        background: rgb(var(--color-gray-100) / 1);
+        border: 1px solid rgb(var(--color-gray-300) / 1);
+      }
+
+      &:focus,
+      &:has(input:focus) {
+        box-shadow: 0 0 0 2px rgb(var(--color-cursus) / 1);
+        background: rgb(var(--color-cursus) / 0.1);
+      }
+
+
+      &-wrapper {
+        display: flex;
+        gap: 0.5rem;
+        align-items: first baseline;
+      }
+
+      &-feedback {
+        font-size: 14px;
+        font-style: italic;
+        display: none;
+        visibility: hidden;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+
+        &.error {
+          color: rgb(var(--color-red-500) / 1);
+        }
+
+        &.success {
+          color: rgb(var(--color-green-500) / 1);
+        }
+
+        &.show {
+          display: block;
+          visibility: visible;
+        }
+      }
+    }
+
+    &__footer {
+      margin-top: 1rem;
+      padding-top: 1rem;
+      display: flex;
+      position: relative;
+      align-items: center;
+      justify-content: space-between;
+
+      border-top: 1px solid rgb(var(--color-gray-200) / 1);
+    }
+
+    &__suggestion {
+      display: inline;
+      font-size: 15px;
+      color: rgb(var(--color-gray-600) / 1);
+    }
+
+    &__action-bar {
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+    }
+  }
+
+  &__history {
+    border-radius: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 0;
+    padding-left: 0;
+
+    &__short {
+      display: inline-flex;
+      width: 96px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+
+      @include breakpoint(md) {
+        width: 128px;
+      }
+
+      @include breakpoint(md) {
+        width: 240px;
+      }
+
+      @include breakpoint(lg) {
+        width: 320px;
+      }
+    }
+
+    &__item {
+      list-style: none;
+      overflow: hidden;
+      padding: 1rem;
+      border: 1px solid rgb(var(--color-gray-200) / 1);
+      border-bottom-color: transparent;
+
+      &:first-child {
+        border-top-left-radius: 0.5rem;
+        border-top-right-radius: 0.5rem;
+      }
+
+      &:last-child {
+        border-bottom-left-radius: 0.5rem;
+        border-bottom-right-radius: 0.5rem;
+        border-bottom-color: rgb(var(--color-gray-200) / 1);
+      }
+
+      &-wrapper {
+        flex: 1 1;
+      }
+
+      &__title {
+        font-size: 1rem;
+        font-weight: 700;
+        margin-bottom: 0.25rem;
+
+        &.register {
+          color: rgb(var(--color-blue-500) / 1);
+        }
+
+        &.generate {
+          color: rgb(var(--color-green-500) / 1);
+        }
+
+        &.revoke {
+          color: rgb(var(--color-orange-500) / 1);
+        }
+      }
+
+      &__description {
+        font-size: 14px;
+        font-weight: 400;
+        color: rgb(var(--color-gray-600) / 1);
+
+        margin-bottom: 0.75rem;
+      }
+
+      &__date {
+        font-size: 14px;
+        font-weight: 500;
+        color: rgb(var(--color-gray-800) / 1);
+      }
+    }
+  }
+
+  &__modal {
+    position: relative;
+    width: 640px;
+    max-width: 100%;
+    background: rgb(var(--color-white) / 1);
+    border-radius: 12px;
+    padding: 2rem;
+
+    box-shadow: 0 0.5rem 1rem rgb(var(--color-black) / 0.15);
+
+    h1,
+    p {
+      margin: 0;
+      padding: 0;
+    }
+
+    &__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       margin-bottom: 1.5rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid rgb(var(--color-gray-200) / 1);
     }
 
-    &>div,
-    &>pre {
-      margin-bottom: 1rem;
+    &__content {}
+
+    &__footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid rgb(var(--color-gray-200) / 1);
+    }
+
+    &__feedback {
+      font-size: 14px;
+      font-style: italic;
+      display: block;
+      visibility: hidden;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+
+      &.error {
+        color: rgb(var(--color-red-500) / 1);
+      }
+
+      &.success {
+        color: rgb(var(--color-green-500) / 1);
+      }
+
+      &.show {
+        visibility: visible;
+      }
+    }
+
+    &__action-list {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
     }
   }
 }

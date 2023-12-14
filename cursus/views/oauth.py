@@ -11,7 +11,8 @@ import requests
 
 from urllib.parse import urlencode
 
-from cursus.models import Account, User
+from cursus.util.exceptions import InternalServerError
+from cursus.models import Account, User, History
 from cursus.util.extensions import db
 from cursus.util.profile import get_profile
 from cursus.util.account import get_account
@@ -127,8 +128,14 @@ def callback(provider: str):
         profile.id = cuid2.Cuid(length=11).generate()
         uniform_account.userId = profile.id
 
+        registration_history = History(
+            user_id=profile.id,
+            type=f"register ({uniform_account.provider})",
+        )
+
         db.session.add(profile)
         db.session.add(uniform_account)
+        db.session.add(registration_history)
 
     else:
         user = (
@@ -137,10 +144,17 @@ def callback(provider: str):
             .first()
         )
 
-        if user and profile.name != user.name:
+        if not user:
+            raise InternalServerError(
+                reason="""
+Login: There is something wrong with the internal server
+                """
+            )
+
+        if profile.name != user.name:
             user.name = profile.name
 
-        if user and profile.image != user.image:
+        if profile.image != user.image:
             user.image = profile.image
 
         account_from_database.refresh_token = uniform_account.refresh_token

@@ -60,6 +60,28 @@ def check_preflight_request(request: flask.Request) -> bool:
     return True
 
 
+def make_cors_headers(response: flask.Response) -> flask.Response:
+    """Make CORS headers for the response
+
+    Args:
+        response (flask.Response): The response object
+
+    Returns:
+        flask.Response: The response object with CORS headers
+    """
+
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    response.headers.add(
+        "Access-Control-Allow-Headers",
+        "X-CURSUS-API-TOKEN, Accept, Origin",
+    )
+    response.headers.add("Access-Control-Allow-Methods", "GET, OPTIONS")
+    response.headers.add("Access-Control-Allow-Credentials", "true")
+    response.headers.add("Access-Control-Max-Age", "86400")
+
+    return response
+
+
 api_bp: Blueprint = Blueprint(
     name="api", import_name=__name__, url_prefix="/api/v1/"
 )
@@ -120,7 +142,6 @@ def before_request():
         )
 
     token = request.headers["X-CURSUS-API-TOKEN"]
-
     token_from_cache = cache.get(token)
 
     # Token is found from cache but it's blacklisted
@@ -152,28 +173,21 @@ def before_request():
         "token": token_from_db.token,
         "user_id": token_from_db.user_id,
         "created": now.strftime("%a, %d %b %Y %H:%M:%S GMT"),
-        "expired": (now + datetime.timedelta(days=1)).strftime(
+        "expired": (now + datetime.timedelta(minutes=60)).strftime(
             "%a, %d %b %Y %H:%M:%S GMT"
         ),
         "request_count": 0,
     }
 
-    # Cache rate limit for one day (in seconds)
-    cache.set(token, json.dumps(cache_item), timeout=60 * 60 * 24)
+    # Cache rate limit for one hour (in seconds)
+    cache.set(token, json.dumps(cache_item), timeout=60 * 60)
 
 
 @university_bp.after_request
 def after_request(response: flask.Response):
     """Perform actions after a request has been processed"""
 
-    response.headers.add("Access-Control-Allow-Origin", "*")
-    response.headers.add(
-        "Access-Control-Allow-Headers",
-        "X-CURSUS-API-TOKEN, Content-Type, Accept, Origin",
-    )
-    response.headers.add("Access-Control-Allow-Methods", "GET, OPTIONS")
-    response.headers.add("Access-Control-Allow-Credentials", "true")
-    response.headers.add("Access-Control-Max-Age", "86400")
+    make_cors_headers(response)
 
     # A response that made it to the endpoint handler either succeeded (200) or
     # failed (404) to retrieve the requested resource. In both cases, we want
@@ -195,13 +209,23 @@ def after_request(response: flask.Response):
     # Compute the time to live up to one day starting from the time the token
     # was first created.
 
-    created_time = datetime.datetime.strptime(
-        cache_obj["created"], "%a, %d %b %Y %H:%M:%S GMT"
+    expired_time = datetime.datetime.strptime(
+        cache_obj["expired"], "%a, %d %b %Y %H:%M:%S GMT"
     )
 
-    ttl = datetime.datetime.utcnow() - created_time
+    ttl = expired_time - datetime.datetime.utcnow()
+
+    if ttl.seconds < 0:
+        ttl = datetime.timedelta(minutes=60)
 
     cache.set(token, json.dumps(cache_obj), timeout=ttl.seconds)
+
+    response.headers.add("X-Cursus-Limit", "50")
+    response.headers.add(
+        "X-Cursus-Remaining", str(50 - cache_obj["request_count"])
+    )
+    response.headers.add("X-Cursus-Start", cache_obj["created"])
+    response.headers.add("X-Cursus-TTL", str(ttl.seconds))
 
     return response
 
@@ -210,7 +234,7 @@ def after_request(response: flask.Response):
 def handle_http_error(error: WerkzeugExceptions.HTTPException):
     """Handle generic Werkzeug HTTP exceptions"""
 
-    return (
+    resp = flask.make_response(
         jsonify(
             {
                 "error": {
@@ -223,6 +247,8 @@ def handle_http_error(error: WerkzeugExceptions.HTTPException):
         error.code,
     )
 
+    return resp
+
 
 @university_bp.errorhandler(CursusException.CursusError)
 def handle_api_error(error: CursusException.CursusError):
@@ -232,7 +258,7 @@ def handle_api_error(error: CursusException.CursusError):
     as an argument, this error handler will return a JSON response with the
     error code, message, and reason.
     """
-    return (
+    resp = flask.make_response(
         jsonify(
             {
                 "error": {
@@ -244,6 +270,8 @@ def handle_api_error(error: CursusException.CursusError):
         ),
         error.status_code,
     )
+
+    return resp
 
 
 api_bp.register_blueprint(university_bp)

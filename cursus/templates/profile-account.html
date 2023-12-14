@@ -1,1 +1,135 @@
-<h1>Profile</h1>
+<div class="profile__detail">
+  <h2>Basic information</h2>
+  <div class="profile__field">
+    <label for="profile-email" class="profile__field__label">
+      Email
+    </label>
+    <p id="profile-email-describe" class="profile__field__description">
+      Email is used to log in to your account and to receive notifications.
+    </p>
+    <div 
+      class="profile__field__input-wrapper"
+      title="This field is currently disabled due to lack of functionality."
+    >
+      <div class="profile__field__input disabled">
+        <input
+          disabled="true"
+          id="profile-email"
+          aria-describedby="profile-email-describe"
+          data-cursus-init-value="{{ current_user.email}}"
+          placeholder="Enter your email"
+          value="{{ current_user.email }}"
+        />
+      </div>
+      <div
+        for="profile-email"
+        class="profile__field__input-feedback"
+        title="something"
+      >
+      </div>
+    </div>
+    <div class="profile__field__footer">
+      <div class="profile__field__suggestion">
+        Your account is logged in with&nbsp;
+        <span class="profile__provider">
+          {% if current_user.provider == 'google' %}
+            <img
+              src="{{ url_for('get_image', filename='google-g-logo.svg') }}?v={{ content_hash_for_image('google-g-logo.svg') }}"
+              alt="Google Logo"
+            />
+          {% elif current_user.provider == 'github' %}
+            <img
+              src="{{ url_for('get_image', filename='github-mark.svg') }}?v={{ content_hash_for_image('github-mark.svg') }}"
+              alt="GitHub Logo"
+            />
+          {% else %}
+            <img
+              src="{{ url_for('get_image', filename='discord-clyde-purple-logo.svg') }}?v={{ content_hash_for_image('discord-clyde-purple-logo.svg') }}"
+              alt="Discord Logo"
+            />
+          {% endif %}
+          {{ current_user.provider }}
+        </span>
+      </div>
+    </div>
+  </div>
+  <div class="profile__field">
+    <label for="profile-display-name" class="profile__field__label">
+      Display name
+    </label>
+    <p id="profile-display-name-describe" class="profile__field__description">
+      Please enter a display name that you are comfortable with.
+    </p>
+    <div class="profile__field__input-wrapper">
+      <div class="profile__field__input">
+        <input
+          id="profile-display-name"
+          aria-describedby="profile-display-name-describe"
+          data-cursus-init-value="{{ current_user.name }}"
+          data-cursus-reset-by="profile-display-cancel-name-btn"
+          data-cursus-submit-by="profile-display-submit-name-btn"
+          placeholder="Enter your display name"
+          autocapitalize="none"
+          autocomplete="off"
+          spellcheck="false"
+          type="text"
+          value="{{ current_user.name }}"
+          title="{{ current_user.name }}"
+        />
+      </div>
+      <div
+        for="profile-display-name"
+        class="profile__field__input-feedback"
+        title="something"
+      >
+        Check feedback
+      </div>
+    </div>
+
+    <div class="profile__field__footer">
+      <div class="profile__field__suggestion">
+        Please use 32 characters at maximum.
+      </div>
+      <div class="profile__field__action-bar">
+        <button
+          type="button"
+          id="profile-display-cancel-name-btn"
+          data-cursus-field-cancel-at="profile-display-name"
+          class="btn profile__field__action-btn display-none"
+        >
+          Cancel
+        </button>
+        <button
+          type="button"
+          id="profile-display-submit-name-btn"
+          data-cursus-field-submit-at="profile-display-name"
+          class="btn btn--secondary btn--cursus profile__field__action-btn"
+        >
+          Update
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="profile-delete" class="profile__detail">
+  <h2>Delete account</h2>
+  <div class="profile__field">
+    <p class="profile__field__description">
+      Permanently delete your accout and remove all your data from our servers.
+      This action is irreversible, so make sure you want to do this.
+    </p>
+    <div class="profile__field__footer">
+      <div></div>
+      <div class="profile__field__action-bar">
+        <button
+          type="button"
+          id="profile-delete-account-btn"
+          data-cursus-field-submit-at="profile-delete-account"
+          class="btn btn--primary btn--danger profile__field__action-btn"
+        >
+          Delete this account
+        </button>
+      </div>
+  </div>
+  </div>
+</div>

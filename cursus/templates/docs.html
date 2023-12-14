@@ -9,14 +9,14 @@ main %} {{ super() }}
   </div>
   <div class="docs__banner__image">
     <img
-      src="/static/img/docs-banner.png"
+      src="{{ url_for('get_image', filename='docs-banner.png') }}?v={{ content_hash_for_image('docs-banner.png') }}"
       width="1440"
       height="360"
       alt="Main doc banner"
     />
   </div>
 </div>
-<div class="docs__card-container mb-24">
+<div class="docs__card-container mb-12 pb-1">
   <a
     href="{{ url_for('views.docs.show', page_name='search') }}"
     class="docs__card"

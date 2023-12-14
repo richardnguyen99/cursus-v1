@@ -1,20 +1,25 @@
-{% extends "_base.html" %} {% block title %}Details - Docs{% endblock %} {%
-block css %} {{ super() }}
-<link rel="stylesheet" href="/static/css/_docs.css" />
-{% endblock %} {% block main %} {{ super() }}
+{% extends "_base.html" %} 
+
+{% block title %}Details - Docs{% endblock %} 
+{% block main %} 
+{{ super() }} 
+
+{% from "macros/heading.html" import heading1, heading2, heading3 with context %}
+
 <div class="docs__banner">
   <div class="docs__banner__heading">
     <h1 class="docs__banner__text">Details</h1>
   </div>
   <div class="docs__banner__image">
-    <img
-      src="/static/img/docs-details-banner.png"
-      width="1440"
-      height="360"
-      alt="Details doc banner"
-    />
+      <img
+        src="{{ url_for('get_image', filename='docs-details-banner.png') }}?v={{ content_hash_for_image('docs-details-banner.png') }}"
+        width="1440"
+        height="360"
+        alt="Details doc banner"
+      />
   </div>
 </div>
+
 <section class="container-sm container-md container-lg mb-24">
   <div class="docs__breadcrumb">
     <div class="docs__breadcrumb__container">
@@ -25,5 +30,84 @@ block css %} {{ super() }}
       <p>Details</p>
     </div>
   </div>
+
+  <div class="docs__display">
+    {% call heading1('detail') %}
+      Details about a university
+    {% endcall %}
+
+    {% call heading2('detail_endpoint') %}
+      <code class="inline">/api/v1/university/{short_name}</code>
+    {% endcall %}
+
+    <p>
+      The endpoint <code class="inline">/{short_name}</code> allows you to get
+      details about a university by its <b>short name</b>. It includes details 
+      such as <em>estlabished year</em>, <em>campuses</em> and <em>domains</em>.
+    </p>
+
+    <pre>
+      <code class="language-bash">
+curl --request GET \
+-H 'X-CURSUS-API-TOKEN': &lt;YOUR_API_TOKEN&gt; \
+--url 'https://cursus.onrender.com/api/v1/university/mit'
+      </code>
+    </pre>
+
+    {% call heading3("detail_path_parameter") %}
+      Path parameter
+    {% endcall %}
+    <ul>
+      <li>
+        <code class="inline">short_name</code>: A complete short name of the 
+        university your are looking for (case insensitive).
+      </li>
+    </ul>
+
+    {% call heading3("search_return") %}
+      Return object
+    {% endcall %}
+    <ul>
+      <li>
+        On success, the HTTP status code in the response header is 
+        <code class="inline">200 (OK)</code> to indicate the request was 
+        successful and the response body contains a detailed object of the 
+        university (unless other filted query parameters are applied).
+      </li>
+      <li>
+        On error, the response body is an error object to describe the error.
+    </ul>
+
+    {% call heading3("search_notes") %}
+      Notes 
+    {% endcall %}
+    <ul>
+      <li>
+        The <code class="inline">short_name</code> must be a complete short name
+        of the university. To obtain the short name of a university, you can
+        use <a href="{{ url_for('views.docs.show', page_name='search') }}"><code>/find</code></a>
+        .
+      </li>
+      <li>Your <code class="inline">API_TOKEN</code> can be found in the 
+        <b>Profile</b> page once you signed in.
+      </li>
+      <li>
+        The API endpoint only supports JSON format. If the request does not 
+        accept JSON, the response will fail.
+      </li>
+      <li>
+        For more information about the endpoint, please visit the 
+        <a 
+          href="{{ url_for('swagger_ui.show', _anchor='/university/findUniversityByShortName') }}"
+          title="{{ url_for('swagger_ui.show', _anchor='/university/findUniversityByShortName') }}"
+        >
+          Swagger documentation for this endpoint
+        </a>.
+      </li>
+    </ul>
+
+  </div>
 </section>
 {% endblock %}
+
+

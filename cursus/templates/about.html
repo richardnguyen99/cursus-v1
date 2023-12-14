@@ -1,7 +1,13 @@
-{% extends "_base.html" %} {% block title %}About{% endblock %} {% block css %}
+{% extends "_base.html" %} 
+{% block title %}About{% endblock %} 
+
+{% block css %}
 {{ super() }}
 <link rel="stylesheet" href="/static/css/_about.css" />
-{% endblock %} {% block main %} {{ super() }}
+{% endblock %} 
+
+{% block main %} 
+{{ super() }}
 <div class="about__banner">
   <div class="about__banner__heading">
     <h1 class="about__banner__text">About Cursus</h1>
@@ -11,7 +17,11 @@
     </h2>
   </div>
   <div class="about__banner__image">
-    <img src="/static/img/about-grid.png" width="1440" height="360" />
+    <img 
+      src="{{ url_for('get_image', filename='about-grid.png') }}?v={{ content_hash_for_image('about-grid.png') }}" 
+      width="1440" 
+      height="360" 
+    />
   </div>
 </div>
 <section class="container-lg about__section mb-24">
@@ -83,5 +93,4 @@
     <li>UIcons by <a href="https://www.flaticon.com/uicons">Flaticon</a></li>
   </ul>
 </section>
-
 {% endblock %}

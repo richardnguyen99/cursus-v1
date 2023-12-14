@@ -1,8 +1,11 @@
-{% extends "_base.html" %} {% block title %}Profile{% endblock %} {% block main
-%} {{ super() }}
+{% extends "_base.html" %}
+{% block title %}Profile{% endblock %} 
+
+{% block main%} 
+{{ super() }}
 <div class="profile">
-  <div class="container-sm conntainer-md container-lg py-8">
-    <div class="display-flex gap-8">
+  <div class="container-sm container-md container-lg py-8">
+    <div class="display-flex flex-col flex-lg-row gap-8">
       <div class="col-lg-3">
         <div class="profile__sticky-nav">
           <ul class="profile__nav">
@@ -12,7 +15,7 @@
                 href="javascript:void(0)"
                 class="profile__nav-item"
               >
-                <i class="fas fa-user"></i>
+                <i class="fi fi-sr-user"></i>
                 <p>Account</p>
               </a>
             </li>
@@ -22,18 +25,18 @@
                 href="javascript:void(0)"
                 class="profile__nav-item"
               >
-                <i class="fas fa-user"></i>
+                <i class="fi fi-rr-code-simple"></i>
                 <p>Tokens</p>
               </a>
             </li>
             <li>
               <a
-                id="profile-update"
+                id="profile-history"
                 href="javascript:void(0)"
                 class="profile__nav-item"
               >
-                <i class="fas fa-user"></i>
-                <p>Update</p>
+                <i class="fi fi-rr-time-forward"></i>
+                <p>History</p>
               </a>
             </li>
           </ul>
@@ -41,30 +44,30 @@
       </div>
       <div class="col-lg-9">
         <div class="profile__info w-full">
-          <div class="display-flex gap-6 w-full">
-            <div class="profile__img">
-              <img src="/static/img/logo-180.png" alt="avatar" />
-            </div>
-            <div class="items-center display-flex justify-between w-full">
+          <div
+            class="display-flex flex-col gap-6 flex-md-row items-md-center gap-md-0 w-full"
+          >
+            <div class="display-flex items-center gap-6">
+              <div class="profile__img">
+                <img src="{{ current_user.image }}" alt="avatar" />
+              </div>
               <div class="profile__heading">
                 <div class="profile__name">
-                  <h1 class="profile__fullname">John Doe</h1>
-                  <p class="profile__username">@johndoe</p>
+                  <h1 class="profile__fullname">{{ current_user.name }}</h1>
+                  <p class="profile__username">{{ current_user.email }}</p>
                 </div>
               </div>
-              <button
-                type="button"
-                class="btn btn--primary btn--neutral btn--large"
-              >
-                <i class="fi fi-rr-pencil"></i>
-                Edit Profile
-              </button>
             </div>
+            <button
+              type="button"
+              class="btn btn--primary btn--neutral btn--large ml-md-auto"
+            >
+              <i class="fi fi-rr-pencil"></i>
+              Edit Profile
+            </button>
           </div>
         </div>
-        <div class="profile__detail mt-8">
-          <div class="profile__spa">{{ sub_page }}</div>
-        </div>
+        <div class="profile__spa mt-8">{{ sub_page }}</div>
       </div>
     </div>
   </div>

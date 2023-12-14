@@ -18,6 +18,7 @@ SUPPORT_PUBLIC_ENDPOINTS = {
     "about",
     "demo",
     "docs",
+    "privacy",
 }
 
 

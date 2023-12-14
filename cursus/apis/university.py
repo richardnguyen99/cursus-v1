@@ -21,6 +21,8 @@ def university_index():
 def university_find():
     """University find endpoint with query string"""
 
+    req = flask.request
+
     # Get request query string
     query_string = flask.request.query_string.decode("utf-8")
 

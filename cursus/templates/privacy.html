@@ -1,0 +1,104 @@
+{% extends "_base.html" %} 
+{% block title %}Terms of Use{% endblock %}
+
+{% block main %}
+{{ super() }}
+
+{% from "macros/heading.html" import heading1, heading2, heading3 with context %}
+
+<div class="container-sm container-md container-lg my-20">
+  {% call heading1('privacy-policy') %}
+    Privacy Policy
+  {% endcall %}
+
+  <p>Effective date: September 01, 2023</p>
+  <p>Last update: December 13, 2023</p>
+
+  <div class="privacy">
+    {% call heading2('privacy-policy-overview') %}
+      1. Overview of data protection
+    {% endcall %}
+
+    {% call heading3('general-information') %}
+      General information
+    {% endcall %}
+    <p>The following information will provide you with an easy to navigate 
+      overview of what will happen with your personal data when you visit this 
+      website. The term “personal data” comprises all data that can be used to 
+      personally identify you. For detailed information about the subject matter 
+      of data protection, please consult our Data Protection Declaration, which 
+      we have included beneath this copy.
+    </p>
+
+    {% call heading3('data-collected') %}
+      What data do we collect?
+    {% endcall %}
+    <p>
+      The data we collect are those that you provide us when you register in our
+      site through OAuth2 Providers (Google, Discord, Github). These data might 
+      include, but not be limited to, your username, your email, your avatar,
+      your OAuth2 Provider, and your OAuth2 Provider's ID.
+    </p>
+    <p>
+      Additionally, public network information such as browsers, IP address for 
+      security purpose are collected.
+    </p>
+
+    {% call heading3('data-usage') %}
+      How do we use your data?
+    {% endcall %}
+    <p>
+      For OAuth2-provided information, we use them to identify you and provide
+      protected resources according to your resources. For example, we need 
+      your login handler (provided by an OAuth2 Provider of your choice) to 
+      create a user account and resources associated with this account.
+    </p>
+    <p>
+      For network information such as web browsers and IP address, we use them
+      to identify your device and provide security protection. For example, we
+      monitor your IP address to prevent rate-limiting.
+    </p>
+
+    {% call heading3('how-we-collect') %}
+      How do we collect your data?
+    {% endcall %}
+    <p>
+      You directly provide us with most of the data we collect. We collect data 
+      and process data when you:
+    </p>
+    <ul>
+      <li>Register online or use our API endpoints</li>
+      <li>Use or view our website</li>
+    </ul>
+
+    {% call heading3('how-we-store') %}
+      How do we store your data?
+    {% endcall %}
+    <p>
+      We securely store your data in our database. We will store your database 
+      until you request to delete your account. Once your account is deleted, 
+      your data will be removed from our database.
+    </p>
+
+    {% call heading3('who-shares-with') %}
+      Who do we share your data with?
+    {% endcall %}
+    <p>
+      Our app doesn't share your data with any third-party. Your data is only
+      for user authentication, authorization, providing protected resources, 
+      and security protection.
+    </p>
+    <p>We do not sell any of your data nor personal information to others.</p>
+
+    {% call heading3('contact') %}
+      Contact information
+    {% endcall %}
+    <p>
+      If you have any questions, please contact <a href="mailto:richard@richardhnguyen.com">richard@richardhnguyen.com</a>
+    </p>
+  </div>
+
+</div>
+
+{% endblock %}
+

@@ -1,0 +1,68 @@
+<div id="profile-history-tab" class="profile__detail">
+  <h2>History</h2>
+  <p>List of activities that associate with this account</p>
+
+  <ul class="profile__history">
+  {%- for log in logs %}  
+
+    <li class="profile__history__item">
+      <div class="profile__history__item-wrapper">
+        {% if log.type.startswith('register') %}
+          <div class="profile__history__item__title register">
+            Account Registration
+          </div>
+        {% elif log.type.startswith('update') %}
+          <div class="profile__history__item__title update">
+            Account Update
+          </div>
+        {% elif log.type.startswith('generate') %}
+          <div class="profile__history__item__title generate">
+            Token Generation
+          </div>
+        {% else %}
+          <div class="profile__history__item__title revoke">
+            Token Revocation
+          </div>
+        {% endif %}
+
+        <div class="profile__history__item__description">
+          {% if log.type.startswith('register') %}
+            Account is logged in with&nbsp;
+            <span class="profile__provider">
+              {% if current_user.provider == 'google' %}
+                <img
+                  src="{{ url_for('get_image', filename='google-g-logo.svg') }}?v={{ content_hash_for_image('google-g-logo.svg') }}"
+                  alt="Google Logo"
+                />
+              {% elif current_user.provider == 'github' %}
+                <img
+                  src="{{ url_for('get_image', filename='github-mark.svg') }}?v={{ content_hash_for_image('github-mark.svg') }}"
+                  alt="GitHub Logo"
+                />
+              {% else %}
+                <img
+                  src="{{ url_for('get_image', filename='discord-clyde-purple-logo.svg') }}?v={{ content_hash_for_image('discord-clyde-purple-logo.svg') }}"
+                  alt="Discord Logo"
+                />
+              {% endif %}
+              {{ current_user.provider }}
+            </span>
+          {% elif log.type.startswith('update') %}
+          {% elif log.type.startswith('generate') %}
+            <span class="profile__history__short" title="{{ log.token }}">{{ log.token }}</span> is 
+            generated
+          {% else %}
+            <span class="profile__history__short" title="{{ log.token }}">{{ log.token }}</span> is 
+            revoked 
+          {% endif %}
+
+        </div>
+        <div class="profile__history__item__date">
+          {{ log.at }}
+        </div>
+      </div>
+    </li>
+
+  {% endfor %}
+  </ul>
+</div>

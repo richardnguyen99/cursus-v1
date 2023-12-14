@@ -377,3 +377,17 @@ template {
 [hidden] {
   display: none;
 }
+
+/**
+  * 1. Correct the font size and margin on `h1` elements within `section` and
+  *    `article` contexts in Chrome, Firefox, and Safari.
+  * 2. Correct the font size and margin on `h1` elements within `section` and
+  *    `article` contexts in iOS.
+  */
+*,
+::after,
+::before {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}

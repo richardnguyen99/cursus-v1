@@ -22,6 +22,7 @@ from sqlalchemy.orm import (
 )
 
 from cursus.util.extensions import db
+from .history import History
 
 cuid_generator: cuid2.Cuid = cuid2.Cuid(length=64)
 

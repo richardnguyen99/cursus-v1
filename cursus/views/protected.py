@@ -3,16 +3,143 @@
 """List of protected endpoitns used by the Cursus application
 """
 
+import re
 import flask
 import json
 import datetime
 
 from flask_login import current_user, login_required
+from sqlalchemy.sql import func
 
 from . import view_bp
 from cursus.util.extensions import db, cache
-from cursus.models import ActiveToken
+from cursus.models import ActiveToken, History
 from cursus.util import exceptions, datetime as cursus_datetime
+
+
+@view_bp.route("/profile/delete", methods=["DELETE"])
+def profile_delete():
+    """Delete the current user account"""
+
+    if not current_user.is_authenticated:
+        return (
+            flask.json.jsonify(
+                {
+                    "type": "error",
+                    "message": "You must be logged in to delete your account",
+                }
+            ),
+            401,
+        )
+
+    req = flask.request
+
+    if req.method != "DELETE":
+        raise exceptions.MethodNotAllowedError(
+            f"Method {req.method} not allowed for this endpoint"
+        )
+
+    db.session.delete(current_user)
+    db.session.commit()
+
+    return flask.json.jsonify(
+        {
+            "type": "success",
+            "message": "Account deleted successfully",
+        }
+    )
+
+
+@view_bp.route("/profile/update_name/<new_name>", methods=["PUT", "POST"])
+def profile_update(new_name: str):
+    """Update the display name of the current user"""
+
+    if not current_user.is_authenticated:
+        return (
+            flask.json.jsonify(
+                {
+                    "type": "error",
+                    "message": "You must be logged in to update your name",
+                }
+            ),
+            401,
+        )
+
+    req = flask.request
+
+    if req.method != "POST" and req.method != "PUT":
+        raise exceptions.MethodNotAllowedError(
+            f"Method {req.method} not allowed for this endpoint"
+        )
+
+    if not new_name:
+        return (
+            flask.json.jsonify(
+                {
+                    "type": "error",
+                    "message": "Name cannot be empty",
+                }
+            ),
+            400,
+        )
+
+    if len(new_name) > 32:
+        return (
+            flask.json.jsonify(
+                {
+                    "type": "error",
+                    "message": "Name cannot be longer than 32 characters",
+                }
+            ),
+            400,
+        )
+
+    if re.match(r"^[a-zA-Z0-9_.\-\s]+$", new_name) is None:
+        return (
+            flask.json.jsonify(
+                {
+                    "type": "error",
+                    "message": "Name can only contain alphanumeric characters,\
+ underscores, dashes, dots and spaces",
+                }
+            ),
+            400,
+        )
+
+    if new_name == current_user.name:
+        return (
+            flask.json.jsonify(
+                {
+                    "type": "info",
+                    "message": "Name is the same as the current one",
+                    "data": {},
+                }
+            ),
+            200,
+        )
+
+    history = History(
+        user_id=current_user.id,
+        type="update",
+    )
+
+    current_user.name = new_name
+    db.session.add(history)
+
+    db.session.commit()
+
+    return (
+        flask.json.jsonify(
+            {
+                "type": "success",
+                "message": "Name updated successfully",
+                "data": {
+                    "name": current_user.name,
+                },
+            }
+        ),
+        200,
+    )
 
 
 @view_bp.route("/profile/revoke_token", methods=["GET"])
@@ -44,7 +171,14 @@ def profile_revoke():
     )
 
     if old_token:
+        history_log = History(
+            user_id=current_user.id, type="revoke", token_used=old_token.token
+        )
+
         db.session.delete(old_token)
+        db.session.flush()
+
+        db.session.add(history_log)
         db.session.commit()
 
         cache.set(old_token.token, False, timeout=60 * 60 * 24 * 7)
@@ -128,6 +262,8 @@ You have reached the maximum number of tokens generated per day",
             timeout=ttl.seconds,
         )
 
+    # If the cache key doesn't exist, i.e. the user hasn't generated any token
+    # today
     else:
         generatedTime = datetime.datetime.now(datetime.timezone.utc).strftime(
             "%a, %d %b %Y %H:%M:%S GMT"
@@ -147,6 +283,11 @@ You have reached the maximum number of tokens generated per day",
     token = ActiveToken(
         token=ActiveToken.generate_token(),
         user_id=current_user.id,
+    )
+
+    history = History(
+        user_id=current_user.id,
+        type="generate",
     )
 
     cached_token = cache.get(token.token)
@@ -171,6 +312,11 @@ You have reached the maximum number of tokens generated per day",
 
     # Commit the token to the database
     db.session.add(token)
+    db.session.flush()
+
+    # https://stackoverflow.com/questions/620610/sqlalchemy-obtain-primary-key-with-autoincrement-before-commit
+    history.token_used = token.token
+    db.session.add(history)
     db.session.commit()
 
     return (
@@ -191,14 +337,17 @@ You have reached the maximum number of tokens generated per day",
 @login_required
 def profile():
     return flask.redirect(
-        flask.url_for("views.profile_account", sub_page="account")
+        flask.url_for(
+            "views.profile_account",
+            sub_page="account",
+        )
     )
 
 
 SUPPORT_PROFILE_SUB_PAGES = (
     "account",
     "token",
-    "update",
+    "history",
 )
 
 
@@ -217,10 +366,41 @@ def profile_account(sub_page: str):
             f"Method {req.method} not allowed for this endpoint"
         )
 
+    content_dict = {
+        "user_id": current_user.id,
+        "active_token": current_user.token,
+    }
+
+    if sub_page == "history":
+        # """
+        # SELECT T.token, H.*
+        # FROM history as H
+        # LEFT JOIN active_tokens as T
+        #   ON H.token_id = T.id
+        # WHERE H.user_id = id
+        #   ORDER BY H."at" DESC;
+        # """
+
+        history_logs = reversed(
+            db.session.query(
+                History.token_used.label("token"),
+                History.type,
+                func.to_char(
+                    History.at,
+                    "Mon DD, YYYY at HH12:MI PM",
+                ).label("at"),
+            )
+            .select_from(History)
+            .outerjoin(ActiveToken, History.token_used == ActiveToken.token)
+            .filter(History.user_id == current_user.id)
+            .all()
+        )
+
+        content_dict["logs"] = history_logs
+
     content = flask.render_template(
         f"profile-{sub_page}.html",
-        user_id=current_user.id,
-        active_token=current_user.token,
+        **content_dict,
     )
 
     if "X-Requested-SPA" in req.headers:
@@ -231,6 +411,7 @@ def profile_account(sub_page: str):
             flask.render_template(
                 "_profile.html",
                 page_name="profile",
+                current_user=current_user,
             )
         )
 

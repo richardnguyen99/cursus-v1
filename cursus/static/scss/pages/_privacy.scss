@@ -1,0 +1,19 @@
+.privacy {
+  position: relative;
+
+  &>p {
+    font-size: 1.125rem;
+    line-height: 1.25;
+    margin-bottom: 1.5rem;
+  }
+
+  &>ul {
+    margin-left: 1.5rem;
+
+    &>li {
+      font-size: 1.125rem;
+      line-height: 1.25;
+      margin-bottom: 1rem;
+    }
+  }
+}
