@@ -17,6 +17,22 @@ from cursus.models import ActiveToken, History
 from cursus.util import exceptions, datetime as cursus_datetime
 
 
+@view_bp.route("/profile/delete", methods=["DELETE", "POST"])
+def profile_delete():
+    """Delete the current user account"""
+
+    if not current_user.is_authenticated:
+        return (
+            flask.json.jsonify(
+                {
+                    "type": "error",
+                    "message": "You must be logged in to delete your account",
+                }
+            ),
+            401,
+        )
+
+
 @view_bp.route("/profile/update_name/<new_name>", methods=["PUT", "POST"])
 def profile_update(new_name: str):
     """Update the display name of the current user"""

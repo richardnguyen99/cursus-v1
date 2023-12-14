@@ -170,6 +170,40 @@ function handleUpdateDisplayName(e) {
     });
 }
 
+let isModalOpen = false;
+
+/**
+ * @param {MouseEvent} e
+ */
+function handleOpenModal(e) {
+  e.preventDefault();
+
+  const modal = document.getElementById("modal");
+
+  modal.classList.add("modal--open");
+}
+
+/**
+ * @param {MouseEvent} e
+ */
+function handleDeleteAccount(e) {
+  e.preventDefault();
+
+  console.log("delete account");
+}
+
+/**
+ *
+ * @param {MouseEvent} e
+ */
+function handleCloseModal(e) {
+  e.preventDefault();
+
+  const modal = document.getElementById("modal");
+
+  modal.classList.remove("modal--open");
+}
+
 function _mountAccount() {
   document.title = "Account - Profile - Cursus";
 
@@ -181,11 +215,57 @@ function _mountAccount() {
     "profile-display-submit-name-btn"
   );
 
+  const deleteAccountBtn = document.getElementById(
+    "profile-delete-account-btn"
+  );
+
+  const modal = document.getElementById("modal");
+
   if (displayNameCancelBtn)
     displayNameCancelBtn.addEventListener("click", handleCancelDisplayName);
 
   if (displayNameSubmitBtn)
     displayNameSubmitBtn.addEventListener("click", handleUpdateDisplayName);
+
+  if (deleteAccountBtn)
+    deleteAccountBtn.addEventListener("click", handleOpenModal);
+
+  if (modal) {
+    modal.innerHTML = `
+<div class="profile__modal">
+  <div class="profile__modal__header">
+    <h1>Warning</h1>
+    <button id="close-modal-btn" class="btn btn--icon">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M5.72 5.72a.75.75 0 0 1 1.06 0L12 10.94l5.22-5.22a.749.749 0 0 1 1.275.326.749.749 0 0 1-.215.734L13.06 12l5.22 5.22a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215L12 13.06l-5.22 5.22a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042L10.94 12 5.72 6.78a.75.75 0 0 1 0-1.06Z"></path></svg>
+    </button>
+  </div>
+  <div class="profile__modal__content">
+    <p>
+      Are you sure you want to delete your account? This action is irreversible.
+    </p>
+    <div class="profile__modal__footer">
+      <button id="cancel-delete-btn" class="btn btn--secondary">
+        Cancel
+      </button>
+      <button id="actual-delete-btn" class="btn btn--primary btn--danger">
+        I&apos;m sure
+      </button>
+    </div>
+  </div>
+</div>`;
+  }
+
+  const actualDeleteBtn = document.getElementById("actual-delete-btn");
+  const cancelDeleleteBtn = document.getElementById("cancel-delete-btn");
+  const closeModalBtn = document.getElementById("close-modal-btn");
+
+  if (actualDeleteBtn)
+    actualDeleteBtn.addEventListener("click", handleDeleteAccount);
+
+  if (cancelDeleleteBtn && closeModalBtn) {
+    cancelDeleleteBtn.addEventListener("click", handleCloseModal);
+    closeModalBtn.addEventListener("click", handleCloseModal);
+  }
 
   return;
 }

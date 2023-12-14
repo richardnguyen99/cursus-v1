@@ -112,6 +112,10 @@
     {% import 'macros/footer.html' as footer %}
     {{ footer.footer() }} 
 
+    <div id="modal">
+      {% block modal %}{% endblock %}
+    </div>
+
     {% assets "js_all" %}
       <script src="{{ ASSET_URL }}"></script>
     {% endassets %} 
