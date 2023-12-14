@@ -39,8 +39,6 @@ def profile_delete():
             f"Method {req.method} not allowed for this endpoint"
         )
 
-    print(current_user)
-
     db.session.delete(current_user)
     db.session.commit()
 
