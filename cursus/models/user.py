@@ -71,6 +71,7 @@ class User(db.Model, UserMixin):
         backref="user",
         lazy=True,
         collection_class=list,
+        cascade="all, delete-orphan",
     )
 
     sessions: Relationship[list["Session"]] = relationship(
@@ -78,6 +79,7 @@ class User(db.Model, UserMixin):
         backref="user",
         lazy=True,
         collection_class=list,
+        cascade="all, delete-orphan",
     )
 
     history: Relationship[list["History"]] = relationship(
@@ -85,12 +87,14 @@ class User(db.Model, UserMixin):
         backref="user",
         lazy=True,
         collection_class=list,
+        cascade="all, delete-orphan",
     )
 
     token = relationship(
         "ActiveToken",
         uselist=False,
         back_populates="user",
+        cascade="all, delete-orphan",
     )
 
     def __init__(self, name: str, email: str, image: str):

@@ -17,7 +17,7 @@ from cursus.models import ActiveToken, History
 from cursus.util import exceptions, datetime as cursus_datetime
 
 
-@view_bp.route("/profile/delete", methods=["DELETE", "POST"])
+@view_bp.route("/profile/delete", methods=["DELETE"])
 def profile_delete():
     """Delete the current user account"""
 
@@ -31,6 +31,25 @@ def profile_delete():
             ),
             401,
         )
+
+    req = flask.request
+
+    if req.method != "DELETE":
+        raise exceptions.MethodNotAllowedError(
+            f"Method {req.method} not allowed for this endpoint"
+        )
+
+    print(current_user)
+
+    db.session.delete(current_user)
+    db.session.commit()
+
+    return flask.json.jsonify(
+        {
+            "type": "success",
+            "message": "Account deleted successfully",
+        }
+    )
 
 
 @view_bp.route("/profile/update_name/<new_name>", methods=["PUT", "POST"])

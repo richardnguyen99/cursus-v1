@@ -189,7 +189,44 @@ function handleOpenModal(e) {
 function handleDeleteAccount(e) {
   e.preventDefault();
 
-  console.log("delete account");
+  fetch("/profile/delete", {
+    method: "DELETE",
+  })
+    .then((res) => res.json())
+    .then(({ type, message }) => {
+      const feedback = document.getElementById("delete-modal-feedback");
+
+      if (feedback === null) {
+        throw new Error("Feedback element not found");
+      }
+
+      feedback.classList.add("show");
+
+      if (type === "error") {
+        feedback.classList.remove("profile--success");
+        feedback.classList.add("profile--danger");
+        feedback.innerText = message;
+
+        return;
+      }
+
+      feedback.classList.remove("danger");
+      feedback.classList.add("success");
+      feedback.innerText = `${message}. Redirecting in 4 seconds... `;
+
+      var count = 3;
+
+      let timer = setInterval(() => {
+        if (count <= 0) {
+          clearInterval(timer);
+          window.location.href = "/";
+          return;
+        }
+
+        feedback.innerText = `${message}. Redirecting in ${count} seconds... `;
+        count--;
+      }, 1000);
+    });
 }
 
 /**
@@ -244,12 +281,16 @@ function _mountAccount() {
       Are you sure you want to delete your account? This action is irreversible.
     </p>
     <div class="profile__modal__footer">
-      <button id="cancel-delete-btn" class="btn btn--secondary">
-        Cancel
-      </button>
-      <button id="actual-delete-btn" class="btn btn--primary btn--danger">
-        I&apos;m sure
-      </button>
+      <div id="delete-modal-feedback" class="profile__modal__feedback">
+      </div>
+      <div class="profile__modal__action-list">
+        <button id="cancel-delete-btn" class="btn btn--secondary">
+          Cancel
+        </button>
+        <button id="actual-delete-btn" class="btn btn--primary btn--danger">
+          I&apos;m sure
+        </button>
+      </div>
     </div>
   </div>
 </div>`;

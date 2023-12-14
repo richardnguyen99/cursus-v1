@@ -407,9 +407,7 @@
     }
 
     &__suggestion {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
+      display: inline;
       font-size: 15px;
       color: rgb(var(--color-gray-600) / 1);
     }
@@ -533,11 +531,39 @@
     &__footer {
       display: flex;
       align-items: center;
-      justify-content: flex-end;
+      justify-content: space-between;
       gap: 0.75rem;
       margin-top: 1.5rem;
       padding-top: 0.75rem;
       border-top: 1px solid rgb(var(--color-gray-200) / 1);
+    }
+
+    &__feedback {
+      font-size: 14px;
+      font-style: italic;
+      display: block;
+      visibility: hidden;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+
+      &.error {
+        color: rgb(var(--color-red-500) / 1);
+      }
+
+      &.success {
+        color: rgb(var(--color-green-500) / 1);
+      }
+
+      &.show {
+        visibility: visible;
+      }
+    }
+
+    &__action-list {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
     }
   }
 }
