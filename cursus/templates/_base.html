@@ -82,12 +82,7 @@
     {% block css %}
     {% assets filters="autoprefixer6, cssmin", output="css/vendor.bundle.css", "css/prism.css" %}
       <link rel="stylesheet" href="{{ ASSET_URL }}" />
-    {% endassets %} 
-
-    {% assets filters="autoprefixer6, cssmin", output="css/vendor.bundle.css", "css/prism.css" %}
-      <link rel="stylesheet" href="{{ ASSET_URL }}" />
-    {% endassets %} 
-
+    {% endassets %}
     {% assets filters="cssmin", output="css/core.bundle.css", "css/index.css", "css/_dropdown.css" %}
       <link rel="stylesheet" href="{{ ASSET_URL }}" />
     {% endassets %} 

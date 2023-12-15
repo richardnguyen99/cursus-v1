@@ -208,7 +208,7 @@ def create_app() -> Flask:
             response.add_etag()
             response.last_modified = datetime.datetime.utcnow()
 
-            response.access_control_allow_methods.add("GET")
+            response.access_control_allow_methods = ["GET"]
             response.access_control_allow_origin = "*"
             response.access_control_max_age = 3600
 
