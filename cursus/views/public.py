@@ -60,11 +60,14 @@ def show(page_name: str):
             f"Method {req.method} not allowed for this endpoint"
         )
 
-    resp = flask.render_template(
-        f"{page_name}.html",
-        page_name=page_name,
-        current_user=flask_login.current_user,
-    )
+    try:
+        resp = flask.render_template(
+            f"{page_name}.html",
+            page_name=page_name,
+            current_user=flask_login.current_user,
+        )
+    except Exception as e:
+        flask.current_app.logger.error(e)
 
     return resp, 200
 

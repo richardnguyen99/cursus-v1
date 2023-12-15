@@ -55,7 +55,6 @@ def robots():
     return resp
 
 
-@flask.current_app.route("/static/img/<filename>")
 def get_image(filename: str):
     return flask.send_from_directory(
         os.path.join(flask.current_app.root_path, "static", "img"), filename
