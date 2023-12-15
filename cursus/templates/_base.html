@@ -79,7 +79,11 @@
       href="https://cdn-uicons.flaticon.com/2.0.0/uicons-regular-rounded/css/uicons-regular-rounded.css"
     />
 
-    {% block css %} 
+    {% block css %}
+    {% assets filters="autoprefixer6, cssmin", output="css/vendor.bundle.css", "css/prism.css" %}
+      <link rel="stylesheet" href="{{ ASSET_URL }}" />
+    {% endassets %} 
+
     {% assets filters="autoprefixer6, cssmin", output="css/vendor.bundle.css", "css/prism.css" %}
       <link rel="stylesheet" href="{{ ASSET_URL }}" />
     {% endassets %} 
