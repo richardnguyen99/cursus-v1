@@ -18,6 +18,8 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship, Relationship
 
 from cursus.util.extensions import db
 
+from .course import Course
+
 
 class University(db.Model):
     """Core university model"""
@@ -68,7 +70,6 @@ class University(db.Model):
     updated_at: Mapped[DateTime] = mapped_column(
         DateTime(timezone=True),
         server_default=func.now(),
-        server_onupdate=func.now(),
     )
 
     founders: Relationship[list["UniversityFounder"]] = relationship(
@@ -76,6 +77,7 @@ class University(db.Model):
         backref="university",
         lazy=True,
         collection_class=list,
+        cascade="all, delete-orphan",
     )
 
     domains: Relationship[list["UniversityDomain"]] = relationship(
@@ -83,6 +85,7 @@ class University(db.Model):
         backref="university",
         lazy=True,
         collection_class=list,
+        cascade="all, delete-orphan",
     )
 
     campuses: Relationship[list["UniversityCampus"]] = relationship(
@@ -90,6 +93,15 @@ class University(db.Model):
         backref="university",
         lazy=True,
         collection_class=list,
+        cascade="all, delete-orphan",
+    )
+
+    courses: Relationship[list["Course"]] = relationship(
+        "Course",
+        backref="university",
+        lazy=True,
+        collection_class=list,
+        cascade="all, delete-orphan",
     )
 
     def __init__(
