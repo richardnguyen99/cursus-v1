@@ -18,7 +18,7 @@ from logging.config import dictConfig
 from .apis import api_bp as api_bp_v1
 from .views import view_bp, oauth_bp
 from .util.extensions import db, migrate, ma, login_manager, assets, cache
-from .models import User, ActiveToken
+from .models import User, ActiveToken, Account
 from .util import generate_content_hash
 
 
@@ -119,20 +119,28 @@ def create_app() -> Flask:
 
     @login_manager.user_loader
     def load_user(id):
+        """Load a user from the database"""
+
         user_with_token = (
-            db.session.query(ActiveToken.token, User)
+            db.session.query(ActiveToken.token, Account.provider, User)
             .select_from(User)
             .outerjoin(ActiveToken, User.id == ActiveToken.user_id)
+            .outerjoin(Account, Account.userId == User.id)
             .filter(User.id == id)
             .first()
         )
 
+        # In case the user id is sent but it's no longer in the database
+        if not user_with_token:
+            return None
+
         # The above query returns a tuple of an API token and a User object
         # However, Flask-Login expects a User object, so we have to set the
         # active token manually
-        user_with_token[1].active_token = user_with_token[0]
+        user_with_token[2].provider = user_with_token[1]
+        user_with_token[2].active_token = user_with_token[0]
 
-        return user_with_token[1]
+        return user_with_token[2]
 
     @login_manager.unauthorized_handler
     def handle_needs_login():
