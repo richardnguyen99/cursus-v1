@@ -58,9 +58,15 @@ class Department(db.Model):
         server_default=func.now(),
     )
 
-    school_id: Mapped[int] = mapped_column(
+    university_id: Mapped[int] = mapped_column(
         Integer,
         ForeignKey("universities.id", ondelete="CASCADE", onupdate="CASCADE"),
+        nullable=False,
+    )
+
+    school_id: Mapped[int] = mapped_column(
+        Integer,
+        ForeignKey("schools.id", ondelete="CASCADE", onupdate="CASCADE"),
         nullable=False,
     )
 

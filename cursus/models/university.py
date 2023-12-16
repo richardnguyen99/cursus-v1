@@ -20,6 +20,7 @@ from cursus.util.extensions import db
 
 from .course import Course
 from .department import Department
+from .school import School
 
 
 class University(db.Model):
@@ -105,6 +106,14 @@ class University(db.Model):
         cascade="all, delete-orphan",
     )
 
+    schools: Relationship[list["School"]] = relationship(
+        "School",
+        backref="university",
+        lazy=True,
+        collection_class=list,
+        cascade="all, delete-orphan",
+    )
+
     departments: Relationship[list["Department"]] = relationship(
         "Department",
         backref="university",
@@ -157,7 +166,6 @@ class UniversityDomain(db.Model):
     updated_at: Mapped[DateTime] = mapped_column(
         DateTime(timezone=True),
         server_default=func.now(),
-        server_onupdate=func.now(),
     )
 
     school_short_name: Mapped[str] = mapped_column(
@@ -194,7 +202,6 @@ class UniversityFounder(db.Model):
     updated_at: Mapped[DateTime] = mapped_column(
         DateTime(timezone=True),
         server_default=func.now(),
-        server_onupdate=func.now(),
     )
 
     school_short_name: Mapped[str] = mapped_column(
