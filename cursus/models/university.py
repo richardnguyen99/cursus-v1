@@ -19,6 +19,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship, Relationship
 from cursus.util.extensions import db
 
 from .course import Course
+from .department import Department
 
 
 class University(db.Model):
@@ -98,6 +99,14 @@ class University(db.Model):
 
     courses: Relationship[list["Course"]] = relationship(
         "Course",
+        backref="university",
+        lazy=True,
+        collection_class=list,
+        cascade="all, delete-orphan",
+    )
+
+    departments: Relationship[list["Department"]] = relationship(
+        "Department",
         backref="university",
         lazy=True,
         collection_class=list,

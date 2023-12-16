@@ -74,12 +74,16 @@ class Course(db.Model):
         nullable=False,
     )
 
-    # department_id: Mapped[int] = mapped_column(
-    # Integer,
-    # ForeignKey("departments.id"),
-    # nullable=False,
-    # index=True,
-    # )
+    department_id: Mapped[int] = mapped_column(
+        Integer,
+        ForeignKey(
+            "departments.id",
+            ondelete="CASCADE",
+            onupdate="CASCADE",
+        ),
+        nullable=False,
+        index=True,
+    )
 
     school_id: Mapped[str] = mapped_column(
         String(32),
