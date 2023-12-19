@@ -7,6 +7,7 @@ School API endpoint handlers
 import urllib
 import flask
 
+from cursus.schema import SchoolSchema
 from cursus.models import School, University
 from cursus.util import CursusException
 from cursus.util.extensions import db
@@ -57,24 +58,29 @@ def school_find():
         db.session.query(
             *School.__table__.columns,
             University.full_name.label("university_full_name"),
+            University.short_name.label("university_short_name"),
         )
         .select_from(School)
         .join(University, School.university_id == University.id)
         .filter(School.name.ilike(f"%{search_string}%"))
         .limit(limit)
-        .all()
     )
 
-    count = len(schools)
+    only_fields = (
+        "id",
+        "name",
+        "university_full_name",
+        "university_short_name",
+    )
 
-    for school in schools:
-        print(f"{school.university_full_name} - {school.name}")
+    school_schema = SchoolSchema(only=only_fields)
 
     resp = flask.make_response(
         flask.jsonify(
             {
                 "message": "Success",
-                "count": count,
+                "count": schools.count(),
+                "data": school_schema.dump(schools, many=True),
             }
         )
     )
