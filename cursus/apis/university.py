@@ -1,7 +1,12 @@
+# -*- coding: utf-8 -*-
+
+"""
+University API endpoint handlers
+"""
+
+
 import flask
 import urllib.parse
-
-from sqlalchemy.orm import joinedload
 
 from cursus.util import CursusException
 from cursus.models.university import University
@@ -39,8 +44,8 @@ def university_find():
     parsed_dict = {key: value[0] for key, value in query_dict.items()}
 
     # Check if query string contains a `school` argument and has a value
-    if "school" not in parsed_dict or not parsed_dict["school"]:
-        reason = "Query string must contain a `school` argument"
+    if "name" not in parsed_dict or not parsed_dict["name"]:
+        reason = "Query string must contain a `name` argument"
         raise CursusException.BadRequestError(reason)
 
     # Set the default limit

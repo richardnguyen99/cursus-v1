@@ -17,6 +17,9 @@ from cursus.models import ActiveToken
 from cursus.util import CursusException
 from cursus.util.extensions import cache, db
 
+from .school import (
+    school_find,
+)
 from .university import (
     university_find,
     university_index,
@@ -90,6 +93,15 @@ university_bp: Blueprint = Blueprint(
     name="university", import_name=__name__, url_prefix="/university/"
 )
 
+school_bp: Blueprint = Blueprint(
+    name="schooll", import_name=__name__, url_prefix="/school/"
+)
+
+###############################################################################
+#                                                                             #
+#                               University API                                #
+#                                                                             #
+###############################################################################
 
 university_bp.add_url_rule("/", "index", view_func=university_index)
 university_bp.add_url_rule(
@@ -100,6 +112,14 @@ university_bp.add_url_rule(
     "api_name",
     view_func=university_get_by_name,
 )
+
+###############################################################################
+#                                                                             #
+#                                 School API                                  #
+#                                                                             #
+###############################################################################
+
+school_bp.add_url_rule("/", "index", view_func=school_find)
 
 
 @api_bp.route("/swagger.json", methods=["GET"])
@@ -115,9 +135,12 @@ def swagger():
     return jsonify(swagger_json)
 
 
-@university_bp.before_request
+@api_bp.before_request
 def before_request():
     """Process actions all requests that are made to the API endpoints"""
+
+    if request.path.endswith("/swagger.json"):
+        return None
 
     if request.method != "OPTIONS" and request.method != "GET":
         raise CursusException.MethodNotAllowedError(
@@ -183,9 +206,12 @@ def before_request():
     cache.set(token, json.dumps(cache_item), timeout=60 * 60)
 
 
-@university_bp.after_request
+@api_bp.after_request
 def after_request(response: flask.Response):
     """Perform actions after a request has been processed"""
+
+    if request.path.endswith("/swagger.json"):
+        return response
 
     make_cors_headers(response)
 
@@ -230,7 +256,7 @@ def after_request(response: flask.Response):
     return response
 
 
-@university_bp.errorhandler(WerkzeugExceptions.HTTPException)
+@api_bp.errorhandler(WerkzeugExceptions.HTTPException)
 def handle_http_error(error: WerkzeugExceptions.HTTPException):
     """Handle generic Werkzeug HTTP exceptions"""
 
@@ -275,3 +301,4 @@ def handle_api_error(error: CursusException.CursusError):
 
 
 api_bp.register_blueprint(university_bp)
+api_bp.register_blueprint(school_bp)
