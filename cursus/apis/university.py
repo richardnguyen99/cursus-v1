@@ -64,7 +64,7 @@ def university_find():
 in the range [1, 10]"
             raise CursusException.BadRequestError(reason)
 
-    search_string = parsed_dict["school"]
+    search_string = parsed_dict["name"]
 
     # Search string with ignored-case pattern
     universities = University.query.filter(

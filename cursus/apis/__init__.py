@@ -19,6 +19,7 @@ from cursus.util.extensions import cache, db
 
 from .school import (
     school_find,
+    school_by_short_name,
 )
 from .university import (
     university_find,
@@ -120,6 +121,9 @@ university_bp.add_url_rule(
 ###############################################################################
 
 school_bp.add_url_rule("/", "index", view_func=school_find)
+school_bp.add_url_rule(
+    "/<short_name>", "short_name", view_func=school_by_short_name
+)
 
 
 @api_bp.route("/swagger.json", methods=["GET"])
@@ -276,7 +280,7 @@ def handle_http_error(error: WerkzeugExceptions.HTTPException):
     return resp
 
 
-@university_bp.errorhandler(CursusException.CursusError)
+@api_bp.errorhandler(CursusException.CursusError)
 def handle_api_error(error: CursusException.CursusError):
     """Handle generic Cursus API exceptions
 
