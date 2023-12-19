@@ -4,7 +4,6 @@
 School API endpoint handlers
 """
 
-import urllib
 import flask
 
 from cursus.schema import SchoolSchema
@@ -22,6 +21,17 @@ def school_find():
     """School find endpoint with query string"""
 
     req = flask.request
+
+    # default fields to dump/respond with
+    dump_fields = {
+        "id": True,
+        "name": True,
+        "university_full_name": True,
+        "university_short_name": False,
+        "website": False,
+        "created_at": False,
+        "modified_at": False,
+    }
 
     parsed_dict = get_parsed_dict(req.query_string.decode("utf-8"))
 
@@ -54,12 +64,29 @@ def school_find():
         .limit(limit)
     )
 
-    only_fields = (
-        "id",
-        "name",
-        "university_full_name",
-        "university_short_name",
-    )
+    if has_require_params(parsed_dict, ["filter"]):
+        if parsed_dict["filter"] == "full":
+            dump_fields["website"] = True
+            dump_fields["created_at"] = True
+            dump_fields["modified_at"] = True
+            dump_fields["university_short_name"] = True
+
+        else:
+            filter_labels = parsed_dict["filter"].split(",")
+            for label in filter_labels:
+                if label == "website":
+                    dump_fields["website"] = True
+
+                if label == "created_at":
+                    dump_fields["created_at"] = True
+
+                if label == "modified_at":
+                    dump_fields["modified_at"] = True
+
+                if label == "university_short_name":
+                    dump_fields["university_short_name"] = True
+
+    only_fields = tuple([key for key, value in dump_fields.items() if value])
 
     school_schema = SchoolSchema(only=only_fields)
 

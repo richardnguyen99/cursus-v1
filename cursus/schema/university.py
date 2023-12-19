@@ -108,6 +108,8 @@ class UniversitySchema(SQLAlchemyAutoSchema):
     former_name = auto_field(dump_only=True)
     motto = auto_field()
 
+    homepage = fields.Method("get_homepage", dump_only=True)
+
     campuses = fields.Nested(
         lambda: UniversityCampusSchema(
             only=(
@@ -142,6 +144,16 @@ class UniversitySchema(SQLAlchemyAutoSchema):
             "biography_link",
         ),
     )
+
+    def get_homepage(self, obj: University):
+        index_page = list(
+            filter(lambda domain: domain.type == "index", obj.domains)
+        )
+
+        if len(index_page) > 0:
+            return index_page[0].domain_name
+
+        return "-"
 
     def get_campuses(self, obj: University):
         return [

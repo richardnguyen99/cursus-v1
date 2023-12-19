@@ -17,6 +17,9 @@ from cursus.models import ActiveToken
 from cursus.util import CursusException
 from cursus.util.extensions import cache, db
 
+from .search import (
+    search_university,
+)
 from .school import (
     school_find,
     school_by_short_name,
@@ -90,13 +93,28 @@ api_bp: Blueprint = Blueprint(
     name="api", import_name=__name__, url_prefix="/api/v1/"
 )
 
+search_bp: Blueprint = Blueprint(
+    name="search", import_name=__name__, url_prefix="/search/"
+)
+
 university_bp: Blueprint = Blueprint(
     name="university", import_name=__name__, url_prefix="/university/"
 )
 
 school_bp: Blueprint = Blueprint(
-    name="schooll", import_name=__name__, url_prefix="/school/"
+    name="school", import_name=__name__, url_prefix="/school/"
 )
+
+###############################################################################
+#                                                                             #
+#                                   Search API                                #
+#                                                                             #
+###############################################################################
+
+search_bp.add_url_rule(
+    "/university", "university", view_func=search_university
+)
+
 
 ###############################################################################
 #                                                                             #
@@ -124,6 +142,15 @@ school_bp.add_url_rule("/", "index", view_func=school_find)
 school_bp.add_url_rule(
     "/<short_name>", "short_name", view_func=school_by_short_name
 )
+
+
+@api_bp.route("/<path:path>", methods=["GET"])
+def not_found(path: str):
+    """Return a 404 response for all unknown API endpoints"""
+
+    raise WerkzeugExceptions.NotFound(
+        description=f"API endpoint, {path}, not found"
+    )
 
 
 @api_bp.route("/swagger.json", methods=["GET"])
@@ -260,6 +287,26 @@ def after_request(response: flask.Response):
     return response
 
 
+@api_bp.errorhandler(WerkzeugExceptions.NotFound)
+def handle_api_not_found(error: WerkzeugExceptions.NotFound):
+    """Handle API 404 errors"""
+
+    resp = flask.make_response(
+        jsonify(
+            {
+                "error": {
+                    "code": 404,
+                    "message": "Not Found",
+                    "reason": "NOT_FOUND",
+                }
+            }
+        ),
+        404,
+    )
+
+    return resp
+
+
 @api_bp.errorhandler(WerkzeugExceptions.HTTPException)
 def handle_http_error(error: WerkzeugExceptions.HTTPException):
     """Handle generic Werkzeug HTTP exceptions"""
@@ -304,5 +351,6 @@ def handle_api_error(error: CursusException.CursusError):
     return resp
 
 
+api_bp.register_blueprint(search_bp)
 api_bp.register_blueprint(university_bp)
 api_bp.register_blueprint(school_bp)

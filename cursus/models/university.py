@@ -41,6 +41,7 @@ class University(db.Model):
         String(128),
         unique=True,
         nullable=False,
+        index=True,
     )
 
     established: Mapped[int] = mapped_column(
