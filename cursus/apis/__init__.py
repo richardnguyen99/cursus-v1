@@ -19,6 +19,7 @@ from cursus.util.extensions import cache, db
 
 from .search import (
     search_university,
+    search_school,
 )
 from .school import (
     school_find,
@@ -107,13 +108,15 @@ school_bp: Blueprint = Blueprint(
 
 ###############################################################################
 #                                                                             #
-#                                   Search API                                #
+#                                 Search API                                  #
 #                                                                             #
 ###############################################################################
 
 search_bp.add_url_rule(
     "/university", "university", view_func=search_university
 )
+
+search_bp.add_url_rule("/school", "school", view_func=search_school)
 
 
 ###############################################################################

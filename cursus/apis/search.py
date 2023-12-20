@@ -7,8 +7,9 @@ Search enpoint handlers
 import flask
 import sqlalchemy as sa
 
-from cursus.schema import UniversitySchema
-from cursus.models import University, UniversityCampus
+from cursus.util.extensions import db
+from cursus.schema import UniversitySchema, SchoolSchema
+from cursus.models import University, UniversityCampus, School
 from cursus.util.exceptions import (
     BadRequestError,
 )
@@ -117,6 +118,84 @@ def search_university():
                 "page": page,
                 "pages": university_page.pages,
                 "results": university_schema.dump(university_page, many=True),
+            }
+        )
+    )
+
+    response.mimetype = "application/json"
+
+    return response, 200
+
+
+def search_school():
+    """Search for schools based on their names"""
+
+    req = flask.request
+
+    page = req.args.get("page", 1, type=int)
+    query = req.args.get("query", None, type=str)
+    display = req.args.get("display", None, type=str)
+
+    if req.method != "GET":
+        raise BadRequestError("Only GET method is allowed for this endpoint")
+
+    if not query:
+        raise BadRequestError(
+            "Query string cannot be empty while using this endpoint"
+        )
+
+    if len(query) < 3:
+        raise BadRequestError(
+            "Query string must be at least 3 characters long"
+        )
+
+    search_string = f"%{query}%"
+    dump_fields = {
+        "id": True,
+        "name": True,
+        "university_full_name": True,
+        "website": False,
+        "created_at": False,
+        "modified_at": False,
+    }
+
+    schools = (
+        db.session.query(
+            *School.__table__.columns,
+            University.full_name.label("university_full_name"),
+        )
+        .select_from(School)
+        .join(University, onclause=University.id == School.university_id)
+        .filter(School.name.ilike(search_string))
+    )
+
+    if display:
+        if display == "all":
+            dump_fields["website"] = True
+            dump_fields["created_at"] = True
+            dump_fields["modified_at"] = True
+
+        else:
+            filtered_displays = display.strip().lower().split(",")
+
+            for filter_display in filtered_displays:
+                if filter_display == "website":
+                    dump_fields["website"] = True
+
+    only_fields = tuple([key for key, value in dump_fields.items() if value])
+    school_schema = SchoolSchema(only=only_fields)
+
+    school_page = schools.paginate(page=page, per_page=10, error_out=True)
+
+    response = flask.make_response(
+        flask.jsonify(
+            {
+                "message": "Success",
+                "total": schools.count(),
+                "count": len(school_page.items),
+                "page": page,
+                "pages": school_page.pages,
+                "results": school_schema.dump(school_page, many=True),
             }
         )
     )
