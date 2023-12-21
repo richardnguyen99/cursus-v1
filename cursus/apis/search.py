@@ -7,12 +7,28 @@ Search enpoint handlers
 import flask
 import sqlalchemy as sa
 
+from typing import Optional
+
 from cursus.util.extensions import db
-from cursus.schema import UniversitySchema, SchoolSchema
-from cursus.models import University, UniversityCampus, School
+from cursus.schema import UniversitySchema, SchoolSchema, DepartmentSchema
+from cursus.models import University, UniversityCampus, School, Department
 from cursus.util.exceptions import (
     BadRequestError,
 )
+
+
+def _search_require_query_string(query: Optional[str]):
+    if not query:
+        raise BadRequestError(
+            "Query string cannot be empty while using this endpoint"
+        )
+
+    if len(query) < 3:
+        raise BadRequestError(
+            "Query string must be at least 3 characters long"
+        )
+
+    return f"%{query}%"
 
 
 def search_university():
@@ -28,17 +44,7 @@ def search_university():
     sort_by_year = req.args.get("sort_by_year", None, type=str)
     country_code = req.args.get("country_code", None, type=str)
 
-    if not query:
-        raise BadRequestError(
-            "Query string cannot be empty while using this endpoint"
-        )
-
-    if len(query) < 3:
-        raise BadRequestError(
-            "Query string must be at least 3 characters long"
-        )
-
-    search_string = f"%{query}%"
+    search_string = _search_require_query_string(query)
 
     dump_fields = {
         "id": True,
@@ -136,20 +142,8 @@ def search_school():
     query = req.args.get("query", None, type=str)
     display = req.args.get("display", None, type=str)
 
-    if req.method != "GET":
-        raise BadRequestError("Only GET method is allowed for this endpoint")
+    search_string = _search_require_query_string(query)
 
-    if not query:
-        raise BadRequestError(
-            "Query string cannot be empty while using this endpoint"
-        )
-
-    if len(query) < 3:
-        raise BadRequestError(
-            "Query string must be at least 3 characters long"
-        )
-
-    search_string = f"%{query}%"
     dump_fields = {
         "id": True,
         "name": True,
@@ -207,3 +201,114 @@ def search_school():
 
 def search_department():
     """Search for departments based on their names"""
+
+    req = flask.request
+
+    page = req.args.get("page", 1, type=int)
+    query = req.args.get("query", None, type=str)
+    filters = req.args.get("filters", None, type=str)
+    display = req.args.get("display", None, type=str)
+
+    search_string = _search_require_query_string(query)
+
+    default_fields = {
+        "id": True,
+        "name": True,
+        "code": True,
+        "university_name": True,
+        "university_id": True,
+        "website": False,
+        "created_at": False,
+        "modified_at": False,
+        "school_name": False,
+        "school_id": False,
+        "undergraduate": False,
+        "graduate": False,
+        "type": False,
+        "special_name": False,
+    }
+
+    departments = (
+        db.session.query(
+            *Department.__table__.columns,
+            School.name.label("school_name"),
+            University.full_name.label("university_name"),
+        )
+        .select_from(Department)
+        .join(School, onclause=School.id == Department.school_id)
+        .join(University, onclause=University.id == Department.university_id)
+        .filter(Department.name.ilike(search_string))
+    )
+
+    if filters:
+        filter_list = filters.strip().lower().split(",")
+
+        for f in filter_list:
+            if f == "undergraduate":
+                departments = departments.filter(
+                    Department.undergraduate == True
+                )
+
+            if f == "graduate":
+                departments = departments.filter(Department.graduate == True)
+
+            if f == "active":
+                departments = departments.filter(Department.active == True)
+
+    if display:
+        if display == "all":
+            default_fields = {key: True for key in default_fields.keys()}
+
+        else:
+            display_list = display.strip().lower().split(",")
+
+            for d in display_list:
+                if d == "website":
+                    default_fields["website"] = True
+
+                if d == "created_at":
+                    default_fields["created_at"] = True
+
+                if d == "modified_at":
+                    default_fields["modified_at"] = True
+
+                if d == "school":
+                    default_fields["school_name"] = True
+                    default_fields["school_id"] = True
+
+                if d == "undergraduate":
+                    default_fields["undergraduate"] = True
+
+                if d == "graduate":
+                    default_fields["graduate"] = True
+
+                if d == "type":
+                    default_fields["type"] = True
+
+                if d == "special_name":
+                    default_fields["special_name"] = True
+
+    only_fields = tuple(
+        [key for key, value in default_fields.items() if value]
+    )
+    department_schema = DepartmentSchema(only=only_fields)
+    department_page = departments.paginate(
+        page=page, per_page=10, error_out=True
+    )
+
+    response = flask.make_response(
+        flask.jsonify(
+            {
+                "message": "Success",
+                "total": departments.count(),
+                "count": len(department_page.items),
+                "page": page,
+                "pages": department_page.pages,
+                "results": department_schema.dump(department_page, many=True),
+            }
+        )
+    )
+
+    response.mimetype = "application/json"
+
+    return response, 200

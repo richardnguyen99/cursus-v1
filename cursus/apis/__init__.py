@@ -20,6 +20,7 @@ from cursus.util.extensions import cache, db
 from .search import (
     search_university,
     search_school,
+    search_department,
 )
 from .school import (
     school_find,
@@ -118,6 +119,9 @@ search_bp.add_url_rule(
 
 search_bp.add_url_rule("/school", "school", view_func=search_school)
 
+search_bp.add_url_rule(
+    "/department", "department", view_func=search_department
+)
 
 ###############################################################################
 #                                                                             #
