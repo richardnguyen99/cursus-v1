@@ -4,21 +4,20 @@
 Departments model
 """
 
-import sqlalchemy as sa
-
 from sqlalchemy import (
     ForeignKey,
+    TIMESTAMP,
     String,
     Integer,
     UniqueConstraint,
+    Boolean,
     DateTime,
-    TIMESTAMP,
 )
-from sqlalchemy.orm import Mapped, mapped_column, Relationship, relationship
+from sqlalchemy.orm import Mapped, mapped_column, relationship, Relationship
 from sqlalchemy.sql import func
 
-from cursus.util.extensions import db
 from cursus.models.course import Course
+from cursus.util.extensions import db
 
 
 class Department(db.Model):
@@ -33,6 +32,7 @@ class Department(db.Model):
     name: Mapped[str] = mapped_column(
         String(128),
         nullable=False,
+        index=True,
     )
 
     code: Mapped[str] = mapped_column(
@@ -46,13 +46,43 @@ class Department(db.Model):
         nullable=True,
     )
 
+    undergraduate: Mapped[bool] = mapped_column(
+        Boolean,
+        nullable=False,
+        default=False,
+    )
+
+    graduate: Mapped[bool] = mapped_column(
+        Boolean,
+        nullable=False,
+        default=False,
+    )
+
+    active: Mapped[bool] = mapped_column(
+        Boolean,
+        nullable=False,
+        default=True,
+    )
+
+    type: Mapped[str] = mapped_column(
+        String(32),
+        nullable=False,
+        default="department",
+        index=True,
+    )
+
+    special_name: Mapped[str] = mapped_column(
+        String(128),
+        nullable=True,
+    )
+
     created_at: Mapped[DateTime] = mapped_column(
         TIMESTAMP(timezone=True),
         nullable=False,
         server_default=func.now(),
     )
 
-    updated_at: Mapped[DateTime] = mapped_column(
+    modified_at: Mapped[DateTime] = mapped_column(
         TIMESTAMP(timezone=True),
         nullable=False,
         server_default=func.now(),

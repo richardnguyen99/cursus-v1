@@ -203,3 +203,7 @@ def search_school():
     response.mimetype = "application/json"
 
     return response, 200
+
+
+def search_department():
+    """Search for departments based on their names"""

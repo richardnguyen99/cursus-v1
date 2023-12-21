@@ -1,0 +1,175 @@
+name	code	website	undergraduate	graduate	university_id	school_id	active	type	special_name
+Architecture	MIT 4	https://architecture.mit.edu/	1	1	112	1	1	department	-
+Media Arts and Sciences	MIT MAS	https://www.media.mit.edu/	1	1	112	1	1	department	-
+Urban Studies and Planning	MIT 11	https://dusp.mit.edu/	1	1	112	1	1	department	-
+Aeronautics and Astronautics	MIT 16	https://aeroastro.mit.edu/	1	1	112	2	1	department	-
+Biological Engineering	MIT 20	https://be.mit.edu/	1	1	112	2	1	department	-
+Chemical Engineering	MIT 10	https://cheme.mit.edu/	1	1	112	2	1	department	-
+Civil and Environmental Engineering	MIT 1	https://cee.mit.edu/	1	1	112	2	1	department	-
+Electrical Engineering and Computer Science	MIT 6	https://www.eecs.mit.edu/	1	1	112	2	1	department	-
+Materials Science and Engineering	MIT 3	https://dmse.mit.edu/	1	1	112	2	1	department	-
+Mechanical Engineering	MIT 2	https://meche.mit.edu/	1	1	112	2	1	department	-
+Medical Engineering and Medical Physics	MIT IMES	https://hst.mit.edu/	0	1	112	2	1	department	-
+Nuclear Science and Engineering	MIT 22	https://web.mit.edu/nse/	1	1	112	2	1	department	-
+Anthropology	MIT 21A	https://anthropology.mit.edu/	1	1	112	3	1	department	-
+Comparative Media Studies/Writing	MIT CMS/21W	https://cmsw.mit.edu/	1	1	112	3	1	department	-
+Economics	MIT 14	https://economics.mit.edu/	1	1	112	3	1	department	-
+Global Languages	MIT 21G	https://mitgsl.mit.edu/	1	1	112	3	1	department	-
+History	MIT 21H	https://history.mit.edu/	1	1	112	3	1	department	-
+Humanities	MIT 21	https://shass.mit.edu/	1	1	112	3	1	department	-
+Linguistics and Philosophy	MIT 24	https://linguistics.mit.edu/	1	1	112	3	1	department	-
+Literature	MIT 21L	https://lit.mit.edu/	1	1	112	3	1	department	-
+Music and Theater Arts	MIT 21M	https://mta.mit.edu/	1	1	112	3	1	department	-
+Political Science	MIT 17	https://polisci.mit.edu/	1	1	112	3	1	department	-
+Science, Technology, and Society	MIT STS	https://sts-program.mit.edu/	1	1	112	3	1	department	-
+Management	MIT 15	https://mitsloan.mit.edu/	1	1	112	4	1	department	-
+Biology	MIT 7	https://biology.mit.edu/	1	1	112	5	1	department	-
+Brain and Cognitive Sciences	MIT 9	https://bcs.mit.edu/	1	1	112	5	1	department	-
+Chemistry	MIT 5	https://chemistry.mit.edu/	1	1	112	5	1	department	-
+Earth, Atmospheric, and Planetary Sciences	MIT 12	https://eapsweb.mit.edu/	1	1	112	5	1	department	-
+Mathematics	MIT 18	https://math.mit.edu/	1	1	112	5	1	department	-
+Physics	MIT 8	https://physics.mit.edu/	1	1	112	5	1	department	-
+Data, Systems, and Society	MIT IDS	https://dssg.mit.edu/	1	1	112	6	1	department	-
+Architecture	AHA-ARCT	https://www.arct.cam.ac.uk/	1	1	113	7	1	department	-
+History of Art	AHA-HOART	https://www.hoart.cam.ac.uk/	1	1	113	7	1	department	-
+East Asian Studies	AMES-EA	https://www.ames.cam.ac.uk/	1	1	113	7	1	department	-
+Middle Eastern Studies	AMES-ME	https://www.ames.cam.ac.uk/	1	1	113	7	1	department	-
+Anglo-Saxon, Norse, and Celtic	ENGL-ASNC	https://www.asnc.cam.ac.uk/	1	1	113	7	1	department	-
+Modern and Medieval Languages and Linguistics	MMLL	https://www.mmll.cam.ac.uk/	1	1	113	7	1	faculty	-
+Asian and Middle Eastern Studies	AMES	https://www.ames.cam.ac.uk/	1	1	113	7	1	faculty	-
+Architecture and History of Art	AHA	https://www.arct.cam.ac.uk/	1	1	113	7	1	faculty	-
+Classics	CLASS	https://www.classics.cam.ac.uk/	1	1	113	7	1	faculty	-
+Divinity	DIV	https://www.divinity.cam.ac.uk/	1	1	113	7	1	faculty	-
+English	ENGL	https://www.english.cam.ac.uk/	1	1	113	7	1	faculty	-
+Music	MUS	https://www.mus.cam.ac.uk/	1	1	113	7	1	faculty	-
+Philosophy	PHIL	https://www.phil.cam.ac.uk/	1	1	113	7	1	faculty	-
+Archeology	ARCH	https://www.arch.cam.ac.uk/	1	1	113	8	1	department	-
+Economics	ECON	https://www.econ.cam.ac.uk/	1	1	113	8	1	faculty	-
+Education	EDUC	https://www.educ.cam.ac.uk/	1	1	113	8	1	faculty	-
+History	HIST	https://www.hist.cam.ac.uk/	1	1	113	8	1	faculty	-
+History and Philosophy of Science	HPS	https://www.hps.cam.ac.uk/	1	1	113	8	1	department	-
+Law	LAW	https://www.law.cam.ac.uk/	1	1	113	8	1	faculty	-
+Criminology	CRIM	https://www.crim.cam.ac.uk/	1	1	113	8	1	institute	-
+Politics and International Studies	POLIS	https://www.polis.cam.ac.uk/	1	1	113	8	1	department	-
+Social Anthropology	SOCANTH	https://www.socanth.cam.ac.uk/	1	1	113	8	1	department	-
+Sociology	SOC	https://www.sociology.cam.ac.uk/	1	1	113	8	1	department	-
+Biology	BIO	https://www.biology.cam.ac.uk/	1	1	113	9	1	faculty	-
+Biochemistry	BIO-BIOC	https://www.bioc.cam.ac.uk/	1	1	113	9	1	department	-
+Genetics	BIO-GEN	https://www.gen.cam.ac.uk/	1	1	113	9	1	department	-
+Pathology	BIO-PATH	https://www.path.cam.ac.uk/	1	1	113	9	1	department	-
+Pharmacology	BIO-PHAR	https://www.phar.cam.ac.uk/	1	1	113	9	1	department	-
+Physiology, Development and Neuroscience	BIO-PDN	https://www.pdn.cam.ac.uk/	1	1	113	9	1	department	-
+Plant Sciences	BIO-PLANTSCI	https://www.plantsci.cam.ac.uk/	1	1	113	9	1	department	-
+Psychology	BIO-PSYCH	https://www.psychol.cam.ac.uk/	1	1	113	9	1	department	-
+Zoology	BIO-ZOO	https://www.zoo.cam.ac.uk/	1	1	113	9	1	department	-
+Veterinary Medicine	VETMED	https://www.vet.cam.ac.uk/	1	1	113	9	1	department	-
+Geography	ESG-GEOG	https://www.geog.cam.ac.uk/	1	1	113	10	1	department	-
+Mathematics	MATHS	https://www.maths.cam.ac.uk/	1	1	113	10	1	faculty	-
+Applied Mathematics and Theoretical Physics	MATHS-DAMTP	https://www.damtp.cam.ac.uk/	1	1	113	10	1	department	-
+Pure Mathematics and Mathematical Statistics	MATHS-DPMMS	https://www.dpmms.cam.ac.uk/	1	1	113	10	1	department	-
+Physics & Chemistry	PHYSCHEM	https://www.ast.cam.ac.uk/physchemfacultyty/	1	1	113	10	1	faculty	-
+Astronomy	PHYSCHEM-ASTRO	https://www.ast.cam.ac.uk/	1	1	113	10	1	institute	-
+Yusuf Hamied departmentnt of Chemistry	PHYSCHEM-CH	https://www.ch.cam.ac.uk/	1	1	113	10	1	department	-
+Materials Science & Metallurgy	PHYSCHEM-MSM	https://www.msm.cam.ac.uk/	1	1	113	10	1	department	-
+Physics	PHYSCHEM-PHYS	https://www.phy.cam.ac.uk/	1	1	113	10	1	department	-
+Earth Sciences and Geography	ESG	https://www.esc.cam.ac.uk/	1	1	113	10	1	faculty	-
+Earth Sciences	ESG-ES	https://www.esc.cam.ac.uk/	1	1	113	10	1	department	-
+Clinical Neurosciences	NEUROSCI	https://www-neurosciences.medschl.cam.ac.uk/	0	1	113	11	1	faculty	-
+Neurology	NEUROSCI-NEUROL	https://www.neurology.cam.ac.uk/	0	1	113	11	1	un	-
+Neurosurgery	NEUROSCI-SURG	https://www.neurosurg.cam.ac.uk/	0	1	113	11	1	divisi	-
+Wolfson Brain Imaging Centre	NEUROSCI-WBIC	https://www.wbic.cam.ac.uk/	0	1	113	11	1	cent	-
+Haematology	HAEM	https://www.haem.cam.ac.uk/	0	1	113	11	1	department	-
+Medical Genetics	MEDGEN	https://www.medgen.cam.ac.uk/	0	1	113	11	1	department	-
+Medicine	MED	https://www.medschl.cam.ac.uk/	0	1	113	11	1	department	-
+MRC Biostatistics Unit	MRCBU	https://www.mrc-bsu.cam.ac.uk/	0	1	113	11	1	un	-
+MRC Epidemiology Unit	MRCEPID	https://www.mrc-epid.cam.ac.uk/	0	1	113	11	1	un	-
+MRC Mitochondrial Biology Unit	MRCMBU	https://www.mrc-mbu.cam.ac.uk/	0	1	113	11	1	un	-
+Obstetrics & Gynaecology	OBGYN	https://www.obgyn.cam.ac.uk/	0	1	113	11	1	department	-
+Oncology	ONC	https://www.oncology.cam.ac.uk/	1	1	113	11	1	department	-
+Early Cancer institutete	ECI	https://www.earlycancer.cam.ac.uk/	1	1	113	11	1	institute	-
+Paediatrics	PAED	https://www.paeds.cam.ac.uk/	1	1	113	11	1	department	-
+Psychiatry	PSYCH	https://www.psychiatry.cam.ac.uk/	0	1	113	11	1	department	-
+Brain Mapping Unit	PSYCH-BMU	https://www.bmu.psychol.cam.ac.uk/	0	1	113	11	1	un	-
+Public Health and Primary Care	PHPC	https://www.phpc.cam.ac.uk/	0	1	113	11	1	department	-
+Clinical Gerontology	PHPC-GERON	https://www.phpc.cam.ac.uk/gerontology/	0	1	113	11	1	un	-
+Radiology	RADIO	https://www.radiology.medschl.cam.ac.uk/	0	1	113	11	1	department	-
+Surgery	SURG	https://www.surgery.cam.ac.uk/	0	1	113	11	1	department	-
+Trauma and Orthopaedic Surgery	SURG-ORTHO	https://www.orthopaedics.cam.ac.uk/	0	1	113	11	1	divisi	-
+Cambridge institutete for Medical Research	CIMR	https://www.cimr.cam.ac.uk/	0	1	113	11	1	institute	-
+MRC Cognition and Brain Sciences Unit	MRCCBSU	https://www.mrc-cbu.cam.ac.uk/	0	1	113	11	1	un	-
+Engineering	ENG	https://www.eng.cam.ac.uk/	1	1	113	12	1	department	-
+Computer Science and Technology	CST	https://www.cst.cam.ac.uk/	1	1	113	12	1	department	-
+Chemical Engineering and Biotechnology	CEB	https://www.ceb.cam.ac.uk/	1	1	113	12	1	department	-
+Asian and Middle Eastern Studies	ORINST	https://www.orinst.ox.ac.uk/	1	1	114	13	1	faculty	-
+Classics	CLASSIC	https://www.classics.ox.ac.uk/	1	1	114	13	1	faculty	-
+English	ENGLISH	https://www.english.ox.ac.uk/	1	1	114	13	1	faculty	-
+History	HISTORY	https://www.history.ox.ac.uk/	1	1	114	13	1	faculty	-
+History of Art	HOART	https://www.hoa.ox.ac.uk/	1	1	114	13	1	department	-
+Linguistics, Philology and Phonetics	LING-PHIL	https://www.ling-phil.ox.ac.uk/	1	1	114	13	1	faculty	-
+Medieval and Modern Languages	MML	https://www.mod-langs.ox.ac.uk/	1	1	114	13	1	faculty	-
+Music	MUSIC	https://www.music.ox.ac.uk/	1	1	114	13	1	faculty	-
+Philosophy	PHILOS	https://www.philosophy.ox.ac.uk/	1	1	114	13	1	faculty	-
+Theology and Religion	THEO	https://www.theology.ox.ac.uk/	1	1	114	13	1	faculty	-
+Earth Sciences	EARTH	https://www.earth.ox.ac.uk/	1	1	114	14	1	department	-
+Engineering Science	ENG	https://www.eng.ox.ac.uk/	1	1	114	14	1	department	-
+Materials	MAT	https://www.materials.ox.ac.uk/	1	1	114	14	1	department	-
+Physics	PHYS	https://www2.physics.ox.ac.uk/	1	1	114	14	1	department	-
+Statistics	STATS	https://www.stats.ox.ac.uk/	1	1	114	14	1	department	-
+Mathematical institutete	MATHS	https://www.maths.ox.ac.uk/	1	1	114	14	1	institute	-
+Biology	BIO	https://www.biology.ox.ac.uk/	1	1	114	15	1	department	-
+Chemistry	CHEM	https://www.chem.ox.ac.uk/	1	1	114	15	1	department	-
+Computer Science	CS	https://www.cs.ox.ac.uk/	1	1	114	15	1	department	-
+Doctor Training Centre	DTC	https://www.dtc.ox.ac.uk/	1	1	114	15	1	cent	-
+Anthropology & Museum Ethnography	ANTHRO	https://www.anthro.ox.ac.uk/	1	1	114	16	1	school	-
+Archaeology	ARCH	https://www.arch.ox.ac.uk/	1	1	114	16	1	school	-
+Business	BS	https://www.sbs.ox.ac.uk/	1	1	114	16	1	school	Saïd
+Economics	ECON	https://www.economics.ox.ac.uk/	1	1	114	16	1	department	-
+Education	EDUC	https://www.education.ox.ac.uk/	1	1	114	16	1	department	-
+Geography and the Environment	GEOG	https://www.geog.ox.ac.uk/	1	1	114	16	1	school	-
+Global and Area Studies	GLOBAL	https://www.area-studies.ox.ac.uk/	1	1	114	16	1	school	-
+Goverment	BSG	https://www.bsg.ox.ac.uk/	1	1	114	16	1	school	Blavatnik
+International Development	QEH	https://www.qeh.ox.ac.uk/	1	1	114	16	1	department	-
+Internet Institute	OII	https://www.oii.ox.ac.uk/	1	1	114	16	1	institute	-
+Law	LAW	https://www.law.ox.ac.uk/	1	1	114	16	1	faculty	-
+Oxford Martin 	OMS	https://www.oxfordmartin.ox.ac.uk/	1	1	114	16	1	school	-
+Politics and International Relations	DPIR	https://www.politics.ox.ac.uk/	1	1	114	16	1	department	-
+Social Policy & Intervention	DSPI	https://www.spi.ox.ac.uk/	1	1	114	16	1	department	-
+Sociology	SOC	https://www.sociology.ox.ac.uk/	1	1	114	16	1	department	-
+African & African-American Studies	AAAS	https://aaas.fas.harvard.edu/	1	1	115	21	1	department	-
+Anthropology	ANTH	https://anthropology.fas.harvard.edu/	1	1	115	21	1	department	-
+Art, Film, and Visual Studies	AFVS	https://afvs.fas.harvard.edu/	1	1	115	21	1	department	-
+Astronomy	ASTRO	https://astronomy.fas.harvard.edu/	1	1	115	21	1	department	-
+Celtic Lanauges and Literatures	CELT	https://celtic.fas.harvard.edu/	1	1	115	21	1	department	-
+Chemistry and Chemical Biology	CHEM	https://chemistry.harvard.edu/	1	1	115	21	1	department	-
+Classics	CLAS	https://classics.fas.harvard.edu/	1	1	115	21	1	department	-
+Comparative Literature	CPLT	https://complit.fas.harvard.edu/	1	1	115	21	1	department	-
+Earth and Planetary Sciences	E-PSCI	https://eps.harvard.edu/	1	1	115	21	1	department	-
+Economics	ECON	https://economics.harvard.edu/	1	1	115	21	1	department	-
+Applied Computation	COMPSE	https://seas.harvard.edu/applied-computation	0	1	115	21	1	department	-
+Applied Mathematics	APMA	https://seas.harvard.edu/applied-mathematics	1	1	115	21	1	department	-
+Biomedical Engineering	BE	https://seas.harvard.edu/bioengineering	1	1	115	21	1	department	-
+Computer Science	CS	https://seas.harvard.edu/computer-science	1	1	115	21	1	department	-
+Government	GOV	https://gov.harvard.edu/	1	1	115	21	1	department	-
+History	HIST	https://history.fas.harvard.edu/	1	1	115	21	1	department	-
+Linguistics	LING	https://linguistics.fas.harvard.edu/	1	1	115	21	1	department	-
+Mathematics	MATH	https://math.harvard.edu/	1	1	115	21	1	department	-
+Organismic and Evolutionary Biology	OEB	https://oeb.harvard.edu/	1	1	115	21	1	department	-
+Philosophy	PHIL	https://philosophy.fas.harvard.edu/	1	1	115	21	1	department	-
+Physics	PHYS	https://physics.harvard.edu/	1	1	115	21	1	department	-
+Psychology	PSYC	https://psychology.fas.harvard.edu/	1	1	115	21	1	department	-
+Roman Languages and Literatures	ROML	https://rll.fas.harvard.edu/	1	1	115	21	1	department	-
+Statistics	STAT	https://statistics.fas.harvard.edu/	1	1	115	21	1	department	-
+Theater, Dance, and Media	TDM	https://tdm.fas.harvard.edu/	1	1	115	21	1	department	-
+Women, Gender and Sexuality Studies	WGS	https://wgs.fas.harvard.edu/	1	1	115	21	1	department	-
+Master of Business Administration	MBA	https://www.hbs.edu/mba/	0	1	115	22	1	program	-
+Developmental Biology	DEVBIO	https://hsdm.harvard.edu/developmental-biology	0	1	115	23	1	department	-
+Oral and Maxillofacial Surgery	OMFS	https://hsdm.harvard.edu/oral-and-maxillofacial-surgery	0	1	115	23	1	department	-
+Oral Health Policy and Epidemiology	OHPE	https://hsdm.harvard.edu/oral-health-policy-and-epidemiology	0	1	115	23	1	department	-
+Oral Medicine, Infection, and Immunity	OMII	https://hsdm.harvard.edu/oral-medicine-infection-and-immunity	0	1	115	23	1	department	-
+Restorative Dentistry and Biomaterials Sciences	RDBS	https://hsdm.harvard.edu/restorative-dentistry-and-biomaterials-sciences	0	1	115	23	1	department	-
+Divinity School	HDS	https://hds.harvard.edu/	0	1	115	25	1	school	-
+Law School	HLS	https://hls.harvard.edu/	0	1	115	28	1	school	-
+Bioethics	BETH	https://bioethics.hms.harvard.edu/	0	1	115	29	1	department	-
+Biomedical Informatics	DBMI	https://dbmi.hms.harvard.edu/	0	1	115	29	1	department	-
+Medicine	MED	https://hms.harvard.edu/departments/department-medicine	0	1	115	29	1	department	-
+Genetics	GEN	https://genetics.med.harvard.edu/	0	1	115	29	1	department	-
