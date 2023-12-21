@@ -67,7 +67,8 @@ class School(db.Model):
     departments: Relationship[list["Department"]] = relationship(
         "Department",
         backref="school",
-        lazy=True,
+        lazy="joined",
+        primaryjoin="School.id == Department.school_id",
         cascade="all, delete-orphan",
         collection_class=set,
     )

@@ -7,6 +7,7 @@ Search enpoint handlers
 import flask
 import sqlalchemy as sa
 
+from sqlalchemy.orm import class_mapper, aliased
 from typing import Optional
 
 from cursus.util.extensions import db
@@ -29,6 +30,12 @@ def _search_require_query_string(query: Optional[str]):
         )
 
     return f"%{query}%"
+
+
+def _map_item_school_search(item: tuple[School, str]):
+    item[0].university_full_name = item[1]
+
+    return item[0]
 
 
 def search_university():
@@ -151,15 +158,18 @@ def search_school():
         "website": False,
         "created_at": False,
         "modified_at": False,
+        "departments": False,
     }
 
     schools = (
         db.session.query(
-            *School.__table__.columns,
+            School,
             University.full_name.label("university_full_name"),
         )
         .select_from(School)
-        .join(University, onclause=University.id == School.university_id)
+        .outerjoin(
+            University,
+        )
         .filter(School.name.ilike(search_string))
     )
 
@@ -168,6 +178,7 @@ def search_school():
             dump_fields["website"] = True
             dump_fields["created_at"] = True
             dump_fields["modified_at"] = True
+            dump_fields["departments"] = True
 
         else:
             filtered_displays = display.strip().lower().split(",")
@@ -176,10 +187,14 @@ def search_school():
                 if filter_display == "website":
                     dump_fields["website"] = True
 
+                if filter_display == "departments":
+                    dump_fields["departments"] = True
+
     only_fields = tuple([key for key, value in dump_fields.items() if value])
     school_schema = SchoolSchema(only=only_fields)
-
     school_page = schools.paginate(page=page, per_page=10, error_out=True)
+
+    school_page.items = list(map(_map_item_school_search, school_page.items))
 
     response = flask.make_response(
         flask.jsonify(
@@ -265,12 +280,6 @@ def search_department():
             for d in display_list:
                 if d == "website":
                     default_fields["website"] = True
-
-                if d == "created_at":
-                    default_fields["created_at"] = True
-
-                if d == "modified_at":
-                    default_fields["modified_at"] = True
 
                 if d == "school":
                     default_fields["school_name"] = True

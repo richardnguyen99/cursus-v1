@@ -1,16 +1,14 @@
 # -*- coding: utf-8 -*-
 
 """
-University-related Schema
+School-related Schema
 """
 
 from marshmallow import fields
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema, auto_field
 
-from cursus.models import (
-    School,
-    University,
-)
+from cursus.models import School
+from cursus.schema.department import DepartmentSchema
 
 
 class SchoolSchema(SQLAlchemyAutoSchema):
@@ -29,4 +27,12 @@ class SchoolSchema(SQLAlchemyAutoSchema):
 
     university_short_name = fields.String(dump_only=True)
 
-    # departments = fields.Nested()
+    departments = fields.Nested(
+        DepartmentSchema,
+        only=(
+            "id",
+            "name",
+            "code",
+        ),
+        many=True,
+    )
