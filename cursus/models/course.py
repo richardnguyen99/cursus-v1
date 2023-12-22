@@ -33,6 +33,7 @@ class Course(db.Model):
     title: Mapped[str] = mapped_column(
         String(128),
         nullable=False,
+        index=True,
     )
 
     code: Mapped[str] = mapped_column(
@@ -61,6 +62,11 @@ class Course(db.Model):
         String(128),
         nullable=False,
         index=True,
+    )
+
+    description: Mapped[str] = mapped_column(
+        String(1024),
+        nullable=True,
     )
 
     created_at: Mapped[DateTime] = mapped_column(
