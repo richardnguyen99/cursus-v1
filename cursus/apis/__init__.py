@@ -25,6 +25,7 @@ from .search import (
 )
 from .school import (
     school_by_id,
+    schools_by_univeristy_id,
 )
 from .university import (
     university_find,
@@ -151,6 +152,13 @@ school_bp.add_url_rule(
     "/<int:id>", "id", view_func=school_by_id, methods=["GET"]
 )
 
+school_bp.add_url_rule(
+    "/all/<int:university_id>",
+    "university_id",
+    view_func=schools_by_univeristy_id,
+    methods=["GET"],
+)
+
 
 @api_bp.route("/<path:path>", methods=["GET"])
 def not_found(path: str):
@@ -207,7 +215,7 @@ def before_request():
     token_from_cache = cache.get(token)
 
     # Token is found from cache but it's blacklisted
-    if token_from_cache == False:
+    if token_from_cache is False:
         raise CursusException.UnauthorizedError("Invalid API Token")
 
     # Token is found from cache and it's not revoked
