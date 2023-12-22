@@ -24,8 +24,7 @@ from .search import (
     search_course,
 )
 from .school import (
-    school_find,
-    school_by_short_name,
+    school_by_id,
 )
 from .university import (
     university_find,
@@ -148,9 +147,8 @@ university_bp.add_url_rule(
 #                                                                             #
 ###############################################################################
 
-school_bp.add_url_rule("/", "index", view_func=school_find)
 school_bp.add_url_rule(
-    "/<short_name>", "short_name", view_func=school_by_short_name
+    "/<int:id>", "id", view_func=school_by_id, methods=["GET"]
 )
 
 

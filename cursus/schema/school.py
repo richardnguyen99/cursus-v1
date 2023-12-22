@@ -22,9 +22,9 @@ class SchoolSchema(SQLAlchemyAutoSchema):
     website = auto_field()
     created_at = auto_field()
     modified_at = auto_field()
+    university_id = auto_field()
 
     university_full_name = fields.String(dump_only=True)
-
     university_short_name = fields.String(dump_only=True)
 
     departments = fields.Nested(
@@ -36,3 +36,5 @@ class SchoolSchema(SQLAlchemyAutoSchema):
         ),
         many=True,
     )
+
+    total_departments = fields.Integer(dump_only=True)
