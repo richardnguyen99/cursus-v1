@@ -26,7 +26,7 @@ class Course(db.Model):
 
     __tablename__ = "courses"
 
-    __table_args__ = (UniqueConstraint("code", "school_id"),)
+    __table_args__ = (UniqueConstraint("code", "university_id"),)
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
 
@@ -64,6 +64,11 @@ class Course(db.Model):
         index=True,
     )
 
+    credits: Mapped[int] = mapped_column(
+        Integer,
+        nullable=False,
+    )
+
     description: Mapped[str] = mapped_column(
         String(1024),
         nullable=True,
@@ -91,10 +96,10 @@ class Course(db.Model):
         index=True,
     )
 
-    school_id: Mapped[str] = mapped_column(
-        String(32),
+    university_id: Mapped[str] = mapped_column(
+        Integer,
         ForeignKey(
-            "universities.short_name",
+            "universities.id",
             ondelete="CASCADE",
             onupdate="CASCADE",
         ),
