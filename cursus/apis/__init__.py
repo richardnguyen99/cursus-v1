@@ -21,6 +21,7 @@ from .search import (
     search_university,
     search_school,
     search_department,
+    search_course,
 )
 from .school import (
     school_find,
@@ -122,6 +123,8 @@ search_bp.add_url_rule("/school", "school", view_func=search_school)
 search_bp.add_url_rule(
     "/department", "department", view_func=search_department
 )
+
+search_bp.add_url_rule("/course", "course", view_func=search_course)
 
 ###############################################################################
 #                                                                             #

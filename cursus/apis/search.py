@@ -7,12 +7,22 @@ Search enpoint handlers
 import flask
 import sqlalchemy as sa
 
-from sqlalchemy.orm import class_mapper, aliased
 from typing import Optional
 
 from cursus.util.extensions import db
-from cursus.schema import UniversitySchema, SchoolSchema, DepartmentSchema
-from cursus.models import University, UniversityCampus, School, Department
+from cursus.schema import (
+    UniversitySchema,
+    SchoolSchema,
+    DepartmentSchema,
+    CourseSchema,
+)
+from cursus.models import (
+    University,
+    UniversityCampus,
+    School,
+    Department,
+    Course,
+)
 from cursus.util.exceptions import (
     BadRequestError,
 )
@@ -260,15 +270,13 @@ def search_department():
 
         for f in filter_list:
             if f == "undergraduate":
-                departments = departments.filter(
-                    Department.undergraduate == True
-                )
+                departments = departments.filter(Department.undergraduate)
 
             if f == "graduate":
-                departments = departments.filter(Department.graduate == True)
+                departments = departments.filter(Department.graduate)
 
             if f == "active":
-                departments = departments.filter(Department.active == True)
+                departments = departments.filter(Department.active)
 
     if display:
         if display == "all":
@@ -319,5 +327,117 @@ def search_department():
     )
 
     response.mimetype = "application/json"
+
+    return response, 200
+
+
+def search_course():
+    """Search courses based on their names"""
+
+    req = flask.request
+
+    page = req.args.get("page", 1, type=int)
+    query = req.args.get("query", None, type=str)
+    filters = req.args.get("filters", None, type=str)
+    displays = req.args.get("display", None, type=str)
+    subject = req.args.get("subject", None, type=str)
+    sort_by = req.args.get("sort_by", None, type=str)
+    department = req.args.get("department", None, type=int)
+    university = req.args.get("university", None, type=int)
+
+    if not query:
+        raise BadRequestError(
+            "Query string cannot be empty while using this endpoint"
+        )
+
+    search_string = _search_require_query_string(query)
+
+    dump_fields = {
+        "id": True,
+        "title": True,
+        "code": True,
+        "website": False,
+        "active": False,
+        "description": False,
+        "level": False,
+        "subject": False,
+        "credits": False,
+        "department_id": True,
+        "university_id": True,
+        "department_name": True,
+        "university_name": True,
+        "created_at": False,
+        "modified_at": False,
+    }
+
+    courses = (
+        db.session.query(
+            *Course.__table__.c,
+            Department.name.label("department_name"),
+            University.full_name.label("university_name"),
+        )
+        .select_from(Course)
+        .join(Department, onclause=Department.id == Course.department_id)
+        .join(University, onclause=University.id == Department.university_id)
+        .filter(Course.title.ilike(search_string))
+    )
+
+    if department:
+        courses = courses.filter(Course.department_id == department)
+
+    if university:
+        courses = courses.filter(Department.university_id == university)
+
+    if filters:
+        filter_list = filters.strip().lower().split(",")
+
+        for f in filter_list:
+            if f == "active":
+                courses = courses.filter(Course.active)
+
+            if f == "undergrad":
+                courses = courses.filter(Course.level == 1)
+
+            if f == "grad":
+                courses = courses.filter(Course.level == 2)
+
+            if f == "doctorate":
+                courses = courses.filter(Course.level == 3)
+
+    if sort_by:
+        if sort_by == "credits":
+            courses = courses.order_by(Course.credits.desc())
+        elif sort_by == "code":
+            courses = courses.order_by(Course.code.asc())
+
+    if subject:
+        courses = courses.filter(Course.subject.ilike(f"%{subject}%"))
+
+    if displays:
+        if displays == "all":
+            dump_fields = {key: True for key in dump_fields.keys()}
+        else:
+            display_list = displays.strip().lower().split(",")
+
+            for d in display_list:
+                if d in dump_fields.keys():
+                    dump_fields[d] = True
+
+    only_fields = tuple([key for key, value in dump_fields.items() if value])
+    course_page = courses.paginate(page=page, per_page=10, error_out=True)
+    course_schema = CourseSchema(only=only_fields)
+
+    response = flask.make_response(
+        flask.jsonify(
+            {
+                "message": "Success",
+                "total": courses.count(),
+                "count": len(course_page.items),
+                "page": page,
+                "pages": course_page.pages,
+                "results": course_schema.dump(course_page, many=True),
+            }
+        )
+    )
 
     return response, 200
