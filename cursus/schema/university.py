@@ -25,6 +25,11 @@ class UniversityDomainSchema(SQLAlchemyAutoSchema):
 
     id = auto_field()
     domain_name = auto_field()
+    school_short_name = auto_field()
+    iso639_1 = auto_field()
+    type = auto_field()
+    created_at = auto_field()
+    updated_at = auto_field()
 
 
 class UniversityFounderSchema(SQLAlchemyAutoSchema):
@@ -39,6 +44,9 @@ class UniversityFounderSchema(SQLAlchemyAutoSchema):
     middle_name = auto_field()
     suffix = auto_field()
     biography_link = auto_field()
+
+    created_at = auto_field(dump_only=True)
+    updated_at = auto_field(dump_only=True)
 
     @staticmethod
     def build(founder: UniversityFounder):
@@ -71,7 +79,7 @@ class UniversityCampusSchema(SQLAlchemyAutoSchema):
     address_city = auto_field()
     address_state = auto_field()
     address_zip_code = auto_field()
-    # country_code = auto_field()
+    country_code = auto_field()
 
     country = fields.Nested(
         CountrySchema,

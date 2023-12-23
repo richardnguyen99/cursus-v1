@@ -28,9 +28,10 @@ from .school import (
     schools_by_univeristy_id,
 )
 from .university import (
-    university_find,
-    university_index,
-    university_get_by_name,
+    university_by_short_name,
+    university_domains_by_short_name,
+    university_campuses_by_short_name,
+    university_founders_by_short_name,
 )
 
 
@@ -132,15 +133,34 @@ search_bp.add_url_rule("/course", "course", view_func=search_course)
 #                                                                             #
 ###############################################################################
 
-university_bp.add_url_rule("/", "index", view_func=university_index)
 university_bp.add_url_rule(
-    "/find", "find", view_func=university_find, methods=["GET", "POST"]
+    "/<string:short_name>",
+    "university_short_name",
+    view_func=university_by_short_name,
+    methods=["GET"],
 )
+
 university_bp.add_url_rule(
-    "/<name>",
-    "api_name",
-    view_func=university_get_by_name,
+    "/<string:short_name>/domains",
+    "university_domains",
+    view_func=university_domains_by_short_name,
+    methods=["GET"],
 )
+
+university_bp.add_url_rule(
+    "/<string:short_name>/campuses",
+    "university_campuses",
+    view_func=university_campuses_by_short_name,
+    methods=["GET"],
+)
+
+university_bp.add_url_rule(
+    "/<string:short_name>/founders",
+    "university_founders",
+    view_func=university_founders_by_short_name,
+    methods=["GET"],
+)
+
 
 ###############################################################################
 #                                                                             #
