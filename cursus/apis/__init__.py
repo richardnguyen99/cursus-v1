@@ -33,6 +33,7 @@ from .university import (
     university_campuses_by_short_name,
     university_founders_by_short_name,
 )
+from .course import course_by_id, courses_by_department
 
 
 def check_preflight_request(request: flask.Request) -> bool:
@@ -109,6 +110,10 @@ school_bp: Blueprint = Blueprint(
     name="school", import_name=__name__, url_prefix="/school/"
 )
 
+course_bp: Blueprint = Blueprint(
+    name="course", import_name=__name__, url_prefix="/course/"
+)
+
 ###############################################################################
 #                                                                             #
 #                                 Search API                                  #
@@ -176,6 +181,23 @@ school_bp.add_url_rule(
     "/all/<int:university_id>",
     "university_id",
     view_func=schools_by_univeristy_id,
+    methods=["GET"],
+)
+
+###############################################################################
+#                                                                             #
+#                                 Course API                                  #
+#                                                                             #
+###############################################################################
+
+course_bp.add_url_rule(
+    "/<int:course_id>", "course_id", view_func=course_by_id, methods=["GET"]
+)
+
+course_bp.add_url_rule(
+    "/all/<int:department_id>",
+    "department_id",
+    view_func=courses_by_department,
     methods=["GET"],
 )
 
@@ -390,3 +412,4 @@ def handle_api_error(error: CursusException.CursusError):
 api_bp.register_blueprint(search_bp)
 api_bp.register_blueprint(university_bp)
 api_bp.register_blueprint(school_bp)
+api_bp.register_blueprint(course_bp)
