@@ -4,6 +4,7 @@
 Department-related Schema
 """
 
+from typing import Any
 from marshmallow import fields
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema, auto_field
 
@@ -30,5 +31,14 @@ class DepartmentSchema(SQLAlchemyAutoSchema):
     created_at = auto_field(dump_only=True)
     modified_at = auto_field(dump_only=True)
 
+    full_name = fields.Method("get_full_name")
     university_name = fields.String(dump_only=True)
     school_name = fields.String(dump_only=True)
+
+    def get_full_name(self, obj: Department) -> str:
+        special_name = (
+            f"{obj.special_name} " if obj.special_name != "-" else ""
+        )
+        department_type = obj.type.capitalize()
+
+        return f"{special_name}{department_type} of {obj.name}"

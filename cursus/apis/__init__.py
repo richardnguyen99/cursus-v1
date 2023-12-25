@@ -34,6 +34,7 @@ from .university import (
     university_founders_by_short_name,
 )
 from .course import course_by_id, courses_by_department
+from .department import department_by_id, departments_by_university_id
 
 
 def check_preflight_request(request: flask.Request) -> bool:
@@ -112,6 +113,10 @@ school_bp: Blueprint = Blueprint(
 
 course_bp: Blueprint = Blueprint(
     name="course", import_name=__name__, url_prefix="/course/"
+)
+
+department_bp: Blueprint = Blueprint(
+    name="department", import_name=__name__, url_prefix="/department/"
 )
 
 ###############################################################################
@@ -198,6 +203,26 @@ course_bp.add_url_rule(
     "/all/<int:department_id>",
     "department_id",
     view_func=courses_by_department,
+    methods=["GET"],
+)
+
+###############################################################################
+#                                                                             #
+#                               Department API                                #
+#                                                                             #
+###############################################################################
+
+department_bp.add_url_rule(
+    "/<int:department_id>",
+    "department_id",
+    view_func=department_by_id,
+    methods=["GET"],
+)
+
+department_bp.add_url_rule(
+    "/all/<int:university_id>",
+    "university_id",
+    view_func=departments_by_university_id,
     methods=["GET"],
 )
 
@@ -413,3 +438,4 @@ api_bp.register_blueprint(search_bp)
 api_bp.register_blueprint(university_bp)
 api_bp.register_blueprint(school_bp)
 api_bp.register_blueprint(course_bp)
+api_bp.register_blueprint(department_bp)
