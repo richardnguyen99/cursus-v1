@@ -1,151 +1,275 @@
+# -*- coding: utf-8 -*-
+
+"""
+University API endpoint handlers
+"""
+
 import flask
-import urllib.parse
 
-from sqlalchemy.orm import joinedload
-
-from cursus.util import CursusException
-from cursus.models.university import University
+from cursus.models.university import (
+    University,
+    UniversityDomain,
+    UniversityCampus,
+    UniversityFounder,
+)
 from cursus.schema.university import (
     UniversitySchema,
+    UniversityDomainSchema,
+    UniversityCampusSchema,
+    UniversityFounderSchema,
 )
 
 
-def university_index():
-    """University index endpoint"""
+def _message_not_found(short_name: str):
+    return f"\
+University with short name `{short_name}` not found. If you want to add this \
+university, please open a pull request at \
+https://github.com/richardnguyen99/cursus/pulls."
 
-    raise CursusException.NotFoundError(
-        "This URL, `/university/`, is unavailable"
+
+def _domain_message_not_found(short_name: str):
+    return f"\
+University with short name `{short_name}` might not exist or have no domain. \
+If you want to add this university or its domains, please open a pull request \
+at https://github.com/richardnguyen99/cursus/pulls."
+
+
+def _campus_message_not_found(short_name: str):
+    return f"\
+University with short name `{short_name}` might not exist or have no campus. \
+If you want to add this university or its campuses, please open a pull \
+request at https://github.com/richardnguyen99/cursus/pulls."
+
+
+def _founder_message_not_found(short_name: str):
+    return f"\
+University with short name `{short_name}` might not exist or have no record \
+of founders. If you want to add this university or its founders, please open \
+a pull request at https://github.com/richardnguyen99/cursus/pulls."
+
+
+def university_by_short_name(short_name: str):
+    """Get a university by its short name (code)"""
+
+    dump_fields = (
+        "id",
+        "full_name",
+        "established",
+        "former_name",
+        "motto",
+        "type",
+        "created_at",
+        "updated_at",
+        "homepage",
     )
 
+    university = University.query.filter_by(short_name=short_name).first()
 
-def university_find():
-    """University find endpoint with query string"""
+    if university is None:
+        response = flask.make_response(
+            flask.jsonify(
+                {
+                    "message": _message_not_found(short_name),
+                    "short_name": short_name.lower(),
+                    "result": {},
+                }
+            )
+        )
+        response.mimetype = "application/json"
+
+        return response, 404
+
+    university_schema = UniversitySchema(only=dump_fields)
+
+    response = flask.make_response(
+        flask.jsonify(
+            {
+                "message": "Success",
+                "short_name": short_name.lower(),
+                "result": university_schema.dump(university),
+            }
+        )
+    )
+    response.mimetype = "application/json"
+
+    return response, 200
+
+
+def university_domains_by_short_name(short_name: str):
+    """Get a university's domains by its short name (code)"""
 
     req = flask.request
 
-    # Get request query string
-    query_string = flask.request.query_string.decode("utf-8")
+    page = req.args.get("page", 1, type=int)
+    domain_type = req.args.get("type", None, type=str)
+    locale = req.args.get("locale", None, type=str)
 
-    # Check if query string is empty
-    if not query_string:
-        reason = "Query string cannot be empty while using this endpoint"
-        raise CursusException.BadRequestError(reason)
-
-    # Parse query string into a dictionary of arguments
-    query_dict = urllib.parse.parse_qs(query_string)
-
-    # parse_qs returns a list of values for each key. This will convert the
-    # list into a single value.
-    parsed_dict = {key: value[0] for key, value in query_dict.items()}
-
-    # Check if query string contains a `school` argument and has a value
-    if "school" not in parsed_dict or not parsed_dict["school"]:
-        reason = "Query string must contain a `school` argument"
-        raise CursusException.BadRequestError(reason)
-
-    # Set the default limit
-    limit = 5
-
-    if "limit" in parsed_dict and parsed_dict["limit"]:
-        try:
-            limit_from_query = int(parsed_dict["limit"])
-
-            if limit_from_query > 0:
-                limit = min(limit_from_query, 10)
-            else:
-                raise ValueError
-        except ValueError:
-            reason = "Query string `limit` argument must be a positive integer\
-in the range [1, 10]"
-            raise CursusException.BadRequestError(reason)
-
-    search_string = parsed_dict["school"]
-
-    # Search string with ignored-case pattern
-    universities = University.query.filter(
-        University.full_name.ilike(f"%{search_string}%")
-    ).limit(limit)
-
-    # Schema dump options
-    fields = {
-        "id": True,
-        "full_name": True,
-        "short_name": True,
-    }
-
-    only_fields = tuple([key for key, value in fields.items() if value])
-
-    university_schema = UniversitySchema(only=only_fields)
-    count = universities.count()
-
-    resp = flask.make_response(
-        flask.json.dumps(
-            {
-                "message": "OK" if count > 0 else "No results found",
-                "data": university_schema.dump(
-                    universities.all(),
-                    many=True,
-                ),
-                "count": count,
-            }
-        ),
-        200,
+    dump_fields = (
+        "id",
+        "domain_name",
+        "iso639_1",
+        "type",
+        "created_at",
+        "updated_at",
     )
 
-    resp.headers["Content-Type"] = "application/json"
-
-    return resp
-
-
-def university_get_by_name(name: str):
-    """University get by name endpoint"""
-
-    if flask.request.method != "GET":
-        uri = flask.request.url
-
-        raise CursusException.MethodNotAllowedError(
-            f"This endpoint, {uri}, only accepts GET requests"
-        )
-
-    university = University.query.filter(
-        University.short_name.ilike(f"{name}")
-    ).first()
-
-    if not university:
-        raise CursusException.BadRequestError(
-            f"University with code name, {name}, not found"
-        )
-
-    # Schema dump options
-    fields = {
-        "id": True,
-        "full_name": True,
-        "short_name": True,
-        "established": True,
-        "former_name": True,
-        "motto": True,
-        "campuses": True,
-        "domains": True,
-        "founders": True,
-        "updated_at": True,
-        "created_at": True,
-    }
-
-    only_fields = tuple([key for key, value in fields.items() if value])
-
-    university_schema = UniversitySchema(only=only_fields)
-
-    resp = flask.make_response(
-        flask.json.dumps(
-            {
-                "message": "OK",
-                "data": university_schema.dump(
-                    university,
-                ),
-            }
-        ),
-        200,
+    domains = UniversityDomain.query.filter(
+        UniversityDomain.school_short_name == short_name
     )
-    resp.headers["Content-Type"] = "application/json"
 
-    return resp
+    if domains.count() == 0:
+        response = flask.make_response(
+            flask.jsonify(
+                {
+                    "message": _domain_message_not_found(short_name),
+                    "short_name": short_name.lower(),
+                    "result": {},
+                }
+            )
+        )
+        response.mimetype = "application/json"
+
+        return response, 404
+
+    if domain_type is not None:
+        domain_type = domain_type.strip().lower()
+        domains = domains.filter(UniversityDomain.type == domain_type)
+
+    if locale is not None:
+        locale = locale.strip().lower()
+        domains = domains.filter(
+            UniversityDomain.iso639_1.ilike(f"%{locale}%")
+        )
+
+    domain_schema = UniversityDomainSchema(only=dump_fields)
+    domain_page = domains.paginate(page=page, per_page=10, error_out=False)
+
+    response = flask.make_response(
+        flask.jsonify(
+            {
+                "message": "Success",
+                "short_name": short_name.lower(),
+                "page": page,
+                "total_pages": domain_page.pages,
+                "total_domains": domains.count(),
+                "resullt": domain_schema.dump(domain_page.items, many=True),
+            }
+        )
+    )
+    response.mimetype = "application/json"
+
+    return response, 200
+
+
+def university_campuses_by_short_name(short_name: str):
+    """Get a university's campuses by its short name (code)"""
+
+    req = flask.request
+
+    page = req.args.get("page", 1, type=int)
+
+    dump_fields = (
+        "address_id",
+        "address_street",
+        "address_city",
+        "address_state",
+        "address_zip_code",
+        "country_code",
+        "school_short_name",
+        "created_at",
+        "updated_at",
+    )
+
+    campuses = UniversityCampus.query.filter(
+        UniversityCampus.school_short_name == short_name
+    )
+
+    if campuses.count() == 0:
+        response = flask.make_response(
+            flask.jsonify(
+                {
+                    "message": _campus_message_not_found(short_name),
+                    "short_name": short_name.lower(),
+                    "result": {},
+                }
+            )
+        )
+        response.mimetype = "application/json"
+
+        return response, 404
+
+    campus_schema = UniversityCampusSchema(only=dump_fields)
+
+    campus_page = campuses.paginate(page=page, per_page=10, error_out=False)
+
+    response = flask.make_response(
+        flask.jsonify(
+            {
+                "message": "success",
+                "short_name": short_name.lower(),
+                "page": page,
+                "total_pages": campus_page.pages,
+                "total_campuses": campuses.count(),
+                "result": campus_schema.dump(campus_page.items, many=True),
+            }
+        )
+    )
+    response.mimetype = "application/json"
+
+    return response, 200
+
+
+def university_founders_by_short_name(short_name: str):
+    """Get a university's campuses by its short name (code)"""
+
+    req = flask.request
+
+    page = req.args.get("page", 1, type=int)
+
+    dump_fields = (
+        "id",
+        "biography_link",
+        "first_name",
+        "last_name",
+        "middle_name",
+        "suffix",
+        "created_at",
+        "updated_at",
+    )
+
+    founders = UniversityFounder.query.filter(
+        UniversityFounder.school_short_name == short_name
+    )
+
+    if founders.count() == 0:
+        response = flask.make_response(
+            flask.jsonify(
+                {
+                    "message": _founder_message_not_found(short_name),
+                    "short_name": short_name.lower(),
+                    "result": {},
+                }
+            )
+        )
+        response.mimetype = "application/json"
+
+        return response, 404
+
+    founder_page = founders.paginate(page=page, per_page=10, error_out=False)
+    founder_schema = UniversityFounderSchema(only=dump_fields)
+
+    response = flask.make_response(
+        flask.jsonify(
+            {
+                "message": "success",
+                "page": page,
+                "total_pages": founder_page.pages,
+                "total_founders": founders.count(),
+                "school_short_name": short_name.lower(),
+                "result": founder_schema.dump(founder_page.items, many=True),
+            }
+        )
+    )
+    response.mimetype = "application/json"
+
+    return response, 200

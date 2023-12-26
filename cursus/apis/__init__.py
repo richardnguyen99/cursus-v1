@@ -17,11 +17,24 @@ from cursus.models import ActiveToken
 from cursus.util import CursusException
 from cursus.util.extensions import cache, db
 
-from .university import (
-    university_find,
-    university_index,
-    university_get_by_name,
+from .search import (
+    search_university,
+    search_school,
+    search_department,
+    search_course,
 )
+from .school import (
+    school_by_id,
+    schools_by_univeristy_id,
+)
+from .university import (
+    university_by_short_name,
+    university_domains_by_short_name,
+    university_campuses_by_short_name,
+    university_founders_by_short_name,
+)
+from .course import course_by_id, courses_by_department
+from .department import department_by_id, departments_by_university_id
 
 
 def check_preflight_request(request: flask.Request) -> bool:
@@ -86,20 +99,141 @@ api_bp: Blueprint = Blueprint(
     name="api", import_name=__name__, url_prefix="/api/v1/"
 )
 
+search_bp: Blueprint = Blueprint(
+    name="search", import_name=__name__, url_prefix="/search/"
+)
+
 university_bp: Blueprint = Blueprint(
     name="university", import_name=__name__, url_prefix="/university/"
 )
 
+school_bp: Blueprint = Blueprint(
+    name="school", import_name=__name__, url_prefix="/school/"
+)
 
-university_bp.add_url_rule("/", "index", view_func=university_index)
-university_bp.add_url_rule(
-    "/find", "find", view_func=university_find, methods=["GET", "POST"]
+course_bp: Blueprint = Blueprint(
+    name="course", import_name=__name__, url_prefix="/course/"
 )
-university_bp.add_url_rule(
-    "/<name>",
-    "api_name",
-    view_func=university_get_by_name,
+
+department_bp: Blueprint = Blueprint(
+    name="department", import_name=__name__, url_prefix="/department/"
 )
+
+###############################################################################
+#                                                                             #
+#                                 Search API                                  #
+#                                                                             #
+###############################################################################
+
+search_bp.add_url_rule(
+    "/university", "university", view_func=search_university
+)
+
+search_bp.add_url_rule("/school", "school", view_func=search_school)
+
+search_bp.add_url_rule(
+    "/department", "department", view_func=search_department
+)
+
+search_bp.add_url_rule("/course", "course", view_func=search_course)
+
+###############################################################################
+#                                                                             #
+#                               University API                                #
+#                                                                             #
+###############################################################################
+
+university_bp.add_url_rule(
+    "/<string:short_name>",
+    "university_short_name",
+    view_func=university_by_short_name,
+    methods=["GET"],
+)
+
+university_bp.add_url_rule(
+    "/<string:short_name>/domains",
+    "university_domains",
+    view_func=university_domains_by_short_name,
+    methods=["GET"],
+)
+
+university_bp.add_url_rule(
+    "/<string:short_name>/campuses",
+    "university_campuses",
+    view_func=university_campuses_by_short_name,
+    methods=["GET"],
+)
+
+university_bp.add_url_rule(
+    "/<string:short_name>/founders",
+    "university_founders",
+    view_func=university_founders_by_short_name,
+    methods=["GET"],
+)
+
+
+###############################################################################
+#                                                                             #
+#                                 School API                                  #
+#                                                                             #
+###############################################################################
+
+school_bp.add_url_rule(
+    "/<int:id>", "id", view_func=school_by_id, methods=["GET"]
+)
+
+school_bp.add_url_rule(
+    "/all/<int:university_id>",
+    "university_id",
+    view_func=schools_by_univeristy_id,
+    methods=["GET"],
+)
+
+###############################################################################
+#                                                                             #
+#                                 Course API                                  #
+#                                                                             #
+###############################################################################
+
+course_bp.add_url_rule(
+    "/<int:course_id>", "course_id", view_func=course_by_id, methods=["GET"]
+)
+
+course_bp.add_url_rule(
+    "/all/<int:department_id>",
+    "department_id",
+    view_func=courses_by_department,
+    methods=["GET"],
+)
+
+###############################################################################
+#                                                                             #
+#                               Department API                                #
+#                                                                             #
+###############################################################################
+
+department_bp.add_url_rule(
+    "/<int:department_id>",
+    "department_id",
+    view_func=department_by_id,
+    methods=["GET"],
+)
+
+department_bp.add_url_rule(
+    "/all/<int:university_id>",
+    "university_id",
+    view_func=departments_by_university_id,
+    methods=["GET"],
+)
+
+
+@api_bp.route("/<path:path>", methods=["GET"])
+def not_found(path: str):
+    """Return a 404 response for all unknown API endpoints"""
+
+    raise WerkzeugExceptions.NotFound(
+        description=f"API endpoint, {path}, not found"
+    )
 
 
 @api_bp.route("/swagger.json", methods=["GET"])
@@ -115,9 +249,12 @@ def swagger():
     return jsonify(swagger_json)
 
 
-@university_bp.before_request
+@api_bp.before_request
 def before_request():
     """Process actions all requests that are made to the API endpoints"""
+
+    if request.path.endswith("/swagger.json"):
+        return None
 
     if request.method != "OPTIONS" and request.method != "GET":
         raise CursusException.MethodNotAllowedError(
@@ -145,7 +282,7 @@ def before_request():
     token_from_cache = cache.get(token)
 
     # Token is found from cache but it's blacklisted
-    if token_from_cache == False:
+    if token_from_cache is False:
         raise CursusException.UnauthorizedError("Invalid API Token")
 
     # Token is found from cache and it's not revoked
@@ -183,9 +320,12 @@ def before_request():
     cache.set(token, json.dumps(cache_item), timeout=60 * 60)
 
 
-@university_bp.after_request
+@api_bp.after_request
 def after_request(response: flask.Response):
     """Perform actions after a request has been processed"""
+
+    if request.path.endswith("/swagger.json"):
+        return response
 
     make_cors_headers(response)
 
@@ -230,7 +370,27 @@ def after_request(response: flask.Response):
     return response
 
 
-@university_bp.errorhandler(WerkzeugExceptions.HTTPException)
+@api_bp.errorhandler(WerkzeugExceptions.NotFound)
+def handle_api_not_found(error: WerkzeugExceptions.NotFound):
+    """Handle API 404 errors"""
+
+    resp = flask.make_response(
+        jsonify(
+            {
+                "error": {
+                    "code": 404,
+                    "message": "Not Found",
+                    "reason": "NOT_FOUND",
+                }
+            }
+        ),
+        404,
+    )
+
+    return resp
+
+
+@api_bp.errorhandler(WerkzeugExceptions.HTTPException)
 def handle_http_error(error: WerkzeugExceptions.HTTPException):
     """Handle generic Werkzeug HTTP exceptions"""
 
@@ -250,7 +410,7 @@ def handle_http_error(error: WerkzeugExceptions.HTTPException):
     return resp
 
 
-@university_bp.errorhandler(CursusException.CursusError)
+@api_bp.errorhandler(CursusException.CursusError)
 def handle_api_error(error: CursusException.CursusError):
     """Handle generic Cursus API exceptions
 
@@ -274,4 +434,8 @@ def handle_api_error(error: CursusException.CursusError):
     return resp
 
 
+api_bp.register_blueprint(search_bp)
 api_bp.register_blueprint(university_bp)
+api_bp.register_blueprint(school_bp)
+api_bp.register_blueprint(course_bp)
+api_bp.register_blueprint(department_bp)

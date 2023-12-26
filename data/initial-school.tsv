@@ -1,0 +1,402 @@
+name	website	university_id
+School of Architecture and Planning	https://sap.mit.edu/	112
+School of Engineering	https://engineering.mit.edu/	112
+School of Humanities, Arts, and Social Sciences	https://shass.mit.edu/	112
+Sloan School of Management	https://mitsloan.mit.edu/	112
+School of Science	https://science.mit.edu/	112
+MIT Schwarzman College of Computing	https://computing.mit.edu/	112
+School of Arts and Humanities	https://www.csah.cam.ac.uk/	113
+School of the Humanities and Social Sciences	https://www.cshss.cam.ac.uk/	113
+School of the Biological Sciences	https://www.bio.cam.ac.uk/	113
+School of the Physical Sciences	https://www.physsci.cam.ac.uk/	113
+School of Clinical Medicine	https://www.medschl.cam.ac.uk/	113
+School of Technology	https://www.tech.cam.ac.uk/	113
+Humanities Division	https://www.humanities.ox.ac.uk/	114
+Mathematical, Physical and Life Sciences Division	https://www.mpls.ox.ac.uk/	114
+Medical Sciences Division	https://www.medsci.ox.ac.uk/	114
+Social Sciences Division	https://www.socsci.ox.ac.uk/	114
+Harvard College	https://college.harvard.edu/	115
+John A. Paulson School of Engineering and Applied Sciences	https://www.seas.harvard.edu/	115
+Kenneth C. Griffin Graduate School of Arts and Sciences	https://gsas.harvard.edu/	115
+Extension School	https://www.extension.harvard.edu/	115
+Faculty of Arts and Sciences	https://www.fas.harvard.edu/	115
+Business School	https://www.hbs.edu/	115
+School of Dental Medicine	https://hsdm.harvard.edu/	115
+Graduate School of Design	https://www.gsd.harvard.edu/	115
+Divinity School	https://hds.harvard.edu/	115
+Graduate School of Education	https://www.gse.harvard.edu/	115
+Kennedy School	https://www.hks.harvard.edu/	115
+Law School	https://hls.harvard.edu/	115
+Medical School	https://hms.harvard.edu/	115
+T.H. Chan School of Public Health	https://www.hsph.harvard.edu/	115
+Radcliffe Institute for Advanced Study	https://www.radcliffe.harvard.edu/	115
+Graduate School of Business	https://www.gsb.stanford.edu/	116
+Graduate School of Education	https://ed.stanford.edu/	116
+School of Engineering	https://engineering.stanford.edu/	116
+School of Humanities and Sciences	https://humsci.stanford.edu/	116
+School of Law	https://law.stanford.edu/	116
+School of Medicine	https://med.stanford.edu/	116
+Doerr School of Sustainability	https://sustainability.stanford.edu/	116
+Faculty of Engineering	https://www.imperial.ac.uk/engineering/	117
+Faculty of Medicine	https://www.imperial.ac.uk/medicine/	117
+Faculty of Natural Sciences	https://www.imperial.ac.uk/natural-sciences/	117
+Imperial College Business School	https://www.imperial.ac.uk/business-school/	117
+Architecture and Civil Engineering	-	118
+Engineering Sciences	-	118
+Natural Sciences and Mathematics	-	118
+System-oriented Natural Sciences	-	118
+Management and Social Sciences	-	118
+Faculty of Arts and Social Sciences	https://www.fas.nus.edu.sg/	119
+Bussiness School	https://bschool.nus.edu.sg/	119
+School of Computing	https://www.comp.nus.edu.sg/	119
+Faculty of Dentistry	https://www.dentistry.nus.edu.sg/	119
+College of Design and Environment	https://cde.nus.edu.sg/	119
+Duke-NUS Medical School	https://www.duke-nus.edu.sg/	119
+Law School	https://law.nus.edu.sg/	119
+Yong Loo Lin School of Medicine	https://medicine.nus.edu.sg/	119
+Yong Siew Toh Conservatory of Music	https://www.ystmusic.nus.edu.sg/	119
+NUS College	https://nuscollege.nus.edu.sg/	119
+NUS Graduate School	https://www.nus.edu.sg/ngs/	119
+Saw Swee Hock School of Public Health	https://sph.nus.edu.sg/	119
+Lee Kuan Yew School of Public Policy	https://lkyspp.nus.edu.sg/	119
+Faculty of Science	https://www.science.nus.edu.sg/	119
+Yale-NUS College	https://www.yale-nus.edu.sg/	119
+Faculty of Arts & Humanities	https://www.ucl.ac.uk/arts-humanities/	120
+Faculty of Mathematical & Physical Sciences	https://www.ucl.ac.uk/mathematical-physical-sciences/	120
+Faculty of Brain Sciences	https://www.ucl.ac.uk/brain-sciences/	120
+Faculty of Medical Sciences	https://www.ucl.ac.uk/medical-sciences/	120
+The Bartlett Faculty of the Built Environment	https://www.ucl.ac.uk/bartlett/	120
+Faculty of Population Health Sciences	https://www.ucl.ac.uk/population-health-sciences/	120
+Faculty of Engineering Sciences	https://www.ucl.ac.uk/engineering/	120
+Faculty of Social & Historical Sciences	https://www.ucl.ac.uk/social-historical-sciences/	120
+Faculty of Laws	https://www.ucl.ac.uk/laws/	120
+Faculty of Education and Society	https://www.ucl.ac.uk/ioe/	120
+Faculty of Life Sciences	https://www.ucl.ac.uk/lifesciences-faculty/	120
+The Haas School of Business	https://haas.berkeley.edu/	121
+College of Chemistry	https://chemistry.berkeley.edu/	121
+College of Computing, Data Science, and Society	https://data.berkeley.edu/	121
+The Graduate School of Education	https://bse.berkeley.edu/	121
+College of Engineering	https://engineering.berkeley.edu/	121
+College of Environmental Design	https://ced.berkeley.edu/	121
+School of Information	https://www.ischool.berkeley.edu/	121
+Graduate School of Journalism	https://journalism.berkeley.edu/	121
+School of Law	https://www.law.berkeley.edu/	121
+College of Letters and Science	https://ls.berkeley.edu/	121
+College of Natural Resources	https://nature.berkeley.edu/	121
+School of Optometry	https://optometry.berkeley.edu/	121
+School of Public Health	https://publichealth.berkeley.edu/	121
+School of Social Welfare	https://socialwelfare.berkeley.edu/	121
+The College	https://college.uchicago.edu/	122
+Biological Sciences Division	https://biologicalsciences.uchicago.edu/	122
+Chicago Booth School of Business	https://www.chicagobooth.edu/	122
+Crown Family School of Social Work, Policy, and Practice	https://crownschool.uchicago.edu/	122
+Divinity School	https://divinity.uchicago.edu/	122
+Graham School of Continuing Liberal and Professional Studies	https://graham.uchicago.edu/	122
+Harris School of Public Policy	https://harris.uchicago.edu/	122
+Humanities Division	https://humanities.uchicago.edu/	122
+Law School	https://www.law.uchicago.edu/	122
+Physical Sciences Division	https://physicalsciences.uchicago.edu/	122
+Pritzker School of Medicine	https://pritzker.uchicago.edu/	122
+Pritzker School of Molecular Engineering	https://pme.uchicago.edu/	122
+Social Sciences Division	https://socialsciences.uchicago.edu/	122
+Shools of Arts and Sciences	https://www.sas.upenn.edu/	123
+The Wharton School	https://www.wharton.upenn.edu/	123
+Annenberg School for Communication	https://www.asc.upenn.edu/	123
+School of Dental Medicine	https://www.dental.upenn.edu/	123
+Weitzman School of Design	https://www.design.upenn.edu/	123
+Graduate School of Education	https://www.gse.upenn.edu/	123
+School of Engineering and Applied Science	https://www.seas.upenn.edu/	123
+Penn Carey Law School	https://www.law.upenn.edu/	123
+Perelman School of Medicine	https://www.med.upenn.edu/	123
+School of Nursing	https://www.nursing.upenn.edu/	123
+School of Social Policy and Practice	https://www.sp2.upenn.edu/	123
+School of Veterinary Medicine	https://www.vet.upenn.edu/	123
+College of Agriculture and Life Sciences	https://cals.cornell.edu/	124
+College of Architecture, Art, and Planning	https://aap.cornell.edu/	124
+College of Arts and Sciences	https://as.cornell.edu/	124
+Cornell SC Johnson College of Business	https://business.cornell.edu/	124
+Peter and Stephanie Nolan School of Hotel Administration	https://sha.cornell.edu/	124
+The Charles H. Dyson School of Applied Economics and Management	https://dyson.cornell.edu/	124
+Cornell Ann S.Bowers College of Computing and Information Science	https://www.cis.cornell.edu/	124
+College of Engineering	https://www.engineering.cornell.edu/	124
+College of Human Ecology	https://www.human.cornell.edu/	124
+School of Industrial and Labor Relations	https://www.ilr.cornell.edu/	124
+Cornell Jeb E. Brooks School of Public Policy	https://publicpolicy.cornell.edu/	124
+Cornell Tech	https://tech.cornell.edu/	124
+Cornell Law School	https://www.lawschool.cornell.edu/	124
+College of Veterinary Medicine	https://www.vet.cornell.edu/	124
+Graduate School	https://gradschool.cornell.edu/	124
+Weill Cornell Medicine	https://weill.cornell.edu/	124
+School of Continuing Education and Summer Sessions	https://sce.cornell.edu/	124
+School of Agriculture, Food and Ecosystem Sciences	https://safes.unimelb.edu.au/	125
+School of BioSciences	https://biosciences.unimelb.edu.au/	125
+School of Chemistry	https://chemistry.unimelb.edu.au/	125
+School of Geography, Earth and Atmospheric Sciences	https://science.unimelb.edu.au/	125
+School of Mathematics and Statistics	https://ms.unimelb.edu.au/	125
+School of Physics	https://physics.unimelb.edu.au/	125
+Melbourne Veterinary School	https://mvs.unimelb.edu.au/	125
+Division of Biology and Biological Engineering	https://www.bbe.caltech.edu/	126
+Division of Chemistry and Chemical Engineering	https://cce.caltech.edu/	126
+Division of Engineering and Applied Science	https://eas.caltech.edu/	126
+Division of Geological and Planetary Sciences	https://gps.caltech.edu/	126
+Division of Humanities and Social Sciences	https://www.hss.caltech.edu/	126
+Division of Physics, Mathematics and Astronomy	https://pma.caltech.edu/	126
+Yale College	https://yalecollege.yale.edu/	127
+Graduate School of Arts and Sciences	https://gsas.yale.edu/	127
+School of Architecture	https://www.architecture.yale.edu/	127
+School of Art	https://art.yale.edu/	127
+Divinity School	https://divinity.yale.edu/	127
+David Geffen School of Drama	https://drama.yale.edu/	127
+School of Engineering and Applied Science	https://seas.yale.edu/	127
+School of the Environment	https://environment.yale.edu/	127
+Jackson School of Global Affairs	https://jackson.yale.edu/	127
+Law School	https://law.yale.edu/	127
+School of Management	https://som.yale.edu/	127
+School of Medicine	https://medicine.yale.edu/	127
+School of Music	https://music.yale.edu/	127
+School of Nursing	https://nursing.yale.edu/	127
+School of Public Health	https://publichealth.yale.edu/	127
+Princeton Undergraduate College	https://ua.princeton.edu/policies-resources/undergraduate-program	129
+Schoolf of Architecture	https://soa.princeton.edu/	129
+School of Engineering and Applied Science	https://engineering.princeton.edu/	129
+Humanities Council	https://humanities.princeton.edu/	129
+School of Public and International Affairs	https://spia.princeton.edu/	129
+Applied science and engineering	https://www.engineering.utoronto.ca/	131
+Daniels Faculty of Architecture, Landscape, and Design	https://www.daniels.utoronto.ca/	131
+Faculty of Arts and Science	https://www.artsci.utoronto.ca/	131
+School of Continuing Studies	https://learn.utoronto.ca/	131
+Faculty of Dentistry	https://www.dentistry.utoronto.ca/	131
+Ontario Institute for Studies in Education	https://www.oise.utoronto.ca/	131
+Faculty of Information	https://ischool.utoronto.ca/	131
+Faculty of Kinesiology and Physical Education	https://kpe.utoronto.ca/	131
+Faculty of Law	https://www.law.utoronto.ca/	131
+Rotman School of Management	https://www.rotman.utoronto.ca/	131
+Temerty Faculty of Medicine	https://temertymedicine.utoronto.ca/	131
+Faculty of Music	https://music.utoronto.ca/	131
+Lawrence S. Bloomberg Faculty of Nursing	https://bloomberg.nursing.utoronto.ca/	131
+Leslie Dan Faculty of Pharmacy	https://pharmacy.utoronto.ca/	131
+Dalla Lana School of Public Health	https://www.dlsph.utoronto.ca/	131
+Factor-Inwentash Faculty of Social Work	https://socialwork.utoronto.ca/	131
+College of Arts, Humanities and Social Sciences	https://www.ed.ac.uk/arts-humanities-soc-sci	132
+College of Medicine & Veterinary Medicine	https://www.ed.ac.uk/medicine-vet-medicine	132
+College of Science & Engineering	https://www.ed.ac.uk/science-engineering	132
+Graduate School of Architecture, Planning, and Preservation	https://www.arch.columbia.edu/	133
+Graduate School of Arts and Sciences	https://gsas.columbia.edu/	133
+School of the Arts	https://arts.columbia.edu/	133
+Barnard College	https://barnard.edu/	133
+Business School	https://www8.gsb.columbia.edu/	133
+Climate School	https://climate.columbia.edu/	133
+Columbia College	https://www.college.columbia.edu/	133
+Journalism School	https://journalism.columbia.edu/	133
+Law School	https://www.law.columbia.edu/	133
+College of Dental Medicine	https://www.dental.columbia.edu/	133
+Fu Foundation School of Engineering and Applied Science	https://www.engineering.columbia.edu/	133
+School of General Studies	https://gs.columbia.edu/	133
+School of International and Public Affairs	https://www.sipa.columbia.edu/	133
+School of Nursing	https://nursing.columbia.edu/	133
+College of Physicians and Surgeons	https://www.ps.columbia.edu/	133
+School of Professional Studies	https://sps.columbia.edu/	133
+Mailman School of Public Health	https://www.publichealth.columbia.edu/	133
+School of Social Work	https://socialwork.columbia.edu/	133
+Teachers College	https://www.tc.columbia.edu/	133
+École nationale supérieure de Chimie de Paris	https://psl.eu/en/university/schools/universite-psl/ecole-nationale-superieure-de-chimie-de-paris-psl	134
+Conservatoire National Supérieur d'Art Dramatique	https://psl.eu/en/university/schools/universite-psl/conservatoire-national-superieur-dart-dramatique-psl	134
+Dauphine	https://psl.eu/en/university/schools/universite-psl/dauphine-psl	134
+École nationale des chartes	https://psl.eu/en/university/schools/universite-psl/ecole-nationale-des-chartes-psl	134
+École normale supérieure	https://psl.eu/universite/nos-etablissements/luniversite-psl/ecole-normale-superieure-psl	134
+École Pratique des Hautes Études	https://psl.eu/universite/nos-etablissements/luniversite-psl/ecole-pratique-des-hautes-etudes-psl	134
+École Supérieure de Physique et de Chimie Industrielles de la Ville de Paris	https://psl.eu/universite/nos-etablissements/luniversite-psl/espci-paris-psl	134
+MINES Paris	https://psl.eu/universite/nos-etablissements/luniversite-psl/mines-paris-psl	134
+Observatoire de Paris	https://psl.eu/universite/nos-etablissements/luniversite-psl/observatoire-de-paris-psl	134
+Collège de France	https://psl.eu/universite/nos-etablissements/associes/college-de-france	134
+Institut Curie	https://psl.eu/universite/nos-etablissements/associes/institut-curie	134
+The Centre National de la Recherche Scientifique	https://psl.eu/en/university/schools/research-centers/cnrs	134
+Inria	https://psl.eu/en/university/schools/research-centers/inria	134
+The Institut national de la santé et de la recherche médicale	https://psl.eu/en/university/schools/research-centers/inserm	134
+Faculty of Arts	http://arts.hku.hk/	137
+School of Biological Sciences	https://www.biosch.hku.hk/	137
+School of Humanities	https://soh.hku.hk/	137
+School of Biomedical Sciences	https://www.sbms.hku.hk/	137
+HKU Business School	https://www.hkubs.hku.hk/	137
+Faculty of Architecture	https://www.arch.hku.hk/	137
+School of Chinese	https://www.hku.hk/chinese/	137
+School of Chinese Medicine	https://www.scm.hku.hk/	137
+Chisun College	https://www.chisuncollege.hku.hk/	137
+School of Clinical Medicine	https://www.sclinmed.hku.hk/	137
+Faculty of Dentistry	https://facdent.hku.hk/	137
+Faculty of Education	https://www.sclinmed.hku.hk/	137
+Faculty of Engineering	https://engg.hku.hk/	137
+School of English	https://www.english.hku.hk/	137
+Graduate School	https://www.gradsch.hku.hk/	137
+Faculty of Law	https://www.law.hku.hk/	137
+Li Ka Shing Faculty of Medicine	https://www.med.hku.hk/	137
+School of Modern Languages and Cultures	https://www.smlc.hku.hk/	137
+Nursing School	https://www.nursing.hku.hk/	137
+Public Health School	https://www.sph.hku.hk/	137
+Faculty of Science	https://www.scifac.hku.hk/	137
+Faculty of Social Sciences	https://www.socsc.hku.hk/	137
+Saint John College	https://www.stjohns.hk/	137
+School of Advanced International Studies	https://sais.jhu.edu/	138
+Applied Physics Laboratory	https://www.jhuapl.edu/	138
+Krieger School of Arts and Sciences	https://krieger.jhu.edu/	138
+Carey Business School	https://carey.jhu.edu/	138
+School of Education	https://education.jhu.edu/	138
+Whiting School of Engineering	https://engineering.jhu.edu/	138
+School of Medicine	https://www.hopkinsmedicine.org/	138
+School of Nursing	https://nursing.jhu.edu/	138
+Peabody Institute	https://peabody.jhu.edu/	138
+Bloomberg School of Public Health	https://publichealth.jhu.edu/	138
+Taubman College of Architecture and Urban Planning	https://taubmancollege.umich.edu/	143
+Stamps School of Art & Design	https://stamps.umich.edu/	143
+Michigan Ross School of Business	https://michiganross.umich.edu/	143
+School of Dentistry	https://dent.umich.edu/	143
+Marsal Family School of Education	https://marsal.umich.edu/	143
+Michigan Engineering	https://www.engin.umich.edu/	143
+School for Environment and Sustainability	https://seas.umich.edu/	143
+School of Information	https://www.si.umich.edu/	143
+School of Kinesiology	https://www.kines.umich.edu/	143
+Michigan Law School	https://www.law.umich.edu/	143
+College of Literature, Science, and the Arts	https://lsa.umich.edu/	143
+Medical School	https://medicine.umich.edu/	143
+School of Music, Theatre & Dance	https://smtd.umich.edu/	143
+School of Nursing	https://nursing.umich.edu/	143
+College of Pharmacy	https://pharmacy.umich.edu/	143
+School of Public Health	https://sph.umich.edu/	143
+Rackham Graduate School	https://rackham.umich.edu/	143
+School of Social Work	https://ssw.umich.edu/	143
+School of Arts & Science	https://as.nyu.edu/	149
+College of Dentistry	https://dental.nyu.edu/	149
+Courant Institute of Mathematical Sciences	https://cims.nyu.edu/	149
+Gallatin School of Individualized Study	https://gallatin.nyu.edu/	149
+Grossman School of Medicine	https://med.nyu.edu/	149
+NYU Long Island School of Medicine	https://medli.nyu.edu/	149
+The Institute of Fine Arts	https://ifa.nyu.edu/	149
+Institute for the Study of the Ancient World	https://isaw.nyu.edu/	149
+Leonard N. Stern School of Business	https://www.stern.nyu.edu/	149
+Robert F. Wagner Graduate School of Public Service	https://wagner.nyu.edu/	149
+Rory Meyers College of Nursing	https://nursing.nyu.edu/	149
+School of Global Public Health	https://publichealth.nyu.edu/	149
+School of Professional Studies	https://www.sps.nyu.edu/	149
+School of Law	https://www.law.nyu.edu/	149
+Silver School of Social Work	https://socialwork.nyu.edu/	149
+Steinhardt School of Culture, Education, and Human Development	https://steinhardt.nyu.edu/	149
+Tandon School of Engineering	https://engineering.nyu.edu/	149
+Tisch School of the Arts	https://tisch.nyu.edu/	149
+College of Humanities	https://humanities.snu.ac.kr/	151
+College of Social Sciences	https://social.snu.ac.kr/	151
+College of Natural Sciences	https://science.snu.ac.kr/	151
+College of Agriculture and Life Sciences	https://cals.snu.ac.kr/	151
+College of Business Administration	https://cba.snu.ac.kr/	151
+College of Education	https://education.snu.ac.kr/	151
+College of Engineering	https://eng.snu.ac.kr/	151
+College of Fine Arts	https://finearts.snu.ac.kr/	151
+College of Human Ecology	https://humanecology.snu.ac.kr/	151
+College of Liberal Studies	https://cls.snu.ac.kr/ 	151
+College of Law	https://law.snu.ac.kr/	151
+College of Medicine	https://medicine.snu.ac.kr/	151
+College of Nursing	https://nursing.snu.ac.kr/	151
+College of Pharmacy	https://pharm.snu.ac.kr/	151
+College of Veterinary Medicine	https://vet.snu.ac.kr/	151
+School of Dentistry	https://dentistry.snu.ac.kr/	151
+Faculty of Integrated Human Studies	https://www.h.kyoto-u.ac.jp/	156
+Faculty of Letters	https://www.bun.kyoto-u.ac.jp/	156
+Faculty of Education	http://www.educ.kyoto-u.ac.jp/	156
+Faculty of Law	https://law.kyoto-u.ac.jp/	156
+Faculty of Economics	http://www.econ.kyoto-u.ac.jp/	156
+Faculty of Science	https://www.sci.kyoto-u.ac.jp/	156
+Faculty of Agriculture	http://www.kais.kyoto-u.ac.jp/	156
+Faculty of Engineering	https://www.t.kyoto-u.ac.jp/	156
+Faculty of Pharmaceutical Sciences	https://www.pharm.kyoto-u.ac.jp/	156
+Faculty of Medicine	https://www.med.kyoto-u.ac.jp/	156
+College of Engineering	https://engineering.cmu.edu/	160
+College of Fine Arts	https://www.cmu.edu/cfa/	160
+Dietrich College of Humanities and Social Sciences	https://www.cmu.edu/dietrich/index.html	160
+Heinz College of Information Systems and Public Policy	https://www.heinz.cmu.edu/	160
+Mello College of Science	https://www.cmu.edu/mcs/	160
+School of Computer Science	https://www.cs.cmu.edu/	160
+Tepper School of Business	https://www.cmu.edu/tepper/	160
+Faculty of Economics and Business	https://www.uva.nl/en/about-the-uva/organisation/faculties/faculty-of-economics-and-business/	161
+Faculty of Humanities	https://www.uva.nl/en/about-the-uva/organisation/faculties/faculty-of-humanities/	161
+Amsterdam Law School	https://www.uva.nl/en/about-the-uva/organisation/faculties/amsterdam-law-school/	161
+Faculty of Science	https://www.uva.nl/en/about-the-uva/organisation/faculties/faculty-of-science/	161
+Faculty of Social and Behavioural Sciences	https://www.uva.nl/en/about-the-uva/organisation/faculties/faculty-of-social-and-behavioural-sciences/	161
+Faculty of Medicine	https://www.uva.nl/en/about-the-uva/organisation/faculties/faculty-of-medicine/	161
+Faculty of Dentistry	https://www.uva.nl/en/about-the-uva/organisation/faculties/faculty-of-dentistry/	161
+Trinity College of Arts and Sciences	https://trinity.duke.edu/	165
+Pratt School of Engineering	https://pratt.duke.edu/	165
+Nicholas School of the Environment	https://nicholas.duke.edu/	165
+Sanford School of Public Policy	https://sanford.duke.edu/	165
+Duke Kunshan University	https://dukekunshan.edu.cn/en	165
+Continuing Studies	https://learnmore.duke.edu/	165
+Divinity School	https://divinity.duke.edu/	165
+Duke-NUS Medical School	https://www.duke-nus.edu.sg/	165
+The Graduate School	https://gradschool.duke.edu/	165
+Fuqua School of Business	https://www.fuqua.duke.edu/	165
+Law School	https://law.duke.edu/	165
+School of Medicine	https://medschool.duke.edu/	165
+School of Nursing	https://nursing.duke.edu/	165
+Cockrell School of Engineering	https://www.engr.utexas.edu/	166
+College of Education	https://education.utexas.edu/	166
+College of Fine Arts	https://finearts.utexas.edu/	166
+Jackson School of Geosciences	https://www.jsg.utexas.edu/	166
+Graduate School	https://gradschool.utexas.edu/	166
+Dell Medical School	https://dellmed.utexas.edu/	166
+College of Pharmacy	https://pharmacy.utexas.edu/	166
+College of Natural Sciences	https://cns.utexas.edu/	166
+College of Liberal Arts	https://liberalarts.utexas.edu/	166
+Lyndon B. Johnson School of Public Affairs	https://lbj.utexas.edu/	166
+McCombs School of Business	https://www.mccombs.utexas.edu/	166
+Moody College of Communication	https://moody.utexas.edu/	166
+School of Architecture	https://soa.utexas.edu/	166
+School of Civic Leadership	https://www.utexas.edu/cola/leadership/	166
+School of Information	https://www.ischool.utexas.edu/	166
+Texas Undergraduate College	https://undergradcollege.utexas.edu/	166
+Steve Hicks School of Social Work	https://socialwork.utexas.edu/	166
+School of Nursing	https://nursing.utexas.edu/	166
+School of Law	https://law.utexas.edu/	166
+Faculty of Arts and Humanities	https://www.sorbonne-universite.fr/en/university/governance-and-organization/faculties/faculty-arts-and-humanities	167
+Faculty of Science and Engineering	https://www.sorbonne-universite.fr/en/university/governance-and-organization/faculties/faculty-science-and-engineering	167
+Faculty of Medicine	https://www.sorbonne-universite.fr/en/university/governance-and-organization/faculties/faculty-medicine	167
+Faculty of Sport Sciences	https://www.sorbonne-universite.fr/en/university/governance-and-organization/faculties/faculty-sport-sciences	167
+School of Arts & Humanities	https://artsandhumanities.ucsd.edu/	170
+School of Biological Sciences	https://biology.ucsd.edu/	170
+Halicioğlu Data Science Institute	https://datascience.ucsd.edu/	170
+School of Social Sciences	https://socialsciences.ucsd.edu/	170
+Rady School of Management	https://rady.ucsd.edu/	170
+School of Physical Sciences	https://physicalsciences.ucsd.edu/	170
+Jacobs School of Engineering	https://jacobsschool.ucsd.edu/	170
+School of Global Policy and Strategy	https://gps.ucsd.edu/	170
+College of Arts and Sciences	https://artsci.washington.edu/	171
+College of Built Environments	https://be.uw.edu/	171
+Foster School of Business	https://foster.uw.edu/	171
+Paul G. Allen School of Computer Science & Engineering	https://www.cs.washington.edu/	171
+School of Denistry	https://dental.washington.edu/	171
+College of Education	https://education.uw.edu/	171
+College of Engineering	https://www.engr.washington.edu/	171
+College of The Environment	https://environment.uw.edu/	171
+The Graduate School	https://grad.uw.edu/	171
+The Heny M. Jackson School of International Studies	https://jsis.washington.edu/	171
+School of Law	https://www.law.uw.edu/	171
+Information School	https://ischool.uw.edu/	171
+School of Medicine	https://www.uwmedicine.org/	171
+School of Nursing	https://nursing.uw.edu/	171
+School of Pharmacy	https://sop.washington.edu/	171
+Evans School of Public Policy & Governance	https://evans.uw.edu/	171
+School of Public Health	https://sph.washington.edu/	171
+School of Social Work	https://socialwork.uw.edu/	171
+Carle Illinois College of Medicine	https://medicine.illinois.edu/	172
+College of Agricultural, Consumer & Environmental Sciences	https://aces.illinois.edu/	172
+College of Applied Health Sciences	https://www.ahs.illinois.edu/	172
+College of Education	https://education.illinois.edu/	172
+College of Fine & Applied Arts	https://faa.illinois.edu/	172
+College of Law	https://law.illinois.edu/	172
+College of Liberal Arts & Sciences	https://las.illinois.edu/	172
+College of Media	https://media.illinois.edu/	172
+College of Veterinary Medicine	https://vetmed.illinois.edu/	172
+Division of General Studies	https://dgs.illinois.edu/	172
+Gies College of Business	https://giesbusiness.illinois.edu/	172
+Grainger College of Engineering	https://grainger.illinois.edu/	172
+School of Social Work	https://socialwork.illinois.edu/	172
+School of Information Sciences	https://ischool.illinois.edu/	172
+School of Labor and Employment Relations	https://ler.illinois.edu/	172
+Judge Business School	https://www.jbs.cam.ac.uk/	113

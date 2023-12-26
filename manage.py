@@ -20,6 +20,9 @@ from cursus.models import (  # noqa: F401 # pylint: disable=unused-import
     country,
     user,
     token,
+    history,
+    course,
+    department,
 )
 
 

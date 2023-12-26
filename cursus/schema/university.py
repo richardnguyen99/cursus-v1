@@ -25,6 +25,11 @@ class UniversityDomainSchema(SQLAlchemyAutoSchema):
 
     id = auto_field()
     domain_name = auto_field()
+    school_short_name = auto_field()
+    iso639_1 = auto_field()
+    type = auto_field()
+    created_at = auto_field()
+    updated_at = auto_field()
 
 
 class UniversityFounderSchema(SQLAlchemyAutoSchema):
@@ -39,6 +44,9 @@ class UniversityFounderSchema(SQLAlchemyAutoSchema):
     middle_name = auto_field()
     suffix = auto_field()
     biography_link = auto_field()
+
+    created_at = auto_field(dump_only=True)
+    updated_at = auto_field(dump_only=True)
 
     @staticmethod
     def build(founder: UniversityFounder):
@@ -71,7 +79,7 @@ class UniversityCampusSchema(SQLAlchemyAutoSchema):
     address_city = auto_field()
     address_state = auto_field()
     address_zip_code = auto_field()
-    # country_code = auto_field()
+    country_code = auto_field()
 
     country = fields.Nested(
         CountrySchema,
@@ -108,6 +116,8 @@ class UniversitySchema(SQLAlchemyAutoSchema):
     former_name = auto_field(dump_only=True)
     motto = auto_field()
 
+    homepage = fields.Method("get_homepage", dump_only=True)
+
     campuses = fields.Nested(
         lambda: UniversityCampusSchema(
             only=(
@@ -142,6 +152,16 @@ class UniversitySchema(SQLAlchemyAutoSchema):
             "biography_link",
         ),
     )
+
+    def get_homepage(self, obj: University):
+        index_page = list(
+            filter(lambda domain: domain.type == "index", obj.domains)
+        )
+
+        if len(index_page) > 0:
+            return index_page[0].domain_name
+
+        return "-"
 
     def get_campuses(self, obj: University):
         return [

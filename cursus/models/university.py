@@ -18,6 +18,10 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship, Relationship
 
 from cursus.util.extensions import db
 
+from .course import Course
+from .department import Department
+from .school import School
+
 
 class University(db.Model):
     """Core university model"""
@@ -37,6 +41,7 @@ class University(db.Model):
         String(128),
         unique=True,
         nullable=False,
+        index=True,
     )
 
     established: Mapped[int] = mapped_column(
@@ -68,7 +73,6 @@ class University(db.Model):
     updated_at: Mapped[DateTime] = mapped_column(
         DateTime(timezone=True),
         server_default=func.now(),
-        server_onupdate=func.now(),
     )
 
     founders: Relationship[list["UniversityFounder"]] = relationship(
@@ -76,6 +80,7 @@ class University(db.Model):
         backref="university",
         lazy=True,
         collection_class=list,
+        cascade="all, delete-orphan",
     )
 
     domains: Relationship[list["UniversityDomain"]] = relationship(
@@ -83,6 +88,7 @@ class University(db.Model):
         backref="university",
         lazy=True,
         collection_class=list,
+        cascade="all, delete-orphan",
     )
 
     campuses: Relationship[list["UniversityCampus"]] = relationship(
@@ -90,6 +96,31 @@ class University(db.Model):
         backref="university",
         lazy=True,
         collection_class=list,
+        cascade="all, delete-orphan",
+    )
+
+    courses: Relationship[list["Course"]] = relationship(
+        "Course",
+        backref="university",
+        lazy=True,
+        collection_class=list,
+        cascade="all, delete-orphan",
+    )
+
+    schools: Relationship[list["School"]] = relationship(
+        "School",
+        backref="university",
+        lazy=True,
+        collection_class=list,
+        cascade="all, delete-orphan",
+    )
+
+    departments: Relationship[list["Department"]] = relationship(
+        "Department",
+        backref="university",
+        lazy=True,
+        collection_class=list,
+        cascade="all, delete-orphan",
     )
 
     def __init__(
@@ -136,7 +167,6 @@ class UniversityDomain(db.Model):
     updated_at: Mapped[DateTime] = mapped_column(
         DateTime(timezone=True),
         server_default=func.now(),
-        server_onupdate=func.now(),
     )
 
     school_short_name: Mapped[str] = mapped_column(
@@ -173,7 +203,6 @@ class UniversityFounder(db.Model):
     updated_at: Mapped[DateTime] = mapped_column(
         DateTime(timezone=True),
         server_default=func.now(),
-        server_onupdate=func.now(),
     )
 
     school_short_name: Mapped[str] = mapped_column(
