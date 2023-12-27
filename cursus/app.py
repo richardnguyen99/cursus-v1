@@ -15,7 +15,6 @@ from webassets.bundle import get_filter
 from flask_login import logout_user, login_required
 from logging.config import dictConfig
 
-
 from .apis import api_bp as api_bp_v1
 from .views import view_bp, oauth_bp
 from .util.extensions import db, migrate, ma, login_manager, assets, cache
@@ -23,7 +22,7 @@ from .models import User, ActiveToken, Account
 from .util import generate_content_hash
 
 
-if os.environ.get("FLASK_ENV") != "development":
+if os.environ.get("FLASK_ENV") != "development":  # pragma: no cover
     dictConfig(
         {
             "version": 1,
@@ -219,7 +218,9 @@ def create_app(config_module_str: Optional[str] = None) -> Flask:
         if req.path.startswith("/static"):
             # Cache static assets for 1 year
             response.add_etag()
-            response.last_modified = datetime.datetime.utcnow()
+            response.last_modified = datetime.datetime.now(
+                datetime.timezone.utc
+            )
 
             response.access_control_allow_methods = ["GET"]
             response.access_control_allow_origin = "*"

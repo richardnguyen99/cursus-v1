@@ -20,7 +20,6 @@ class Config(object):
 
     TESTING = False
     DEBUG = False
-    DATABASE_URL = os.environ.get("DATABASE_URL")
     FLASK_ENV = os.environ.get("FLASK_ENV")
     SWAGGER_API_SPEC_URL = os.environ.get("SWAGGER_API_SPEC_URL")
 
@@ -112,6 +111,7 @@ class DevConfig(Config):
     DEBUG = True
     CSRF_ENABLED = True
     LOG_LEVEL = "DEBUG"
+    DATABASE_URL = os.environ.get("DATABASE_URL")
 
 
 class ProdConfig(Config):
@@ -126,6 +126,7 @@ class ProdConfig(Config):
     DEBUG = False
     LOG_LEVEL = "INFO"
     PREFERRED_URL_SCHEME = "https"
+    DATABASE_URL = os.environ.get("DATABASE_URL")
 
 
 class TestingConfig(Config):
@@ -140,3 +141,5 @@ class TestingConfig(Config):
     CSRF_ENABLED = True
     LOG_LEVEL = "DEBUG"
     SWAGGER_API_SPEC_URL = ""
+    DATABASE_URL = os.environ.get("TEST_DATABASE_URL")
+    SQLALCHEMY_DATABASE_URI = os.environ.get("TEST_DATABASE_URL")

@@ -38,6 +38,7 @@ build-backend = "flit_core.buildapi"
 
 [tool.pytest.ini_options]
 testpaths = ["test"]
+markers = ["config", "swjs", "robots", "images", "after_request"]
 
 [tool.coverage.run]
 branch = true
