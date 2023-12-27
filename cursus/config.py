@@ -126,3 +126,17 @@ class ProdConfig(Config):
     DEBUG = False
     LOG_LEVEL = "INFO"
     PREFERRED_URL_SCHEME = "https"
+
+
+class TestingConfig(Config):
+    """Testing configuration class for the application
+
+    This class contains testing configuration and variables that are used for
+    testing the application.
+    """
+
+    TESTING = True
+    DEBUG = True
+    CSRF_ENABLED = True
+    LOG_LEVEL = "DEBUG"
+    SWAGGER_API_SPEC_URL = ""
