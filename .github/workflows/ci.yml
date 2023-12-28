@@ -51,6 +51,11 @@ jobs:
           CACHE_TYPE: redis
           CACHE_REDIS_URL: redis://redis:6379/0
           CACHE_DEFAULT_TIMEOUT: 500
+          TESTING: true
+          FLASK_ENV: testing
+          DEBUG: true
+          SWAGGER_API_SPEC_URL: https://cursus.onrender.com/api/v1/swagger.json
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
         run: |
           python -m coverage run -m pytest
 
