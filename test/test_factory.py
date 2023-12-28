@@ -18,14 +18,18 @@ def test_config():
     load_dotenv(env_file, override=True)
 
     assets._named_bundles = {}  # pylint: disable=protected-access
+    os.environ["APP_SETTINGS"] = "cursus.config.DevConfig"
     app = create_app()
 
     assert not app.config["TESTING"]
+    assert app.config["FLASK_ENV"] == "development"
+    assert app.config["DATABASE_URL"] == os.environ.get("DATABASE_URL")
 
     assets._named_bundles = {}  # pylint: disable=protected-access
     app = create_app("cursus.config.TestingConfig")
 
     assert app.config["TESTING"]
+    assert app.config["FLASK_ENV"] == "testing"
     assert app.config["DATABASE_URL"] == os.environ.get("TEST_DATABASE_URL")
 
 
