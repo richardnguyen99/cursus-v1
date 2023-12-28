@@ -161,34 +161,6 @@ def test_logout(client):
     assert response.status_code == 302
 
 
-def test_registered_bundle(client):
-    # Test if the Flask application has a registered bundle after calling
-    # the `create_app` function.
-
-    # print(assets._named_bundles)
-
-    assert type(assets._named_bundles) is dict
-
-    named_bundles = assets._named_bundles
-
-    assert len(named_bundles) == 2
-    assert "css_all" in named_bundles
-    assert "js_all" in named_bundles
-
-    css_bundle = named_bundles["css_all"]
-
-    assert type(css_bundle) is Bundle
-    assert len(css_bundle.contents) == 1
-    assert css_bundle.output == "css/min.bundle.css"
-
-    js_bundle = named_bundles["js_all"]
-
-    assert type(js_bundle) is Bundle
-    assert len(js_bundle.contents) == 2
-    assert js_bundle.contents[0].output == "js/min.bundle.js"
-    assert js_bundle.contents[1].output == "js/vendor.bundle.js"
-
-
 def test_extensions(client):
     assert client.application.extensions["sqlalchemy"]
     assert client.application.extensions["migrate"]

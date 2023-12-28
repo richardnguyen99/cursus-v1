@@ -56,6 +56,7 @@ jobs:
           DEBUG: true
           SWAGGER_API_SPEC_URL: https://cursus.onrender.com/api/v1/swagger.json
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          APP_SETTINGS: cursus.config.TestingConfig
         run: |
           python -m coverage run -m pytest
 
