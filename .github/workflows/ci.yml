@@ -60,18 +60,3 @@ jobs:
           APP_SETTINGS: cursus.config.TestingConfig
         run: |
           python -m coverage run -m pytest
-
-  merge:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      # Merge pull request
-      - name: Merge pull request
-        uses: pascalgn/automerge-action@v0.13.0
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          merge-method: squash
-          delete-branch: true
