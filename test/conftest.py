@@ -19,11 +19,11 @@ def app():
     env_file = find_dotenv(os.path.join("..", ".env"))
     load_dotenv(env_file)
 
-    os.environ["FLASK_ENV"] = "development"
+    assert os.environ.get("TEST_DATABASE_URL")
+
     assets._named_bundles = {}  # pylint: disable=protected-access
     app = create_app("cursus.config.TestingConfig")
 
-    assert os.environ.get("TEST_DATABASE_URL")
     assert app.config["DATABASE_URL"] == os.environ.get("TEST_DATABASE_URL")
 
     with app.app_context():

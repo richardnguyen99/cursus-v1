@@ -1,0 +1,62 @@
+# This GitHub Action will perform a checking of pull request to the main branch
+
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    services:
+      redis:
+        image: redis
+        ports:
+          - 6379:6379
+        options: --entrypoint redis-server
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.11
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e .
+          pip install pylint
+
+      - name: Lint with pylint
+        id: pylint
+        continue-on-error: true
+        run: |
+          pylint --rcfile=.pylintrc --fail-under=9.0 --exit-zero *.py
+
+      - name: Lint with pylint
+        if: ${{ steps.pylint.outcome == 'failure' }}
+        run: |
+          echo "Pylint failed"
+          exit 1
+
+      - name: Run tests
+        env:
+          DATABASE_URL: ${{ secrets.TEST_DATABASE_URL }}
+          TEST_DATABASE_URL: ${{ secrets.TEST_DATABASE_URL }}
+          CACHE_TYPE: redis
+          CACHE_REDIS_URL: redis://redis:6379/0
+          CACHE_DEFAULT_TIMEOUT: 500
+          TESTING: true
+          FLASK_ENV: testing
+          DEBUG: true
+          SWAGGER_API_SPEC_URL: https://cursus.onrender.com/api/v1/swagger.json
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          APP_SETTINGS: cursus.config.TestingConfig
+        run: |
+          python -m coverage run -m pytest
