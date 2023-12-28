@@ -9,8 +9,7 @@ on:
     branches: [main]
 
 jobs:
-  container_job:
-    runs-on: ubuntu-latest
+  build:
     services:
       redis:
         image: redis
@@ -18,7 +17,6 @@ jobs:
           - 6379:6379
         options: --entrypoint redis-server
 
-  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
