@@ -39,6 +39,8 @@ jobs:
           exit 1
 
       - name: Run tests
+        env:
+          TEST_DATABASE_URL: ${{ secrets.TEST_DATABASE_URL }}
         run: |
           python -m coverage run -m pytest
 
