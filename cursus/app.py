@@ -7,13 +7,13 @@ import os
 import flask
 import datetime
 
+from typing import Optional
 from flask import Flask
 from flask_assets import Bundle
 from flask_swagger_ui import get_swaggerui_blueprint
 from webassets.bundle import get_filter
 from flask_login import logout_user, login_required
 from logging.config import dictConfig
-
 
 from .apis import api_bp as api_bp_v1
 from .views import view_bp, oauth_bp
@@ -22,7 +22,7 @@ from .models import User, ActiveToken, Account
 from .util import generate_content_hash
 
 
-if os.environ.get("FLASK_ENV") != "development":
+if os.environ.get("FLASK_ENV") != "development":  # pragma: no cover
     dictConfig(
         {
             "version": 1,
@@ -55,7 +55,7 @@ if os.environ.get("FLASK_ENV") != "development":
     )
 
 
-def create_app() -> Flask:
+def create_app(config_module_str: Optional[str] = None) -> Flask:
     """App factory function to create a Flask app instance
 
     The pattern is carefully described in the Flask documentation
@@ -67,11 +67,23 @@ def create_app() -> Flask:
     app = Flask(__name__, instance_relative_config=True)
 
     # Load configuration for the application
-    app.config.from_object(os.environ.get("APP_SETTINGS"))
+    if config_module_str:
+        app.config.from_object(config_module_str)
+    else:
+        app.config.from_object(os.environ.get("APP_SETTINGS"))
 
-    # URL for exposing Swagger UI (without trailing '/')
-    SWAGGER_URL = "/api/v1/docs/"
-    API_URL = app.config["SWAGGER_API_SPEC_URL"]
+    if not app.config["TESTING"]:
+        # URL for exposing Swagger UI (without trailing '/')
+        SWAGGER_URL = "/api/v1/docs/"
+        API_URL = app.config["SWAGGER_API_SPEC_URL"]
+
+        # Call factory function to create our blueprint
+        swaggerui_blueprint = get_swaggerui_blueprint(
+            SWAGGER_URL,
+            API_URL,
+            config={"app_name": "Cursus application"},
+        )
+        app.register_blueprint(swaggerui_blueprint)
 
     # Register Flask extensions
     db.init_app(app)
@@ -153,14 +165,6 @@ def create_app() -> Flask:
     app.register_blueprint(api_bp_v1)
     app.register_blueprint(view_bp)
     app.register_blueprint(oauth_bp)
-    # Call factory function to create our blueprint
-    swaggerui_blueprint = get_swaggerui_blueprint(
-        SWAGGER_URL,
-        API_URL,
-        config={"app_name": "Cursus application"},
-    )
-
-    app.register_blueprint(swaggerui_blueprint)
 
     @app.route("/logout")
     @login_required
@@ -214,7 +218,9 @@ def create_app() -> Flask:
         if req.path.startswith("/static"):
             # Cache static assets for 1 year
             response.add_etag()
-            response.last_modified = datetime.datetime.utcnow()
+            response.last_modified = datetime.datetime.now(
+                datetime.timezone.utc
+            )
 
             response.access_control_allow_methods = ["GET"]
             response.access_control_allow_origin = "*"

@@ -16,11 +16,14 @@ dependencies = [
     "requests>=2.31.0",
     "cuid2>=2.0.0",
     "redis>=5.0.0",
+    "pytest>=7.4.3",
+    "pytest-xdist>=3.5.0",
+    "coverage>=7.3.4",
     "cssmin",
     "jsmin",
 ]
 name = "cursus"
-version = "0.0.6"
+version = "0.0.9"
 description = "An open-source API repository for university courses."
 license = { file = "LICENSE" }
 authors = [{ name = "Richard H Nguyen", email = "richard@richardhnguyen.com" }]
@@ -32,6 +35,14 @@ cursus = "manage:cli"
 [build-system]
 requires = ["flit_core<4"]
 build-backend = "flit_core.buildapi"
+
+[tool.pytest.ini_options]
+testpaths = ["test"]
+markers = ["config", "swjs", "robots", "images", "after_request"]
+
+[tool.coverage.run]
+branch = true
+source = ["cursus"]
 
 # For black formatter
 [tool.black]
