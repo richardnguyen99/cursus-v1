@@ -1,10 +1,15 @@
+# -*- coding: utf-8 -*-
+
+"""
+Test module for Cursus Flask Factory function
+"""
+
 import os
 import flask
 
 import pytest
 import json
 
-from webassets.bundle import Bundle
 from dotenv import load_dotenv, find_dotenv
 from flask_login import current_user, login_user
 

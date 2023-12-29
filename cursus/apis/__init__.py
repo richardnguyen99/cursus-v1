@@ -274,7 +274,7 @@ def before_request():
 
     # Missing API token
     if "X-CURSUS-API-TOKEN" not in request.headers:
-        raise CursusException.BadRequestError(
+        raise CursusException.UnauthorizedError(
             "API endpoints require an authorized API token"
         )
 
@@ -353,7 +353,7 @@ def after_request(response: flask.Response):
         cache_obj["expired"], "%a, %d %b %Y %H:%M:%S GMT"
     )
 
-    ttl = expired_time - datetime.datetime.utcnow()
+    ttl = expired_time - datetime.datetime.now()
 
     if ttl.seconds < 0:
         ttl = datetime.timedelta(minutes=60)

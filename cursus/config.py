@@ -146,3 +146,8 @@ class TestingConfig(Config):
     DATABASE_URL = os.environ.get("TEST_DATABASE_URL")
     SQLALCHEMY_DATABASE_URI = os.environ.get("TEST_DATABASE_URL")
     FLASK_ENV = "testing"
+
+    CACHE_REDIS_HOST = "localhost"
+    CACHE_REDIS_PORT = "6379"
+    CACHE_REDIS_DB = "0"
+    CACHE_REDIS_URL = "redis://localhost:6379/0"
