@@ -50,3 +50,168 @@ def test_apis_with_key(app, client, admin):
         assert res.status_code == 200
 
         logout_user()
+
+
+def test_apis_valid_preflight_requests(app, client, admin):
+    with app.test_request_context():
+        login_user(admin)
+
+        user = app.login_manager._user_callback(admin.id)
+
+        option_res = client.options(
+            "/api/v1/search/university?query=harvard",
+            headers={
+                "X-CURSUS-API-TOKEN": user.active_token,
+                "Origin": "http://localhost",
+                "Access-Control-Request-Method": "GET",
+                "Access-Control-Request-Headers": "x-cursus-api-token",
+            },
+        )
+
+        assert option_res.status_code == 200
+
+        logout_user()
+
+
+def test_apis_missing_origin_preflight_requests(app, client, admin):
+    with app.test_request_context():
+        login_user(admin)
+
+        user = app.login_manager._user_callback(admin.id)
+
+        option_res = client.options(
+            "/api/v1/search/university?query=harvard",
+            headers={
+                "X-CURSUS-API-TOKEN": user.active_token,
+                "Access-Control-Request-Method": "GET",
+                "Access-Control-Request-Headers": "x-cursus-api-token",
+            },
+        )
+
+        assert option_res.status_code == 400
+        assert option_res.headers["Content-Type"] == "application/json"
+
+        data = option_res.get_json()
+
+        assert data["error"]
+        assert data["error"]["code"] == 400
+        assert data["error"]["message"] == "Bad Request"
+        assert data["error"]["reason"] == "Invalid preflight request"
+
+        logout_user()
+
+
+def test_apis_request_method_preflight_requests(app, client, admin):
+    with app.test_request_context():
+        login_user(admin)
+
+        user = app.login_manager._user_callback(admin.id)
+
+        invalid_option_res1 = client.options(
+            "/api/v1/search/university?query=harvard",
+            headers={
+                "Origin": "http://localhost",
+                "X-CURSUS-API-TOKEN": user.active_token,
+                "Access-Control-Request-Headers": "x-cursus-api-token",
+            },
+        )
+
+        assert invalid_option_res1.status_code == 400
+        assert (
+            invalid_option_res1.headers["Content-Type"] == "application/json"
+        )
+
+        data = invalid_option_res1.get_json()
+
+        assert data["error"]
+        assert data["error"]["code"] == 400
+        assert data["error"]["message"] == "Bad Request"
+        assert data["error"]["reason"] == "Invalid preflight request"
+
+        invalid_option_res2 = client.options(
+            "/api/v1/search/university?query=harvard",
+            headers={
+                "Origin": "http://localhost",
+                "X-CURSUS-API-TOKEN": user.active_token,
+                "Access-Control-Request-Method": "POST",
+                "Access-Control-Request-Headers": "x-cursus-api-token",
+            },
+        )
+
+        assert invalid_option_res2.status_code == 400
+        assert (
+            invalid_option_res2.headers["Content-Type"] == "application/json"
+        )
+
+        data = invalid_option_res2.get_json()
+
+        assert data["error"]
+        assert data["error"]["code"] == 400
+        assert data["error"]["message"] == "Bad Request"
+        assert data["error"]["reason"] == "Invalid preflight request"
+
+        logout_user()
+
+
+def test_apis_request_headers_preflight_request(app, client, admin):
+    with app.test_request_context():
+        login_user(admin)
+
+        user = app.login_manager._user_callback(admin.id)
+
+        invalid_option_res1 = client.options(
+            "/api/v1/search/university?query=harvard",
+            headers={
+                "Origin": "http://localhost",
+                "X-CURSUS-API-TOKEN": user.active_token,
+                "Access-Control-Request-Method": "GET",
+            },
+        )
+
+        assert invalid_option_res1.status_code == 400
+        assert (
+            invalid_option_res1.headers["Content-Type"] == "application/json"
+        )
+
+        data = invalid_option_res1.get_json()
+
+        assert data["error"]
+        assert data["error"]["code"] == 400
+        assert data["error"]["message"] == "Bad Request"
+        assert data["error"]["reason"] == "Invalid preflight request"
+
+        invalid_option_res2 = client.options(
+            "/api/v1/search/university?query=harvard",
+            headers={
+                "Origin": "http://localhost",
+                "X-CURSUS-API-TOKEN": user.active_token,
+                "Access-Control-Request-Method": "GET",
+                "Access-Control-Request-Headers": "x-curs-api-token",
+            },
+        )
+
+        assert invalid_option_res2.status_code == 400
+        assert (
+            invalid_option_res2.headers["Content-Type"] == "application/json"
+        )
+
+        data = invalid_option_res2.get_json()
+
+        assert data["error"]
+        assert data["error"]["code"] == 400
+        assert data["error"]["message"] == "Bad Request"
+        assert data["error"]["reason"] == "Invalid preflight request"
+
+        valid_option_res = client.options(
+            "/api/v1/search/university?query=harvard",
+            headers={
+                "Origin": "http://localhost",
+                "X-CURSUS-API-TOKEN": user.active_token,
+                "Access-Control-Request-Method": "GET",
+                "Access-Control-Request-Headers": "X-CURSUS-API-TOKEN",
+            },
+        )
+
+        assert valid_option_res.status_code == 200
+
+        logout_user()
