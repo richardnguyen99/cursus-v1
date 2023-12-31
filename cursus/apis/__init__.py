@@ -340,14 +340,20 @@ def after_request(response: flask.Response):
 
     make_cors_headers(response)
 
-    # A response that made it to the endpoint handler either succeeded (200) or
-    # failed (404) to retrieve the requested resource. In both cases, we want
-    # to increment the request count for the API token.
+    # If a request makes into the database, whether there is at least one
+    # entity or not, it is considered as a successful request and will return
+    # a 200 (OK) status code.
     #
-    # Other HTTP status codes are already handled by the error handlers.
-    if response.status_code != 200 and response.status_code != 404:
+    # If a request cannot amke into the database, whether it is because of
+    # missing headers, missing parameters, missing api tokens or any general
+    # bad requests (400), it will not be cached and processed further as it
+    # has been processed before.
+    if response.status_code != 200:
         return response
 
+    # Prelight request to check if the API endpoint is allowed to be accessed
+    # outside of the domain. Regardless of the result, the request will not be
+    # cached.
     if request.method == "OPTIONS":
         return response
 
@@ -409,57 +415,20 @@ def handle_method_not_allowed(status_code: int):
 def handle_api_not_found(error: WerkzeugExceptions.NotFound):
     """Handle API 404 errors"""
 
+    req = flask.request
+    uri = req.path
+
     resp = flask.make_response(
         jsonify(
             {
                 "error": {
                     "code": 404,
                     "message": "Not Found",
-                    "reason": "NOT_FOUND",
+                    "reason": f"API endpoint, `{uri}`, not found",
                 }
             }
         ),
         404,
-    )
-
-    return resp
-
-
-@api_bp.errorhandler(WerkzeugExceptions.MethodNotAllowed)
-def handle_http_error(error: WerkzeugExceptions.MethodNotAllowed):
-    """Handle Method-Not-Allowed (405) Werkzeug HTTP exceptions"""
-
-    resp = flask.make_response(
-        jsonify(
-            {
-                "error": {
-                    "code": error.code,
-                    "message": error.description,
-                    "reason": error.name,
-                }
-            }
-        ),
-        error.code,
-    )
-
-    return resp
-
-
-@api_bp.errorhandler(WerkzeugExceptions.HTTPException)
-def handle_http_error(error: WerkzeugExceptions.HTTPException):
-    """Handle generic Werkzeug HTTP exceptions"""
-
-    resp = flask.make_response(
-        jsonify(
-            {
-                "error": {
-                    "code": error.code,
-                    "message": error.description,
-                    "reason": error.name,
-                }
-            }
-        ),
-        error.code,
     )
 
     return resp

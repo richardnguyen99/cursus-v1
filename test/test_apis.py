@@ -292,3 +292,37 @@ def test_apis_with_invalid_method_requests(app, client, admin):
     logout_user()
 
     app_context.pop()
+
+
+def test_apis_with_not_found_handler(app, client, admin):
+    app_context = app.test_request_context()
+
+    app_context.push()
+
+    login_user(admin)
+
+    user = app.login_manager._user_callback(admin.id)
+
+    not_found_search = client.get(
+        "/api/v1/unknown/",
+        headers={
+            "X-CURSUS-API-TOKEN": user.active_token,
+        },
+    )
+
+    assert not_found_search.status_code == 404
+    assert not_found_search.headers["Content-Type"] == "application/json"
+
+    data = not_found_search.get_json()
+
+    assert data["error"]
+    assert data["error"]["code"] == 404
+    assert data["error"]["message"] == "Not Found"
+    assert (
+        data["error"]["reason"]
+        == "API endpoint, `/api/v1/unknown/`, not found"
+    )
+
+    logout_user()
+
+    app_context.pop()
