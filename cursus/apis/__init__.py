@@ -126,16 +126,32 @@ department_bp: Blueprint = Blueprint(
 ###############################################################################
 
 search_bp.add_url_rule(
-    "/university", "university", view_func=search_university
+    "/university",
+    "university",
+    view_func=search_university,
+    methods=["GET", "OPTIONS"],
 )
-
-search_bp.add_url_rule("/school", "school", view_func=search_school)
 
 search_bp.add_url_rule(
-    "/department", "department", view_func=search_department
+    "/school",
+    "school",
+    view_func=search_school,
+    methods=["GET", "OPTIONS"],
 )
 
-search_bp.add_url_rule("/course", "course", view_func=search_course)
+search_bp.add_url_rule(
+    "/department",
+    "department",
+    view_func=search_department,
+    methods=["GET", "OPTIONS"],
+)
+
+search_bp.add_url_rule(
+    "/course",
+    "course",
+    view_func=search_course,
+    methods=["GET", "OPTIONS"],
+)
 
 ###############################################################################
 #                                                                             #
@@ -256,11 +272,6 @@ def before_request():
     if request.path.endswith("/swagger.json"):
         return None
 
-    if request.method != "OPTIONS" and request.method != "GET":
-        raise CursusException.MethodNotAllowedError(
-            "Only GET requests are allowed"
-        )
-
     # Prelight request to check if the API endpoint is allowed to be accessed
     # outside of the domain
     if request.method == "OPTIONS":
@@ -370,6 +381,30 @@ def after_request(response: flask.Response):
     return response
 
 
+@api_bp.app_errorhandler(405)
+def handle_method_not_allowed(status_code: int):
+    """Handle API Method-Not-Allowed (405) errors"""
+
+    req = flask.request
+
+    method = req.method
+    uri = req.path
+
+    res = flask.make_response(
+        jsonify(
+            {
+                "error": {
+                    "code": 405,
+                    "message": "Method Not Allowed",
+                    "reason": f"Method {method} is not allowed for {uri}",
+                }
+            }
+        )
+    )
+
+    return res, 405
+
+
 @api_bp.errorhandler(WerkzeugExceptions.NotFound)
 def handle_api_not_found(error: WerkzeugExceptions.NotFound):
     """Handle API 404 errors"""
@@ -385,6 +420,26 @@ def handle_api_not_found(error: WerkzeugExceptions.NotFound):
             }
         ),
         404,
+    )
+
+    return resp
+
+
+@api_bp.errorhandler(WerkzeugExceptions.MethodNotAllowed)
+def handle_http_error(error: WerkzeugExceptions.MethodNotAllowed):
+    """Handle Method-Not-Allowed (405) Werkzeug HTTP exceptions"""
+
+    resp = flask.make_response(
+        jsonify(
+            {
+                "error": {
+                    "code": error.code,
+                    "message": error.description,
+                    "reason": error.name,
+                }
+            }
+        ),
+        error.code,
     )
 
     return resp
@@ -418,6 +473,9 @@ def handle_api_error(error: CursusException.CursusError):
     as an argument, this error handler will return a JSON response with the
     error code, message, and reason.
     """
+
+    print(error)
+
     resp = flask.make_response(
         jsonify(
             {

@@ -215,3 +215,80 @@ def test_apis_request_headers_preflight_request(app, client, admin):
         assert valid_option_res.status_code == 200
 
         logout_user()
+
+
+def test_apis_with_invalid_method_requests(app, client, admin):
+    app_context = app.test_request_context()
+
+    app_context.push()
+
+    login_user(admin)
+
+    user = app.login_manager._user_callback(admin.id)
+
+    get_res = client.get(
+        "/api/v1/search/university?query=harvard",
+        headers={
+            "X-CURSUS-API-TOKEN": user.active_token,
+        },
+    )
+
+    options_res = client.options(
+        "/api/v1/search/university?query=harvard",
+        headers={
+            "X-CURSUS-API-TOKEN": user.active_token,
+            "Origin": "*",
+            "Access-Control-Request-Method": "GET",
+            "Access-Control-Request-Headers": "X-CURSUS-API-TOKEN",
+        },
+    )
+
+    post_res = client.post(
+        "/api/v1/search/university?query=harvard",
+        headers={
+            "X-CURSUS-API-TOKEN": user.active_token,
+        },
+    )
+
+    put_res = client.put(
+        "/api/v1/search/university?query=harvard",
+        headers={
+            "X-CURSUS-API-TOKEN": user.active_token,
+        },
+    )
+
+    delete_res = client.delete(
+        "/api/v1/search/university?query=harvard",
+        headers={"X-CURSUS-API-TOKEN": user.active_token},
+    )
+
+    assert get_res.status_code == 200
+    assert options_res.status_code == 200
+
+    assert post_res.status_code == 405
+    assert put_res.status_code == 405
+    assert delete_res.status_code == 405
+
+    assert post_res.data
+    assert put_res.data
+    assert delete_res.data
+
+    post_json = post_res.get_json()
+    put_json = put_res.get_json()
+    delete_json = delete_res.get_json()
+
+    assert post_json["error"]
+    assert put_json["error"]
+    assert delete_json["error"]
+
+    assert post_json["error"]["code"] == 405
+    assert put_json["error"]["code"] == 405
+    assert delete_json["error"]["code"] == 405
+
+    assert post_json["error"]["message"] == "Method Not Allowed"
+    assert put_json["error"]["message"] == "Method Not Allowed"
+    assert delete_json["error"]["message"] == "Method Not Allowed"
+
+    logout_user()
+
+    app_context.pop()
